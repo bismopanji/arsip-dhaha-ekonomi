@@ -52,9 +52,6 @@
   <div id="login-wrapper" class="min-h-screen flex items-center justify-center p-4">
     <div class="bg-white dark:bg-brand-surfaceDark max-w-md w-full rounded-2xl shadow-2xl border border-brand-muted/30 dark:border-brand-highlightDark overflow-hidden">
       <div class="p-8 bg-brand-primary dark:bg-brand-sidebarDark text-white text-center relative">
-        <button id="login-settings-btn" class="absolute top-4 left-4 p-2 rounded-full hover:bg-black/10" title="Atur API">
-          <i data-lucide="settings" class="w-5 h-5"></i>
-        </button>
         <button id="login-dark-toggle" class="absolute top-4 right-4 p-2 rounded-full hover:bg-black/10" title="Ubah Tema">
           <i data-lucide="moon" class="w-5 h-5"></i>
         </button>
@@ -70,7 +67,7 @@
           <label class="block text-xs font-bold uppercase text-gray-600 dark:text-brand-accentDark mb-1">Username</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i data-lucide="user" class="w-4 h-4"></i></span>
-            <input type="text" id="login-username" required placeholder="admin / user" class="block w-full pl-9 pr-3 py-2 border border-brand-muted/60 dark:border-brand-highlightDark dark:bg-brand-bgDeep dark:text-white rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-primary text-sm">
+            <input type="text" id="login-username" required placeholder="Masukkan username Anda..." class="block w-full pl-9 pr-3 py-2 border border-brand-muted/60 dark:border-brand-highlightDark dark:bg-brand-bgDeep dark:text-white rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-primary text-sm">
           </div>
         </div>
 
@@ -78,10 +75,9 @@
           <label class="block text-xs font-bold uppercase text-gray-600 dark:text-brand-accentDark mb-1">Password</label>
           <div class="relative">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i data-lucide="lock" class="w-4 h-4"></i></span>
-            <input type="password" id="login-password" required placeholder="admin123 / user123" class="block w-full pl-9 pr-10 py-2 border border-brand-muted/60 dark:border-brand-highlightDark dark:bg-brand-bgDeep dark:text-white rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-primary text-sm">
+            <input type="password" id="login-password" required placeholder="Masukkan kata sandi Anda..." class="block w-full pl-9 pr-10 py-2 border border-brand-muted/60 dark:border-brand-highlightDark dark:bg-brand-bgDeep dark:text-white rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-primary text-sm">
             <button type="button" id="toggle-password-visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-brand-primary">
-              <i data-lucide="eye" id="eye-icon-show" class="w-4 h-4"></i>
-              <i data-lucide="eye-off" id="eye-icon-hide" class="w-4 h-4 hidden"></i>
+              <i data-lucide="eye" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
@@ -90,6 +86,12 @@
           <span>Masuk Sistem</span>
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </button>
+
+        <div class="pt-5 border-t border-brand-muted/25 dark:border-brand-highlightDark/35 text-center">
+          <p class="text-[11px] text-gray-400 dark:text-brand-muted/50 font-medium tracking-wide leading-relaxed">
+            Copyright &copy; 2026 PT BPR Dhaha Ekonomi.<br>All Rights Reserved.
+          </p>
+        </div>
       </form>
     </div>
   </div>
@@ -119,7 +121,7 @@
             <p id="user-display-role" class="text-[10px] text-brand-muted truncate">Loading</p>
           </div>
         </div>
-        <button id="btn-logout" class="w-full flex items-center justify-center space-x-1 py-1.5 bg-red-650/20 hover:bg-red-650 hover:text-white rounded-lg text-[11px] font-bold text-red-200">
+        <button id="btn-logout" class="w-full flex items-center justify-center space-x-1 py-1.5 bg-red-600/20 hover:bg-red-600 hover:text-white rounded-lg text-[11px] font-bold text-red-200">
           <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
           <span>Keluar</span>
         </button>
@@ -139,7 +141,6 @@
         </div>
 
         <div class="flex items-center space-x-2">
-          <button id="header-settings-btn" class="p-1.5 rounded-full hover:bg-gray-100 text-brand-primary"><i data-lucide="sliders" class="w-4 h-4"></i></button>
           <button id="dark-mode-toggle" class="p-1.5 rounded-full hover:bg-gray-100 text-brand-primary">
             <i data-lucide="sun" id="sun-icon" class="w-4 h-4 hidden"></i>
             <i data-lucide="moon" id="moon-icon" class="w-4 h-4"></i>
@@ -240,31 +241,14 @@
               <span class="font-semibold text-gray-600">Semua Bagian</span>
             </label>
           </div>
+          <div id="doc-bagian-akses-list" class="hidden grid grid-cols-2 gap-2 bg-gray-50 dark:bg-brand-bgDeep p-3 rounded-xl border border-brand-muted/30 max-h-24 overflow-y-auto">
+            <!-- Pilihan checklist departemen otomatis -->
+          </div>
         </div>
 
         <div class="flex justify-end space-x-2 pt-2 border-t">
           <button type="button" class="close-modal-doc px-3 py-1.5 border rounded-lg">Batal</button>
           <button type="submit" id="btn-submit-doc" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL SETTINGS (CONFIG API) -->
-  <div id="modal-settings" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 hidden">
-    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl shadow-xl max-w-sm w-full border">
-      <div class="p-4 bg-brand-primary text-white flex justify-between items-center">
-        <h3 class="font-bold text-xs">Konfigurasi API Google Cloud</h3>
-        <button id="close-modal-settings"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-      <form id="form-settings" class="p-5 space-y-3 text-[11px]">
-        <div>
-          <label class="block text-gray-500 mb-1">Web App API URL</label>
-          <input type="url" id="settings-api-url" class="block w-full py-1.5 px-2 border rounded-lg focus:ring-1 focus:ring-brand-primary text-xs">
-        </div>
-        <div class="flex justify-end space-x-2 pt-1">
-          <button type="button" id="btn-clear-api" class="px-3 py-1.5 border text-red-500 rounded-lg">Simpan Offline (Demo)</button>
-          <button type="submit" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg font-bold">Simpan & Sync</button>
         </div>
       </form>
     </div>
@@ -407,7 +391,7 @@
 
   <template id="tpl-file-manager">
     <div class="space-y-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl p-3 border flex items-center justify-between">
+      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-3 border flex items-center justify-between">
         <div class="flex items-center space-x-1" id="drive-breadcrumbs"></div>
         <button id="btn-new-folder" class="px-3 py-1 bg-brand-primary text-white text-[11px] font-bold rounded-lg">Folder Baru</button>
       </div>
@@ -511,24 +495,62 @@
     </div>
   </template>
 
-  <template id="tpl-control-menu"><div class="bg-brand-cardWhite rounded-xl overflow-hidden border"><table class="min-w-full text-xs"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary"><th class="px-4 py-3">Menu</th><th class="px-4 py-3">Ikon</th><th class="px-4 py-3 text-center">Aksi</th></tr></thead><tbody id="tbl-body-menus" class="divide-y"></tbody></table></div></template>
+  <template id="tpl-control-menu"><div class="bg-brand-cardWhite rounded-xl overflow-hidden border"><table class="min-w-full text-xs"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary"><th class="px-4 py-3">Menu</th><th class="px-4 py-3">Ikon</th><th class="px-4 py-3 text-center">Status</th><th class="px-4 py-3 text-center">Aksi</th></tr></thead><tbody id="tbl-body-menus" class="divide-y"></tbody></table></div></template>
   <template id="tpl-riwayat-unduhan"><div class="bg-brand-cardWhite rounded-xl overflow-hidden border"><table class="min-w-full text-xs"><thead class="bg-gray-50"><tr class="text-left font-bold text-brand-primary"><th class="px-4 py-3">Log</th><th class="px-4 py-3">Dokumen</th><th class="px-4 py-3">Diunduh Oleh</th><th class="px-4 py-3">Tanggal</th></tr></thead><tbody id="tbl-body-history" class="divide-y"></tbody></table></div></template>
   <template id="tpl-riwayat-login"><div class="bg-brand-cardWhite rounded-xl overflow-hidden border"><table class="min-w-full text-xs"><thead class="bg-gray-50"><tr class="text-left font-bold text-brand-primary"><th class="px-4 py-3">ID</th><th class="px-4 py-3">User</th><th class="px-4 py-3 text-center">Jenis</th><th class="px-4 py-3">Perangkat</th><th class="px-4 py-3">Waktu</th></tr></thead><tbody id="tbl-body-login-history" class="divide-y"></tbody></table></div></template>
   <template id="tpl-backup-db"><div class="bg-brand-cardWhite p-5 rounded-xl border max-w-md mx-auto text-xs space-y-4"><h3 class="font-bold text-sm text-brand-primary">Backup Excel</h3><button id="btn-proses-backup" class="w-full py-2 bg-brand-primary text-white font-bold rounded-lg">Cadangkan Sekarang</button><div id="backup-status-area" class="hidden"></div></div></template>
 
   <!-- ==================== JAVASCRIPT LOGIC SPA ==================== -->
   <script>
+    // ==========================================
+    // KONFIGURASI API GOOGLE APPS SCRIPT
+    // ==========================================
+    // Masukkan Web App URL dari Deployment Google Apps Script di dalam tanda kutip ini:
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzfAVAswMySEZc4KSCbg2pM6vyBd3knYEFuIHgjGxhNVlM-MeHxirrFJODquWDjyNhn6A/exec"; 
+
+    const pageTitles = {
+      'dashboard': 'Dasbor Ringkasan Arsip',
+      'daftar-dokumen': 'Daftar Dokumen Arsip',
+      'kategori': 'Manajemen Kategori',
+      'file-manager': 'Google Drive File Manager',
+      'control-user': 'Control Panel User',
+      'control-menu': 'Pengaturan Hak Akses Menu',
+      'riwayat-unduhan': 'Riwayat Unduhan Berkas',
+      'backup-db': 'Pencadangan Database',
+      'bagian': 'Manajemen Bagian',
+      'riwayat-login': 'Log Keamanan Sesi'
+    };
+
+    const adminOnlyPages = ['control-user', 'bagian', 'control-menu', 'riwayat-unduhan', 'backup-db', 'riwayat-login'];
+
+    const state = { 
+      isLoggedIn: false, 
+      activePage: 'dashboard', 
+      currentUser: null, 
+      menus: [], 
+      documents: [], 
+      categories: [], 
+      users: [], 
+      departments: [], 
+      history: [], 
+      loginHistory: [], 
+      drive: {}, 
+      darkMode: false, 
+      selectedFile: null 
+    };
+
     async function executeApi(action, method = 'GET', data = {}) {
-      const apiUrl = localStorage.getItem('gas_api_url');
-      if (!apiUrl || apiUrl.trim() === '') return handleMockSimulation(action, method, data);
+      if (!GAS_API_URL || GAS_API_URL.trim() === '' || GAS_API_URL.includes("YOUR_")) {
+        return handleMockSimulation(action, method, data);
+      }
       
       try {
         let response;
         if (method === 'GET') {
           const params = new URLSearchParams({ action, ...data }).toString();
-          response = await fetch(`${apiUrl}?${params}`, { method: 'GET', mode: 'cors' });
+          response = await fetch(`${GAS_API_URL}?${params}`, { method: 'GET', mode: 'cors' });
         } else {
-          response = await fetch(apiUrl, {
+          response = await fetch(GAS_API_URL, {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -616,7 +638,167 @@
       setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3000);
     }
 
-    const state = { isLoggedIn: false, activePage: 'dashboard', currentUser: null, menus: [], documents: [], categories: [], users: [], departments: [], history: [], loginHistory: [], drive: {}, darkMode: false, selectedFile: null };
+    // --- FUNGSI AMBIL DATA SECARA ASINKRON (DATA FETCHING) ---
+    function fetchDocuments() {
+      executeApi('getDocuments').then(res => {
+        state.documents = res;
+        applyDocFilters();
+      }).catch(err => showToast("Gagal", "Gagal memuat dokumen: " + err.message, "danger"));
+    }
+
+    function fetchCategories() {
+      executeApi('getCategories').then(res => {
+        state.categories = res;
+        renderCategoriesTable();
+      }).catch(err => showToast("Gagal", "Gagal memuat kategori: " + err.message, "danger"));
+    }
+
+    function fetchUsers() {
+      executeApi('getUsers').then(res => {
+        state.users = res;
+        renderUsersTable();
+      }).catch(err => showToast("Gagal", "Gagal memuat pengguna: " + err.message, "danger"));
+    }
+
+    function fetchBagian() {
+      executeApi('getBagian').then(res => {
+        state.departments = res;
+        renderBagianTable();
+      }).catch(err => showToast("Gagal", "Gagal memuat divisi: " + err.message, "danger"));
+    }
+
+    // --- FUNGSI KEAMANAN & JEJAK PERANGKAT ---
+    async function fetchSecurityFootprint() {
+      let location = "Kediri, Jawa Timur, Indonesia"; 
+      let device = "Desktop";
+      const ua = navigator.userAgent;
+      if (/tablet|ipad|playbook|silk/i.test(ua)) device = "Tablet";
+      else if (/Mobile|Android|iPhone|iPad|Phone/i.test(ua)) device = "Ponsel Pintar";
+      
+      let os = "OS Desktop";
+      if (ua.indexOf("Win") !== -1) os = "Windows";
+      else if (ua.indexOf("Mac") !== -1) os = "macOS";
+      else if (ua.indexOf("Linux") !== -1) os = "Linux";
+      device = `${device} (${os})`;
+      return { device, location };
+    }
+
+    // --- FUNGSI DOWNLOAD ARSIP AMAN ---
+    function handleDocumentDownload(doc) {
+      const role = state.currentUser ? state.currentUser.role : 'User';
+      const userBagian = state.currentUser ? state.currentUser.id_bagian : '';
+      const isAllowed = role === 'Admin' || doc.akses_semua_bagian || (doc.akses_bagian_tertentu && doc.akses_bagian_tertentu.includes(userBagian));
+
+      if (!isAllowed) {
+        showToast("Ditolak", "Bagian Anda tidak diizinkan mendownload dokumen ini.", "danger");
+        return;
+      }
+      executeApi('logDownload', 'POST', { docId: doc.id, docName: doc.nama_dokumen })
+        .then(() => {
+          showToast("Pengunduhan", "Arsip dibuka di tab baru.", "success");
+          window.open(doc.file_url_drive, '_blank');
+        });
+    }
+
+    // --- RENDERING TABEL KONTROL HAK AKSES MENU ---
+    function renderMenusTable() {
+      const tbody = document.getElementById('tbl-body-menus');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      state.menus.forEach(m => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-xs';
+        tr.innerHTML = `
+          <td class="px-6 py-4 font-bold text-gray-400">${m.id}</td>
+          <td class="px-6 py-4 font-bold">${m.nama_menu}</td>
+          <td class="px-6 py-4"><i data-lucide="${m.icon}" class="w-5 h-5 text-brand-primary"></i></td>
+          <td class="px-6 py-4 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${m.status}</span></td>
+          <td class="px-6 py-4 text-center">
+            <button class="p-1 bg-brand-primary/10 text-brand-primary rounded" onclick="toggleMenuStatus('${m.id}')"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    function toggleMenuStatus(menuId) {
+      const menu = state.menus.find(m => m.id === menuId);
+      if (menu) {
+        menu.status = menu.status === 'Aktif' ? 'Nonaktif' : 'Aktif';
+        showToast("Sukses", `Menu ${menu.nama_menu} diubah menjadi ${menu.status}`);
+        renderMenusTable();
+        renderSidebarMenu();
+      }
+    }
+
+    // --- BUKA MODAL DOKUMEN (TAMBAH/EDIT) ---
+    function openDocumentModal(doc = null) {
+      const modal = document.getElementById('modal-dokumen');
+      const title = document.getElementById('modal-doc-title');
+      const form = document.getElementById('form-dokumen-detail');
+      if (!modal || !form) return;
+      
+      form.reset();
+
+      document.getElementById('doc-id').value = doc ? doc.id : '';
+      document.getElementById('doc-nomor').value = doc ? doc.nomor_arsip : '';
+      document.getElementById('doc-nama').value = doc ? doc.nama_dokumen : '';
+      document.getElementById('doc-deskripsi').value = doc ? doc.deskripsi : '';
+      document.getElementById('doc-file-id').value = doc ? doc.file_id_drive : '';
+      document.getElementById('doc-file-url').value = doc ? doc.file_url_drive : '';
+      document.getElementById('doc-akses-semua').checked = doc ? doc.akses_semua_bagian : true;
+
+      // Inisialisasi daftar otorisasi bagian
+      const listContainer = document.getElementById('doc-bagian-akses-list');
+      if (listContainer) {
+        if (doc && !doc.akses_semua_bagian) {
+          listContainer.classList.remove('hidden');
+          listContainer.innerHTML = '';
+          state.departments.forEach(bag => {
+            const isChecked = doc.akses_bagian_tertentu && doc.akses_bagian_tertentu.includes(bag.id);
+            listContainer.innerHTML += `
+              <label class="flex items-center space-x-1.5 cursor-pointer">
+                <input type="checkbox" value="${bag.id}" ${isChecked ? 'checked' : ''} class="doc-chk-bag-akses rounded text-brand-primary">
+                <span>${bag.nama_bagian}</span>
+              </label>`;
+          });
+        } else {
+          listContainer.classList.add('hidden');
+        }
+      }
+
+      // Populate dropdown kategori
+      const catSel = document.getElementById('doc-id-kategori');
+      if (catSel) {
+        catSel.innerHTML = '';
+        state.categories.forEach(c => {
+          catSel.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`;
+        });
+        if (doc) catSel.value = doc.id_kategori;
+      }
+
+      // Populate dropdown bagian/divisi
+      const bagSel = document.getElementById('doc-id-bagian');
+      if (bagSel) {
+        bagSel.innerHTML = '';
+        state.departments.forEach(b => {
+          bagSel.innerHTML += `<option value="${b.id}">${b.nama_bagian}</option>`;
+        });
+        if (doc) bagSel.value = doc.id_bagian;
+      }
+
+      if (title) {
+        title.innerHTML = doc ? `<i data-lucide="edit" class="w-4 h-4 mr-1 inline-block"></i> Edit Dokumen` : `<i data-lucide="file-plus" class="w-4 h-4 mr-1 inline-block"></i> Tambah Dokumen Baru`;
+      }
+      
+      const fileInfo = document.getElementById('file-info');
+      if (fileInfo) fileInfo.classList.add('hidden');
+      state.selectedFile = null;
+
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
 
     window.onload = function() {
       updateSyncStatus();
@@ -628,8 +810,7 @@
     function updateSyncStatus() {
       const dot = document.getElementById('conn-dot');
       const text = document.getElementById('conn-text');
-      const api = localStorage.getItem('gas_api_url');
-      const active = api && api.trim() !== '';
+      const active = GAS_API_URL && GAS_API_URL.trim() !== '' && !GAS_API_URL.includes("YOUR_");
       if (dot) dot.className = active ? "w-1.5 h-1.5 rounded-full bg-emerald-500" : "w-1.5 h-1.5 rounded-full bg-amber-500";
       if (text) text.textContent = active ? "Sync Online" : "Demo Offline";
     }
@@ -689,6 +870,14 @@
     }
 
     function navigateTo(pageId) {
+      // Otorisasi Hak Akses Navigasi Halaman SPA
+      const userRole = state.currentUser ? state.currentUser.role : 'User';
+      if (adminOnlyPages.includes(pageId) && userRole !== 'Admin') {
+        showToast("Akses Dilarang", "Halaman ini memerlukan otorisasi Administrator.", "warning");
+        navigateTo('dashboard');
+        return;
+      }
+
       state.activePage = pageId;
       renderSidebarMenu();
       document.getElementById('page-title').textContent = pageTitles[pageId] || 'SI-Arsip';
@@ -720,8 +909,50 @@
       else if (pageId === 'backup-db') renderPageBackup();
     }
 
+    // --- FUNGSI CHART / DIAGRAM VISUALISASI ---
+    function renderPageChart(labels, dataSet, chartColors) {
+      const totalItems = dataSet.reduce((acc, curr) => acc + curr, 0);
+      if (totalItems === 0) {
+        document.getElementById('categoryChart').classList.add('hidden');
+        document.getElementById('no-chart-data').classList.remove('hidden');
+      } else {
+        document.getElementById('categoryChart').classList.remove('hidden');
+        document.getElementById('no-chart-data').classList.add('hidden');
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        if (window.dashboardChart) window.dashboardChart.destroy();
+        window.dashboardChart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: dataSet,
+              backgroundColor: chartColors.slice(0, labels.length),
+              borderColor: state.darkMode ? '#163832' : '#ffffff',
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const value = context.raw || 0;
+                    return ` ${context.label}: ${value} Berkas`;
+                  }
+                }
+              }
+            },
+            cutout: '72%'
+          }
+        });
+      }
+    }
+
     // ==========================================
-    // MODULES MODULES
+    // MODULES FUNCTIONS
     // ==========================================
     function renderPageDashboard() {
       let catL = false, docL = false;
@@ -737,6 +968,7 @@
         document.getElementById('stat-total-size').textContent = (sz / (1024 * 1024)).toFixed(1) + " MB";
 
         const rBody = document.getElementById('dash-recent-docs');
+        if (!rBody) return;
         rBody.innerHTML = '';
         state.documents.slice(0, 5).forEach(doc => {
           rBody.innerHTML += `
@@ -799,8 +1031,322 @@
       });
     }
 
+    function renderPageKategori() {
+      const form = document.getElementById('form-kategori');
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        const catData = {
+          id: document.getElementById('cat-id').value,
+          nama_kategori: document.getElementById('cat-nama').value,
+          deskripsi: document.getElementById('cat-deskripsi').value
+        };
+        executeApi('saveCategory', 'POST', { catData }).then((res) => {
+          showToast("Sukses", res.message, "success");
+          fetchCategories();
+          resetCategoryForm();
+        });
+      };
+      document.getElementById('btn-batal-cat').onclick = resetCategoryForm;
+      fetchCategories();
+    }
+
+    function renderCategoriesTable() {
+      const tbody = document.getElementById('tbl-body-categories');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      state.categories.forEach(cat => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 text-[11px]">
+            <td class="px-4 py-2 font-bold">${cat.nama_kategori}</td>
+            <td class="px-4 py-2 text-gray-500">${cat.deskripsi || '-'}</td>
+            <td class="px-4 py-2 text-center font-bold text-brand-primary">${cat.jumlah_dokumen || 0}</td>
+            <td class="px-4 py-2 text-center space-x-1.5">
+              <button onclick="editCategory(${JSON.stringify(cat).replace(/"/g, '&quot;')})" class="text-amber-500"><i data-lucide="edit-3" class="w-3.5 h-3.5 inline"></i></button>
+              <button onclick="deleteCategory('${cat.id}')" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i></button>
+            </td>
+          </tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    function editCategory(cat) {
+      document.getElementById('form-cat-title').innerHTML = `<i data-lucide="edit" class="w-4 h-4 mr-1 inline"></i> Edit Kategori`;
+      document.getElementById('cat-id').value = cat.id;
+      document.getElementById('cat-nama').value = cat.nama_kategori;
+      document.getElementById('cat-deskripsi').value = cat.deskripsi || '';
+      document.getElementById('btn-batal-cat').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function deleteCategory(id) {
+      showCustomConfirm("Hapus", "Hapus Kategori ini?", () => {
+        executeApi('deleteCategory', 'POST', { catId: id }).then(res => {
+          showToast("Sukses", res.message);
+          fetchCategories();
+        });
+      });
+    }
+
+    function renderPageFileManager() {
+      document.getElementById('btn-new-folder').onclick = () => document.getElementById('modal-folder').classList.remove('hidden');
+      fetchDriveContents();
+    }
+
+    function fetchDriveContents(folderId = 'root') {
+      const container = document.getElementById('drive-contents');
+      if (container) {
+        container.innerHTML = `<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-brand-primary mx-auto"></div></div>`;
+      }
+      executeApi('getFolderContents', 'GET', { folderId }).then(contents => {
+        state.drive = contents;
+        renderDriveBreadcrumbs();
+        renderDriveGrid();
+      });
+    }
+
+    function renderDriveBreadcrumbs() {
+      const crumbs = document.getElementById('drive-breadcrumbs');
+      if (!crumbs) return;
+      crumbs.innerHTML = `<button onclick="fetchDriveContents('root')" class="text-brand-primary font-bold hover:underline">Utama</button>`;
+      if (state.drive.currentFolderId && state.drive.currentFolderId !== 'root') {
+        crumbs.innerHTML += ` <span class="text-gray-400">/</span> <span class="font-semibold text-gray-600 truncate max-w-[100px]">${state.drive.currentFolderName}</span>`;
+      }
+    }
+
+    function renderDriveGrid() {
+      const container = document.getElementById('drive-contents');
+      if (!container) return;
+      container.innerHTML = '';
+      if (!state.drive.folders?.length && !state.drive.files?.length) {
+        container.innerHTML = `<div class="col-span-full text-center py-6 text-gray-400">Folder ini kosong.</div>`;
+        return;
+      }
+      state.drive.folders?.forEach(fold => {
+        container.innerHTML += `
+          <div onclick="fetchDriveContents('${fold.id}')" class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border hover:border-brand-primary/40 cursor-pointer flex flex-col items-center">
+            <i data-lucide="folder" class="w-8 h-8 text-amber-500 fill-amber-500/10"></i>
+            <p class="mt-1 text-[11px] font-bold truncate w-full text-center">${fold.name}</p>
+          </div>`;
+      });
+      state.drive.files?.forEach(file => {
+        container.innerHTML += `
+          <div class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border flex flex-col items-center">
+            <i data-lucide="file-text" class="w-8 h-8 text-brand-primary"></i>
+            <p class="mt-1 text-[11px] font-bold truncate w-full text-center">${file.name}</p>
+            <span class="text-[9px] text-gray-400">${(file.size / 1024).toFixed(0)} KB</span>
+          </div>`;
+      });
+      lucide.createIcons();
+    }
+
+    function renderPageControlUser() {
+      const sel = document.getElementById('user-bagian');
+      sel.innerHTML = '<option value="">-- Pilih Bagian --</option>';
+      state.departments.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.nama_bagian}</option>`);
+
+      const list = document.getElementById('user-menu-checklist');
+      list.innerHTML = '';
+      state.menus.forEach(m => {
+        list.innerHTML += `
+          <label class="flex items-center space-x-2 p-1 cursor-pointer">
+            <input type="checkbox" value="${m.id}" class="user-menu-access-chk rounded text-brand-primary">
+            <span class="text-[11px] font-semibold">${m.nama_menu}</span>
+          </label>`;
+      });
+
+      document.getElementById('form-user').onsubmit = (e) => {
+        e.preventDefault();
+        const checked = [];
+        document.querySelectorAll('.user-menu-access-chk:checked').forEach(c => checked.push(c.value));
+        const userData = {
+          id: document.getElementById('user-id').value,
+          username: document.getElementById('user-username').value,
+          nama: document.getElementById('user-nama').value,
+          id_bagian: document.getElementById('user-bagian').value,
+          role: document.getElementById('user-role').value,
+          status: document.getElementById('user-status').value,
+          menu_akses: checked
+        };
+        executeApi('saveUser', 'POST', { userData }).then(res => {
+          showToast("Sukses", res.message, "success");
+          fetchUsers();
+          resetUserForm();
+        });
+      };
+      document.getElementById('btn-batal-user').onclick = resetUserForm;
+      fetchUsers();
+    }
+
+    function renderUsersTable() {
+      const tbody = document.getElementById('tbl-body-users');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      state.users.forEach(usr => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 text-[11px]">
+            <td class="px-4 py-2 font-bold">@${usr.username}</td>
+            <td class="px-4 py-2 font-semibold">${usr.nama}</td>
+            <td class="px-4 py-2 text-center"><span class="px-1.5 py-0.5 rounded border border-brand-primary text-brand-primary">${usr.role}</span></td>
+            <td class="px-4 py-2 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${usr.status}</span></td>
+            <td class="px-4 py-2 text-center space-x-1">
+              <button onclick="editUser(${JSON.stringify(usr).replace(/"/g, '&quot;')})" class="text-amber-500"><i data-lucide="edit" class="w-3.5 h-3.5 inline"></i></button>
+            </td>
+          </tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    function editUser(usr) {
+      document.getElementById('form-user-title').innerHTML = `<i data-lucide="user-check" class="w-4 h-4 mr-1 inline"></i> Edit User`;
+      document.getElementById('user-id').value = usr.id;
+      document.getElementById('user-username').value = usr.username;
+      document.getElementById('user-username').disabled = true;
+      document.getElementById('user-nama').value = usr.nama;
+      document.getElementById('user-bagian').value = usr.id_bagian;
+      document.getElementById('user-role').value = usr.role;
+      document.getElementById('user-status').value = usr.status;
+      document.getElementById('pwd-field-group').classList.add('hidden');
+      document.querySelectorAll('.user-menu-access-chk').forEach(cb => {
+        cb.checked = usr.menu_akses && usr.menu_akses.includes(cb.value);
+      });
+      document.getElementById('btn-batal-user').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function renderPageBagian() {
+      document.getElementById('form-bagian').onsubmit = (e) => {
+        e.preventDefault();
+        const bagData = {
+          nama_bagian: document.getElementById('bag-nama').value,
+          kode_bagian: document.getElementById('bag-kode').value
+        };
+        executeApi('saveBagian', 'POST', { bagData }).then((res) => {
+          showToast("Sukses", res.message, "success");
+          document.getElementById('form-bagian').reset();
+          fetchBagian();
+        });
+      };
+      fetchBagian();
+    }
+
+    function renderBagianTable() {
+      const tbody = document.getElementById('tbl-body-bagian');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      state.departments.forEach(bag => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 text-[11px]">
+            <td class="px-4 py-2 font-bold">${bag.kode_bagian}</td>
+            <td class="px-4 py-2">${bag.nama_bagian}</td>
+            <td class="px-4 py-2 text-center">
+              <button onclick="deleteBagian('${bag.id}')" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i></button>
+            </td>
+          </tr>`;
+      });
+      lucide.createIcons();
+    }
+
+    function deleteBagian(id) {
+      showCustomConfirm("Hapus", "Hapus divisi ini?", () => {
+        executeApi('deleteBagian', 'POST', { bagId: id }).then(res => {
+          showToast("Sukses", res.message);
+          fetchBagian();
+        });
+      });
+    }
+
+    // --- RENDERING HISTORI AKTIVITAS DOWNLOAD ---
+    function fetchDownloadHistory() {
+      executeApi('getDownloadHistory').then(res => {
+        state.history = res;
+        renderDownloadHistoryTable();
+      });
+    }
+
+    function renderDownloadHistoryTable() {
+      const tbody = document.getElementById('tbl-body-history');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      state.history.forEach(hist => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 text-[11px]">
+            <td class="px-4 py-2 text-gray-400">${hist.id}</td>
+            <td class="px-4 py-2 font-bold">${hist.nama_dokumen}</td>
+            <td class="px-4 py-2">${hist.diunduh_oleh}</td>
+            <td class="px-4 py-2 text-gray-500">${hist.tanggal_unduh_formatted}</td>
+          </tr>`;
+      });
+    }
+
+    function fetchLoginHistory() {
+      executeApi('getLoginHistory').then(res => {
+        state.loginHistory = res;
+        renderLoginHistoryTable();
+      });
+    }
+
+    function renderLoginHistoryTable() {
+      const tbody = document.getElementById('tbl-body-login-history');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      state.loginHistory.forEach(log => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50 text-[11px]">
+            <td class="px-4 py-2 text-gray-400">${log.id}</td>
+            <td class="px-4 py-2"><strong>${log.nama}</strong> (@${log.username})</td>
+            <td class="px-4 py-2 text-center"><span class="px-1.5 py-0.5 rounded ${log.event_type === 'Login' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${log.event_type}</span></td>
+            <td class="px-4 py-2">${log.device}</td>
+            <td class="px-4 py-2 text-gray-500">${log.tanggal_jam_formatted}</td>
+          </tr>`;
+      });
+    }
+
+    function renderPageBackup() {
+      document.getElementById('btn-proses-backup').onclick = function() {
+        this.disabled = true;
+        this.textContent = "Mengekspor & Mencadangkan Seluruh Basis Data...";
+        executeApi('backupDb', 'POST').then(res => {
+          this.disabled = false;
+          this.textContent = "Cadangkan Sekarang";
+          if (res.success) {
+            showToast("Berhasil", res.message, "success");
+            document.getElementById('backup-status-area').innerHTML = `
+              <div class="mt-4 p-3 bg-emerald-50 text-emerald-800 border rounded-xl">
+                <p class="font-bold text-xs">Pencadangan Excel Sukses!</p>
+                <a href="${res.downloadUrl}" target="_blank" class="mt-2 inline-block px-3 py-1.5 bg-emerald-600 text-white rounded text-xs">Ambil Berkas Excel (.xlsx)</a>
+              </div>`;
+          }
+        });
+      };
+    }
+
     // ==========================================
-    // MODULE INTEGRASI & SETUP EVENT
+    // MODULES UTILITIES
+    // ==========================================
+    function resetCategoryForm() {
+      const form = document.getElementById('form-kategori');
+      if (form) form.reset();
+      document.getElementById('cat-id').value = '';
+      document.getElementById('form-cat-title').innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4 mr-1 animate-pulse"></i> Tambah Kategori`;
+      document.getElementById('btn-batal-cat').classList.add('hidden');
+      lucide.createIcons();
+    }
+
+    // --- RESET FORMULIR MANAJEMEN USER ---
+    function resetUserForm() {
+      const form = document.getElementById('form-user');
+      if (form) form.reset();
+      document.getElementById('user-id').value = '';
+      document.getElementById('user-username').disabled = false;
+      document.getElementById('form-user-title').innerHTML = `<i data-lucide="user-plus" class="w-4 h-4 mr-1"></i> Tambah User`;
+      document.getElementById('pwd-field-group').classList.remove('hidden');
+      document.querySelectorAll('.user-menu-access-chk').forEach(cb => cb.checked = false);
+      document.getElementById('btn-batal-user').classList.add('hidden');
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // GLOBAL UI EVENT LISTENERS
     // ==========================================
     function setupEventListeners() {
       document.getElementById('dark-mode-toggle').onclick = toggleDarkMode;
@@ -809,30 +1355,18 @@
       document.getElementById('btn-confirm-cancel').onclick = () => document.getElementById('custom-confirm-modal').classList.add('hidden');
       document.getElementById('btn-confirm-proceed').onclick = () => { if (confirmCallback) confirmCallback(); };
 
-      const mSettings = document.getElementById('modal-settings');
-      document.getElementById('header-settings-btn').onclick = () => {
-        document.getElementById('settings-api-url').value = localStorage.getItem('gas_api_url') || '';
-        mSettings.classList.remove('hidden');
-      };
-      document.getElementById('login-settings-btn').onclick = () => {
-        document.getElementById('settings-api-url').value = localStorage.getItem('gas_api_url') || '';
-        mSettings.classList.remove('hidden');
-      };
-      document.getElementById('close-modal-settings').onclick = () => mSettings.classList.add('hidden');
-      
-      document.getElementById('btn-clear-api').onclick = () => {
-        localStorage.removeItem('gas_api_url');
-        mSettings.classList.add('hidden');
-        updateSyncStatus();
-        showToast("Demo Mode", "Beralih ke mode luring.", "warning");
-      };
-
-      document.getElementById('form-settings').onsubmit = (e) => {
-        e.preventDefault();
-        localStorage.setItem('gas_api_url', document.getElementById('settings-api-url').value.trim());
-        mSettings.classList.add('hidden');
-        updateSyncStatus();
-        showToast("Tersimpan", "Koneksi berhasil diperbarui.", "success");
+      // Memperbaiki Fungsi Mata agar icon dapat berubah dan klik tidak rusak
+      document.getElementById('toggle-password-visibility').onclick = function() {
+        const pwd = document.getElementById('login-password');
+        const btn = this;
+        if (pwd.type === 'password') {
+          pwd.type = 'text';
+          btn.innerHTML = '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+        } else {
+          pwd.type = 'password';
+          btn.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
+        }
+        lucide.createIcons(); // Re-render Lucide Icon
       };
 
       document.getElementById('form-login').onsubmit = async function(e) {
@@ -862,6 +1396,89 @@
         state.isLoggedIn = false;
         document.getElementById('app-wrapper').classList.add('hidden');
         document.getElementById('login-wrapper').classList.remove('hidden');
+        document.getElementById('form-login').reset();
+      };
+
+      document.querySelectorAll('.close-modal-doc').forEach(btn => {
+        btn.onclick = () => document.getElementById('modal-dokumen').classList.add('hidden');
+      });
+
+      document.getElementById('doc-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            state.selectedFile = { bytes: evt.target.result.split(',')[1], mimeType: file.type, name: file.name };
+            document.getElementById('file-name-display').textContent = `${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+            document.getElementById('file-info').classList.remove('hidden');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      document.getElementById('btn-remove-file').onclick = () => {
+        document.getElementById('doc-file').value = '';
+        state.selectedFile = null;
+        document.getElementById('file-info').classList.add('hidden');
+      };
+
+      document.getElementById('form-dokumen-detail').onsubmit = function(e) {
+        e.preventDefault();
+        const checkedBagian = [];
+        document.querySelectorAll('.doc-chk-bag-akses:checked').forEach(cb => {
+          checkedBagian.push(cb.value);
+        });
+
+        const docData = {
+          id: document.getElementById('doc-id').value,
+          nomor_arsip: document.getElementById('doc-nomor').value,
+          nama_dokumen: document.getElementById('doc-nama').value,
+          id_kategori: document.getElementById('doc-id-kategori').value,
+          id_bagian: document.getElementById('doc-id-bagian').value,
+          deskripsi: document.getElementById('doc-deskripsi').value,
+          file_id_drive: document.getElementById('doc-file-id').value,
+          file_url_drive: document.getElementById('doc-file-url').value,
+          akses_semua_bagian: document.getElementById('doc-akses-semua').checked,
+          akses_bagian_tertentu: checkedBagian
+        };
+        executeApi('saveDocument', 'POST', { docData, fileDataObj: state.selectedFile })
+          .then(res => {
+            showToast("Berhasil", res.message, "success");
+            document.getElementById('modal-dokumen').classList.add('hidden');
+            navigateTo(state.activePage);
+          });
+      };
+
+      document.getElementById('doc-akses-semua').onchange = function() {
+        const listContainer = document.getElementById('doc-bagian-akses-list');
+        if (!listContainer) return;
+        if (this.checked) {
+          listContainer.classList.add('hidden');
+        } else {
+          listContainer.classList.remove('hidden');
+          listContainer.innerHTML = '';
+          state.departments.forEach(bag => {
+            listContainer.innerHTML += `
+              <label class="flex items-center space-x-1.5 cursor-pointer">
+                <input type="checkbox" value="${bag.id}" class="doc-chk-bag-akses rounded text-brand-primary">
+                <span>${bag.nama_bagian}</span>
+              </label>
+            `;
+          });
+        }
+      };
+
+      document.getElementById('close-modal-folder').onclick = () => document.getElementById('modal-folder').classList.add('hidden');
+      document.getElementById('btn-cancel-folder').onclick = () => document.getElementById('modal-folder').classList.add('hidden');
+      document.getElementById('form-new-folder').onsubmit = function(e) {
+        e.preventDefault();
+        const fName = document.getElementById('new-folder-name').value;
+        executeApi('createNewFolder', 'POST', { parentFolderId: state.drive.currentFolderId, folderName: fName })
+          .then(res => {
+            showToast("Sukses", res.message, "success");
+            document.getElementById('modal-folder').classList.add('hidden');
+            fetchDriveContents(state.drive.currentFolderId);
+          });
       };
     }
   </script>

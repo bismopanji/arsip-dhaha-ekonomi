@@ -88,8 +88,8 @@
         </button>
 
         <div class="pt-5 border-t border-brand-muted/25 dark:border-brand-highlightDark/35 text-center">
-          <p class="text-[11px] text-gray-400 dark:text-brand-muted/50 font-medium tracking-wide">
-            Copyright &copy; 2026 PT BPR Dhaha Ekonomi. All Rights Reserved.
+          <p class="text-[11px] text-gray-400 dark:text-brand-muted/50 font-medium tracking-wide leading-relaxed">
+            Copyright &copy; 2026 PT BPR Dhaha Ekonomi.<br>All Rights Reserved.
           </p>
         </div>
       </form>
@@ -506,7 +506,7 @@
     // KONFIGURASI API GOOGLE APPS SCRIPT
     // ==========================================
     // Masukkan Web App URL dari Deployment Google Apps Script di dalam tanda kutip ini:
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzfAVAswMySEZc4KSCbg2pM6vyBd3knYEFuIHgjGxhNVlM-MeHxirrFJODquWDjyNhn6A/exec"; 
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxQav7mP2By-7u78IL_7rHklmBdAdplgoHV_pC5RScUnUVr5Q6myqHW2Jr3K4PcmFtR/exec"; 
 
     const pageTitles = {
       'dashboard': 'Dasbor Ringkasan Arsip',
@@ -733,7 +733,7 @@
     }
 
     // --- BUKA MODAL DOKUMEN (TAMBAH/EDIT) ---
-    function openDocumentModal(doc = null) {
+    window.openDocumentModal = function(doc = null) {
       const modal = document.getElementById('modal-dokumen');
       const title = document.getElementById('modal-doc-title');
       const form = document.getElementById('form-dokumen-detail');
@@ -798,7 +798,7 @@
 
       modal.classList.remove('hidden');
       lucide.createIcons();
-    }
+    };
 
     window.onload = function() {
       updateSyncStatus();
@@ -848,15 +848,15 @@
       const nav = document.getElementById('main-navigation');
       if (!nav) return;
       nav.innerHTML = '';
-
+      
       const role = state.currentUser ? state.currentUser.role : 'User';
       const allowedMenus = state.currentUser ? state.currentUser.menu_akses || [] : [];
-
+      
       state.menus.forEach(menu => {
         if (menu.status !== 'Aktif') return;
         // PENTING: Menyembunyikan menu pada antarmuka sidebar jika hak akses user (bukan Admin) tidak diizinkan.
         if (role !== 'Admin' && !allowedMenus.includes(menu.id)) return;
-
+        
         let pId = 'daftar-dokumen';
         if (menu.nama_menu.includes('Dashboard')) pId = 'dashboard';
         else if (menu.nama_menu.includes('Kategori')) pId = 'kategori';
@@ -871,11 +871,7 @@
         const btn = document.createElement('button');
         btn.className = `w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-semibold ${state.activePage === pId ? 'bg-brand-accent text-white' : 'text-brand-bgLight/85 hover:bg-black/10'}`;
         btn.innerHTML = `<i data-lucide="${menu.icon}" class="w-4 h-4"></i><span>${menu.nama_menu}</span>`;
-        btn.onclick = () => { 
-          navigateTo(pId); 
-          document.getElementById('sidebar').classList.add('-translate-x-full');
-          document.getElementById('sidebar-overlay').classList.add('hidden');
-        };
+        btn.onclick = () => { navigateTo(pId); document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('sidebar-overlay').classList.add('hidden'); };
         nav.appendChild(btn);
       });
       lucide.createIcons();
@@ -1054,14 +1050,14 @@
       lucide.createIcons();
     }
 
-    function deleteDoc(id) {
+    window.deleteDoc = function(id) {
       showCustomConfirm("Hapus", "Hapus arsip ini?", () => {
         executeApi('deleteDocument', 'POST', { docId: id }).then(res => {
           showToast("Sukses", res.message);
           fetchDocuments();
         });
       });
-    }
+    };
 
     function renderPageKategori() {
       const form = document.getElementById('form-kategori');
@@ -1104,30 +1100,30 @@
       lucide.createIcons();
     }
 
-    function editCategory(cat) {
+    window.editCategory = function(cat) {
       document.getElementById('form-cat-title').innerHTML = `<i data-lucide="edit" class="w-4 h-4 mr-1 inline"></i> Edit Kategori`;
       document.getElementById('cat-id').value = cat.id;
       document.getElementById('cat-nama').value = cat.nama_kategori;
       document.getElementById('cat-deskripsi').value = cat.deskripsi || '';
       document.getElementById('btn-batal-cat').classList.remove('hidden');
       lucide.createIcons();
-    }
+    };
 
-    function deleteCategory(id) {
+    window.deleteCategory = function(id) {
       showCustomConfirm("Hapus", "Hapus Kategori ini?", () => {
         executeApi('deleteCategory', 'POST', { catId: id }).then(res => {
           showToast("Sukses", res.message);
           fetchCategories();
         });
       });
-    }
+    };
 
     function renderPageFileManager() {
       document.getElementById('btn-new-folder').onclick = () => document.getElementById('modal-folder').classList.remove('hidden');
       fetchDriveContents();
     }
 
-    function fetchDriveContents(folderId = 'root') {
+    window.fetchDriveContents = function(folderId = 'root') {
       const container = document.getElementById('drive-contents');
       if (container) {
         container.innerHTML = `<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-brand-primary mx-auto"></div></div>`;
@@ -1137,7 +1133,7 @@
         renderDriveBreadcrumbs();
         renderDriveGrid();
       });
-    }
+    };
 
     function renderDriveBreadcrumbs() {
       const crumbs = document.getElementById('drive-breadcrumbs');
@@ -1239,7 +1235,7 @@
       lucide.createIcons();
     }
 
-    function editUser(usr) {
+    window.editUser = function(usr) {
       document.getElementById('form-user-title').innerHTML = `<i data-lucide="user-check" class="w-4 h-4 mr-1 inline"></i> Edit User`;
       document.getElementById('user-id').value = usr.id;
       document.getElementById('user-username').value = usr.username;
@@ -1254,7 +1250,7 @@
       });
       document.getElementById('btn-batal-user').classList.remove('hidden');
       lucide.createIcons();
-    }
+    };
 
     function renderPageBagian() {
       const form = document.getElementById('form-bagian');
@@ -1292,16 +1288,15 @@
       lucide.createIcons();
     }
 
-    function deleteBagian(id) {
+    window.deleteBagian = function(id) {
       showCustomConfirm("Hapus", "Hapus divisi ini?", () => {
         executeApi('deleteBagian', 'POST', { bagId: id }).then(res => {
           showToast("Sukses", res.message);
           fetchBagian();
         });
       });
-    }
+    };
 
-    // --- RENDERING HISTORI AKTIVITAS DOWNLOAD ---
     function fetchDownloadHistory() {
       executeApi('getDownloadHistory').then(res => {
         state.history = res;

@@ -88,8 +88,8 @@
         </button>
 
         <div class="pt-5 border-t border-brand-muted/25 dark:border-brand-highlightDark/35 text-center">
-          <p class="text-[11px] text-gray-400 dark:text-brand-muted/50 font-medium tracking-wide leading-relaxed">
-            Copyright &copy; 2026 PT BPR Dhaha Ekonomi.<br>All Rights Reserved.
+          <p class="text-[11px] text-gray-400 dark:text-brand-muted/50 font-medium tracking-wide">
+            Copyright &copy; 2026 PT BPR Dhaha Ekonomi. All Rights Reserved.
           </p>
         </div>
       </form>
@@ -171,7 +171,7 @@
 
   <!-- CONFIRM MODAL -->
   <div id="custom-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 hidden">
-    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl shadow-xl max-w-sm w-full overflow-hidden border border-brand-muted/20">
+    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl shadow-xl max-w-sm w-full overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark">
       <div class="p-5 space-y-3">
         <h3 id="confirm-title" class="text-sm font-bold text-brand-primary">Konfirmasi</h3>
         <p id="confirm-message" class="text-xs text-gray-500"></p>
@@ -198,56 +198,56 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-gray-500 mb-1">No. Arsip</label>
-            <input type="text" id="doc-nomor" required class="block w-full py-1.5 px-2.5 border rounded-lg dark:bg-brand-bgDeep">
+            <input type="text" id="doc-nomor" required class="block w-full py-1.5 px-2.5 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
           <div>
             <label class="block font-bold text-gray-500 mb-1">Nama Dokumen</label>
-            <input type="text" id="doc-nama" required class="block w-full py-1.5 px-2.5 border rounded-lg dark:bg-brand-bgDeep">
+            <input type="text" id="doc-nama" required class="block w-full py-1.5 px-2.5 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-gray-500 mb-1">Kategori</label>
-            <select id="doc-id-kategori" required class="block w-full py-1.5 px-2 border rounded-lg dark:bg-brand-bgDeep"></select>
+            <select id="doc-id-kategori" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
           </div>
           <div>
             <label class="block font-bold text-gray-500 mb-1">Divisi</label>
-            <select id="doc-id-bagian" required class="block w-full py-1.5 px-2 border rounded-lg dark:bg-brand-bgDeep"></select>
+            <select id="doc-id-bagian" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
           </div>
         </div>
 
         <div>
           <label class="block font-bold text-gray-500 mb-1">Deskripsi</label>
-          <textarea id="doc-deskripsi" rows="2" class="block w-full py-1.5 px-2.5 border rounded-lg dark:bg-brand-bgDeep"></textarea>
+          <textarea id="doc-deskripsi" rows="2" class="block w-full py-1.5 px-2.5 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></textarea>
         </div>
 
-        <div id="drop-area" class="border border-dashed rounded-xl p-3 text-center cursor-pointer">
+        <div id="drop-area" class="border border-dashed border-brand-muted/50 dark:border-brand-highlightDark rounded-xl p-3 text-center cursor-pointer">
           <input type="file" id="doc-file" class="hidden">
           <div onclick="document.getElementById('doc-file').click()" class="space-y-1">
-            <p class="font-semibold text-[11px] text-gray-600">Klik / Seret Berkas Di Sini</p>
+            <p class="font-semibold text-[11px] text-gray-600 dark:text-gray-300">Klik / Seret Berkas Di Sini</p>
           </div>
-          <div id="file-info" class="hidden mt-2 p-1.5 bg-brand-bgLight/30 rounded-lg flex items-center justify-between">
-            <span id="file-name-display" class="truncate text-[10px] text-brand-primary">-</span>
+          <div id="file-info" class="hidden mt-2 p-1.5 bg-brand-bgLight/30 dark:bg-brand-highlightDark/30 rounded-lg flex items-center justify-between">
+            <span id="file-name-display" class="truncate text-[10px] text-brand-primary dark:text-brand-textLight">-</span>
             <button type="button" id="btn-remove-file" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
           </div>
         </div>
 
-        <div class="space-y-1 border-t pt-2">
+        <div class="space-y-1 border-t border-brand-muted/20 pt-2">
           <div class="flex items-center justify-between">
             <span class="block font-bold text-gray-500">Otorisasi Unduh</span>
             <label class="flex items-center space-x-1 cursor-pointer">
               <input type="checkbox" id="doc-akses-semua" checked class="rounded text-brand-primary">
-              <span class="font-semibold text-gray-600">Semua Bagian</span>
+              <span class="font-semibold text-gray-600 dark:text-gray-300">Semua Bagian</span>
             </label>
           </div>
-          <div id="doc-bagian-akses-list" class="hidden grid grid-cols-2 gap-2 bg-gray-50 dark:bg-brand-bgDeep p-3 rounded-xl border border-brand-muted/30 max-h-24 overflow-y-auto">
+          <div id="doc-bagian-akses-list" class="hidden grid grid-cols-2 gap-2 bg-gray-50 dark:bg-brand-bgDeep p-3 rounded-xl border border-brand-muted/30 dark:border-brand-highlightDark/50 max-h-24 overflow-y-auto">
             <!-- Pilihan checklist departemen otomatis -->
           </div>
         </div>
 
-        <div class="flex justify-end space-x-2 pt-2 border-t">
-          <button type="button" class="close-modal-doc px-3 py-1.5 border rounded-lg">Batal</button>
+        <div class="flex justify-end space-x-2 pt-2 border-t border-brand-muted/20">
+          <button type="button" class="close-modal-doc px-3 py-1.5 border border-brand-muted dark:border-brand-highlightDark text-gray-700 dark:text-white rounded-lg">Batal</button>
           <button type="submit" id="btn-submit-doc" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg">Simpan</button>
         </div>
       </form>
@@ -256,15 +256,15 @@
 
   <!-- MODAL FOLDER -->
   <div id="modal-folder" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/55 hidden">
-    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl max-w-xs w-full">
+    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl max-w-xs w-full overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark">
       <div class="p-4 bg-brand-primary text-white flex justify-between items-center">
         <h3 class="font-bold text-xs">Folder Baru</h3>
         <button id="close-modal-folder"><i data-lucide="x" class="w-4 h-4"></i></button>
       </div>
       <form id="form-new-folder" class="p-5 space-y-3 text-xs">
-        <input type="text" id="new-folder-name" required placeholder="Nama folder..." class="block w-full py-1.5 px-2 border rounded-lg">
+        <input type="text" id="new-folder-name" required placeholder="Nama folder..." class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
         <div class="flex justify-end space-x-2">
-          <button type="button" id="btn-cancel-folder" class="px-3 py-1.5 border rounded-lg">Batal</button>
+          <button type="button" id="btn-cancel-folder" class="px-3 py-1.5 border border-brand-muted dark:border-brand-highlightDark text-gray-700 dark:text-white rounded-lg">Batal</button>
           <button type="submit" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg">Buat</button>
         </div>
       </form>
@@ -275,21 +275,21 @@
   <template id="tpl-dashboard">
     <div class="space-y-4">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border flex items-center justify-between">
+        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex items-center justify-between">
           <div>
             <p class="text-[10px] text-gray-400 font-bold uppercase">Berkas Terarsip</p>
             <h3 id="stat-total-docs" class="text-2xl font-extrabold text-brand-primary">0</h3>
           </div>
           <div class="p-3 bg-brand-primary/10 rounded-xl"><i data-lucide="file-text" class="w-6 h-6"></i></div>
         </div>
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border flex items-center justify-between">
+        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex items-center justify-between">
           <div>
             <p class="text-[10px] text-gray-400 font-bold uppercase">Ukuran Berkas</p>
             <h3 id="stat-total-size" class="text-2xl font-extrabold text-brand-primary">0 MB</h3>
           </div>
           <div class="p-3 bg-brand-primary/10 rounded-xl"><i data-lucide="hard-drive" class="w-6 h-6"></i></div>
         </div>
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border flex items-center justify-between">
+        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex items-center justify-between">
           <div>
             <p class="text-[10px] text-gray-400 font-bold uppercase">Kategori Klasifikasi</p>
             <h3 id="stat-total-cats" class="text-2xl font-extrabold text-brand-primary">0</h3>
@@ -299,22 +299,22 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border overflow-x-auto">
-          <h4 class="font-bold text-xs mb-3 flex items-center"><i data-lucide="history" class="w-4 h-4 mr-1"></i> Riwayat Arsip Terbaru</h4>
+        <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 overflow-x-auto">
+          <h4 class="font-bold text-xs mb-3 flex items-center text-gray-800 dark:text-gray-200"><i data-lucide="history" class="w-4 h-4 mr-1"></i> Riwayat Arsip Terbaru</h4>
           <table class="min-w-full text-xs">
             <thead>
-              <tr class="text-left text-gray-400 border-b">
+              <tr class="text-left text-gray-400 border-b dark:border-brand-highlightDark/30">
                 <th class="pb-2">No. Arsip</th>
                 <th class="pb-2">Nama Berkas</th>
                 <th class="pb-2">Bagian</th>
                 <th class="pb-2 text-right">Aksi</th>
               </tr>
             </thead>
-            <tbody id="dash-recent-docs" class="divide-y text-[11px]"></tbody>
+            <tbody id="dash-recent-docs" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-600 dark:text-gray-300"></tbody>
           </table>
         </div>
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border flex flex-col justify-center items-center">
-          <h4 class="font-bold text-xs self-start mb-2"><i data-lucide="pie-chart" class="w-4 h-4 mr-1 inline"></i> Proporsi Kategori</h4>
+        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex flex-col justify-center items-center">
+          <h4 class="font-bold text-xs self-start mb-2 text-gray-800 dark:text-gray-200"><i data-lucide="pie-chart" class="w-4 h-4 mr-1 inline"></i> Proporsi Kategori</h4>
           <div class="relative w-40 h-40">
             <canvas id="categoryChart"></canvas>
             <div id="no-chart-data" class="hidden text-xs text-gray-450 text-center absolute inset-0 flex items-center justify-center">Kosong</div>
@@ -326,19 +326,19 @@
 
   <template id="tpl-daftar-dokumen">
     <div class="space-y-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl p-4 border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl p-4 border border-brand-muted/20 dark:border-brand-highlightDark/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div class="flex-1 flex gap-2">
-          <input type="text" id="doc-search" placeholder="Cari nomor atau nama berkas..." class="block w-full py-1.5 px-3 border rounded-lg text-xs">
-          <select id="doc-filter-kategori" class="py-1.5 px-2 border rounded-lg text-xs"></select>
+          <input type="text" id="doc-search" placeholder="Cari nomor atau nama berkas..." class="block w-full py-1.5 px-3 border border-brand-muted/50 rounded-lg text-xs dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
+          <select id="doc-filter-kategori" class="py-1.5 px-2 border border-brand-muted/50 rounded-lg text-xs dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
         </div>
         <button id="btn-tambah-dokumen" class="px-4 py-1.5 bg-brand-primary text-white font-semibold text-xs rounded-lg shadow-sm">Tambah Baru</button>
       </div>
 
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border">
+      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
         <div class="overflow-x-auto">
-          <table class="min-w-full text-xs divide-y">
+          <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
             <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-              <tr class="text-left font-bold text-brand-primary">
+              <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
                 <th class="px-4 py-3">No. Arsip</th>
                 <th class="px-4 py-3">Nama Dokumen</th>
                 <th class="px-4 py-3">Divisi</th>
@@ -347,7 +347,7 @@
                 <th class="px-4 py-3 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody id="tbl-body-documents" class="divide-y text-[11px]"></tbody>
+            <tbody id="tbl-body-documents" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
           </table>
         </div>
       </div>
@@ -356,34 +356,34 @@
 
   <template id="tpl-kategori">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border h-fit">
+      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 h-fit">
         <h3 id="form-cat-title" class="font-bold text-brand-primary text-xs mb-3 flex items-center"><i data-lucide="plus-circle" class="w-4 h-4 mr-1"></i> Tambah Kategori</h3>
         <form id="form-kategori" class="space-y-3 text-xs">
           <input type="hidden" id="cat-id">
           <div>
             <label class="block text-gray-500 mb-0.5">Nama Kategori</label>
-            <input type="text" id="cat-nama" required class="block w-full py-1.5 px-2 border rounded-lg">
+            <input type="text" id="cat-nama" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
           <div>
             <label class="block text-gray-500 mb-0.5">Deskripsi</label>
-            <textarea id="cat-deskripsi" rows="2" class="block w-full py-1.5 px-2 border rounded-lg"></textarea>
+            <textarea id="cat-deskripsi" rows="2" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></textarea>
           </div>
           <button type="submit" class="w-full bg-brand-primary text-white font-bold py-1.5 rounded-lg shadow-sm">Simpan</button>
           <button type="button" id="btn-batal-cat" class="hidden w-full bg-gray-200 text-gray-700 py-1.5 rounded-lg">Batal</button>
         </form>
       </div>
 
-      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border">
-        <table class="min-w-full text-xs">
+      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
+        <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
           <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-            <tr class="text-left font-bold text-brand-primary">
+            <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
               <th class="px-4 py-3">Kategori</th>
               <th class="px-4 py-3">Deskripsi</th>
               <th class="px-4 py-3 text-center">Berkas</th>
               <th class="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody id="tbl-body-categories" class="divide-y text-[11px]"></tbody>
+          <tbody id="tbl-body-categories" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
         </table>
       </div>
     </div>
@@ -391,7 +391,7 @@
 
   <template id="tpl-file-manager">
     <div class="space-y-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-3 border flex items-center justify-between">
+      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-3 border border-brand-muted/20 dark:border-brand-highlightDark/30 rounded-xl flex items-center justify-between">
         <div class="flex items-center space-x-1" id="drive-breadcrumbs"></div>
         <button id="btn-new-folder" class="px-3 py-1 bg-brand-primary text-white text-[11px] font-bold rounded-lg">Folder Baru</button>
       </div>
@@ -401,37 +401,37 @@
 
   <template id="tpl-control-user">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border h-fit text-xs">
+      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 h-fit text-xs">
         <h3 id="form-user-title" class="font-bold text-brand-primary text-xs mb-3 flex items-center"><i data-lucide="user-plus" class="w-4 h-4 mr-1"></i> Tambah User</h3>
         <form id="form-user" class="space-y-3">
           <input type="hidden" id="user-id">
           <div>
             <label class="block text-gray-500 mb-0.5">Username</label>
-            <input type="text" id="user-username" required class="block w-full py-1.5 px-2 border rounded-lg">
+            <input type="text" id="user-username" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
           <div id="pwd-field-group">
             <label class="block text-gray-500 mb-0.5">Password</label>
-            <input type="password" id="user-password" class="block w-full py-1.5 px-2 border rounded-lg">
+            <input type="password" id="user-password" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
           <div>
             <label class="block text-gray-500 mb-0.5">Nama Lengkap</label>
-            <input type="text" id="user-nama" required class="block w-full py-1.5 px-2 border rounded-lg">
+            <input type="text" id="user-nama" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
           <div>
             <label class="block text-gray-500 mb-0.5">Bagian/Divisi</label>
-            <select id="user-bagian" required class="block w-full py-1.5 px-2 border rounded-lg"></select>
+            <select id="user-bagian" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
           </div>
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-gray-500 mb-0.5">Role</label>
-              <select id="user-role" class="block w-full py-1.5 px-2 border rounded-lg">
+              <select id="user-role" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
                 <option value="User">User</option>
                 <option value="Admin">Admin</option>
               </select>
             </div>
             <div>
               <label class="block text-gray-500 mb-0.5">Status</label>
-              <select id="user-status" class="block w-full py-1.5 px-2 border rounded-lg">
+              <select id="user-status" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
                 <option value="Aktif">Aktif</option>
                 <option value="Nonaktif">Nonaktif</option>
               </select>
@@ -439,17 +439,17 @@
           </div>
           <div class="pt-2">
             <span class="block text-gray-500 mb-1 font-bold">Akses Menu SPA</span>
-            <div id="user-menu-checklist" class="space-y-1 bg-gray-50 dark:bg-brand-bgDeep p-2 rounded-lg max-h-32 overflow-y-auto"></div>
+            <div id="user-menu-checklist" class="space-y-1 bg-gray-50 dark:bg-brand-bgDeep p-2 rounded-lg max-h-32 overflow-y-auto border border-brand-muted/30 dark:border-brand-highlightDark/50"></div>
           </div>
           <button type="submit" class="w-full bg-brand-primary text-white font-bold py-1.5 rounded-lg shadow-sm">Simpan</button>
-          <button type="button" id="btn-batal-user" class="hidden w-full bg-gray-250 py-1.5 rounded-lg">Batal</button>
+          <button type="button" id="btn-batal-user" class="hidden w-full bg-gray-200 dark:bg-brand-highlightDark text-gray-700 dark:text-white py-1.5 rounded-lg">Batal</button>
         </form>
       </div>
 
-      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border">
-        <table class="min-w-full text-xs">
+      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
+        <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
           <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-            <tr class="text-left font-bold text-brand-primary">
+            <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
               <th class="px-4 py-3">Username</th>
               <th class="px-4 py-3">Nama & Divisi</th>
               <th class="px-4 py-3 text-center">Role</th>
@@ -457,7 +457,7 @@
               <th class="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody id="tbl-body-users" class="divide-y text-[11px]"></tbody>
+          <tbody id="tbl-body-users" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
         </table>
       </div>
     </div>
@@ -465,40 +465,40 @@
 
   <template id="tpl-bagian">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border h-fit text-xs">
+      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 h-fit text-xs">
         <h3 class="font-bold text-brand-primary text-xs mb-3 flex items-center"><i data-lucide="plus-circle" class="w-4 h-4 mr-1"></i> Tambah Divisi</h3>
         <form id="form-bagian" class="space-y-3">
           <div>
             <label class="block text-gray-500 mb-0.5">Nama Divisi</label>
-            <input type="text" id="bag-nama" required class="block w-full py-1.5 px-2 border rounded-lg">
+            <input type="text" id="bag-nama" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
           <div>
             <label class="block text-gray-500 mb-0.5">Kode Singkat</label>
-            <input type="text" id="bag-kode" required class="block w-full py-1.5 px-2 border rounded-lg">
+            <input type="text" id="bag-kode" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
           </div>
           <button type="submit" class="w-full bg-brand-primary text-white font-bold py-1.5 rounded-lg shadow-sm">Simpan</button>
         </form>
       </div>
 
-      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border">
-        <table class="min-w-full text-xs">
+      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
+        <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
           <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-            <tr class="text-left font-bold text-brand-primary">
+            <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
               <th class="px-4 py-3">Kode</th>
               <th class="px-4 py-3">Divisi</th>
               <th class="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody id="tbl-body-bagian" class="divide-y text-[11px]"></tbody>
+          <tbody id="tbl-body-bagian" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
         </table>
       </div>
     </div>
   </template>
 
-  <template id="tpl-control-menu"><div class="bg-brand-cardWhite rounded-xl overflow-hidden border"><table class="min-w-full text-xs"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary"><th class="px-4 py-3">Menu</th><th class="px-4 py-3">Ikon</th><th class="px-4 py-3 text-center">Status</th><th class="px-4 py-3 text-center">Aksi</th></tr></thead><tbody id="tbl-body-menus" class="divide-y"></tbody></table></div></template>
-  <template id="tpl-riwayat-unduhan"><div class="bg-brand-cardWhite rounded-xl overflow-hidden border"><table class="min-w-full text-xs"><thead class="bg-gray-50"><tr class="text-left font-bold text-brand-primary"><th class="px-4 py-3">Log</th><th class="px-4 py-3">Dokumen</th><th class="px-4 py-3">Diunduh Oleh</th><th class="px-4 py-3">Tanggal</th></tr></thead><tbody id="tbl-body-history" class="divide-y"></tbody></table></div></template>
-  <template id="tpl-riwayat-login"><div class="bg-brand-cardWhite rounded-xl overflow-hidden border"><table class="min-w-full text-xs"><thead class="bg-gray-50"><tr class="text-left font-bold text-brand-primary"><th class="px-4 py-3">ID</th><th class="px-4 py-3">User</th><th class="px-4 py-3 text-center">Jenis</th><th class="px-4 py-3">Perangkat</th><th class="px-4 py-3">Waktu</th></tr></thead><tbody id="tbl-body-login-history" class="divide-y"></tbody></table></div></template>
-  <template id="tpl-backup-db"><div class="bg-brand-cardWhite p-5 rounded-xl border max-w-md mx-auto text-xs space-y-4"><h3 class="font-bold text-sm text-brand-primary">Backup Excel</h3><button id="btn-proses-backup" class="w-full py-2 bg-brand-primary text-white font-bold rounded-lg">Cadangkan Sekarang</button><div id="backup-status-area" class="hidden"></div></div></template>
+  <template id="tpl-control-menu"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30"><table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark"><th class="px-4 py-3">Menu</th><th class="px-4 py-3">Ikon</th><th class="px-4 py-3 text-center">Status</th><th class="px-4 py-3 text-center">Aksi</th></tr></thead><tbody id="tbl-body-menus" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-gray-700 dark:text-gray-300"></tbody></table></div></template>
+  <template id="tpl-riwayat-unduhan"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30"><table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark"><th class="px-4 py-3">Log</th><th class="px-4 py-3">Dokumen</th><th class="px-4 py-3">Diunduh Oleh</th><th class="px-4 py-3">Tanggal</th></tr></thead><tbody id="tbl-body-history" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-gray-700 dark:text-gray-300"></tbody></table></div></template>
+  <template id="tpl-riwayat-login"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30"><table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark"><th class="px-4 py-3">ID</th><th class="px-4 py-3">User</th><th class="px-4 py-3 text-center">Jenis</th><th class="px-4 py-3">Perangkat</th><th class="px-4 py-3">Waktu</th></tr></thead><tbody id="tbl-body-login-history" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-gray-700 dark:text-gray-300"></tbody></table></div></template>
+  <template id="tpl-backup-db"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-5 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 max-w-md mx-auto text-xs space-y-4"><h3 class="font-bold text-sm text-brand-primary dark:text-brand-accentDark">Backup Excel</h3><button id="btn-proses-backup" class="w-full py-2 bg-brand-primary text-white font-bold rounded-lg">Cadangkan Sekarang</button><div id="backup-status-area" class="hidden"></div></div></template>
 
   <!-- ==================== JAVASCRIPT LOGIC SPA ==================== -->
   <script>
@@ -848,7 +848,15 @@
       const nav = document.getElementById('main-navigation');
       if (!nav) return;
       nav.innerHTML = '';
+
+      const role = state.currentUser ? state.currentUser.role : 'User';
+      const allowedMenus = state.currentUser ? state.currentUser.menu_akses || [] : [];
+
       state.menus.forEach(menu => {
+        if (menu.status !== 'Aktif') return;
+        // PENTING: Menyembunyikan menu pada antarmuka sidebar jika hak akses user (bukan Admin) tidak diizinkan.
+        if (role !== 'Admin' && !allowedMenus.includes(menu.id)) return;
+
         let pId = 'daftar-dokumen';
         if (menu.nama_menu.includes('Dashboard')) pId = 'dashboard';
         else if (menu.nama_menu.includes('Kategori')) pId = 'kategori';
@@ -863,7 +871,11 @@
         const btn = document.createElement('button');
         btn.className = `w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-semibold ${state.activePage === pId ? 'bg-brand-accent text-white' : 'text-brand-bgLight/85 hover:bg-black/10'}`;
         btn.innerHTML = `<i data-lucide="${menu.icon}" class="w-4 h-4"></i><span>${menu.nama_menu}</span>`;
-        btn.onclick = () => { navigateTo(pId); document.getElementById('sidebar').classList.add('-translate-x-full'); };
+        btn.onclick = () => { 
+          navigateTo(pId); 
+          document.getElementById('sidebar').classList.add('-translate-x-full');
+          document.getElementById('sidebar-overlay').classList.add('hidden');
+        };
         nav.appendChild(btn);
       });
       lucide.createIcons();
@@ -912,13 +924,17 @@
     // --- FUNGSI CHART / DIAGRAM VISUALISASI ---
     function renderPageChart(labels, dataSet, chartColors) {
       const totalItems = dataSet.reduce((acc, curr) => acc + curr, 0);
+      const canvas = document.getElementById('categoryChart');
+      const placeholder = document.getElementById('no-chart-data');
+      if (!canvas || !placeholder) return;
+
       if (totalItems === 0) {
-        document.getElementById('categoryChart').classList.add('hidden');
-        document.getElementById('no-chart-data').classList.remove('hidden');
+        canvas.classList.add('hidden');
+        placeholder.classList.remove('hidden');
       } else {
-        document.getElementById('categoryChart').classList.remove('hidden');
-        document.getElementById('no-chart-data').classList.add('hidden');
-        const ctx = document.getElementById('categoryChart').getContext('2d');
+        canvas.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+        const ctx = canvas.getContext('2d');
         if (window.dashboardChart) window.dashboardChart.destroy();
         window.dashboardChart = new Chart(ctx, {
           type: 'doughnut',
@@ -961,18 +977,25 @@
 
       function stats() {
         if (!catL || !docL) return;
-        document.getElementById('stat-total-docs').textContent = state.documents.length;
-        document.getElementById('stat-total-cats').textContent = state.categories.length;
+        if (state.activePage !== 'dashboard') return;
+
+        const totalDocsEl = document.getElementById('stat-total-docs');
+        const totalCatsEl = document.getElementById('stat-total-cats');
+        const totalSizeEl = document.getElementById('stat-total-size');
+
+        if (totalDocsEl) totalDocsEl.textContent = state.documents.length;
+        if (totalCatsEl) totalCatsEl.textContent = state.categories.length;
+
         let sz = 0;
         state.documents.forEach(d => sz += d.ukuran_file || 0);
-        document.getElementById('stat-total-size').textContent = (sz / (1024 * 1024)).toFixed(1) + " MB";
+        if (totalSizeEl) totalSizeEl.textContent = (sz / (1024 * 1024)).toFixed(1) + " MB";
 
         const rBody = document.getElementById('dash-recent-docs');
         if (!rBody) return;
         rBody.innerHTML = '';
         state.documents.slice(0, 5).forEach(doc => {
           rBody.innerHTML += `
-            <tr class="border-b hover:bg-gray-50">
+            <tr class="border-b dark:border-brand-highlightDark/30 hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10">
               <td class="py-2 font-bold">${doc.nomor_arsip}</td>
               <td class="py-2">${doc.nama_dokumen}</td>
               <td class="py-2">${doc.nama_bagian || 'Umum'}</td>
@@ -985,32 +1008,41 @@
     }
 
     function renderPageDaftarDokumen() {
-      document.getElementById('doc-search').oninput = applyDocFilters;
-      document.getElementById('doc-filter-kategori').onchange = applyDocFilters;
-      document.getElementById('btn-tambah-dokumen').onclick = () => openDocumentModal();
+      const searchInput = document.getElementById('doc-search');
+      const filterKategori = document.getElementById('doc-filter-kategori');
+      const btnTambah = document.getElementById('btn-tambah-dokumen');
+      
+      if (searchInput) searchInput.oninput = applyDocFilters;
+      if (filterKategori) filterKategori.onchange = applyDocFilters;
+      if (btnTambah) btnTambah.onclick = () => openDocumentModal();
+
       executeApi('getCategories').then(categories => {
         state.categories = categories;
         const sel = document.getElementById('doc-filter-kategori');
-        sel.innerHTML = '<option value="">Semua Kategori</option>';
-        categories.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`);
-        fetchDocuments();
+        if (sel) {
+          sel.innerHTML = '<option value="">Semua Kategori</option>';
+          categories.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`);
+        }
+        if (state.activePage === 'daftar-dokumen') {
+          fetchDocuments();
+        }
       });
     }
 
     function applyDocFilters() {
-      const q = document.getElementById('doc-search').value.toLowerCase();
-      const cat = document.getElementById('doc-filter-kategori').value;
+      const q = document.getElementById('doc-search') ? document.getElementById('doc-search').value.toLowerCase() : '';
+      const cat = document.getElementById('doc-filter-kategori') ? document.getElementById('doc-filter-kategori').value : '';
       const tbody = document.getElementById('tbl-body-documents');
       if (!tbody) return;
       tbody.innerHTML = '';
       state.documents.filter(d => (d.nomor_arsip.toLowerCase().includes(q) || d.nama_dokumen.toLowerCase().includes(q)) && (!cat || d.id_kategori === cat))
         .forEach(doc => {
           tbody.innerHTML += `
-            <tr class="hover:bg-gray-50 text-[11px]">
+            <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
               <td class="px-4 py-2 font-bold">${doc.nomor_arsip}</td>
               <td class="px-4 py-2 font-semibold">${doc.nama_dokumen}</td>
-              <td class="px-4 py-2 text-brand-primary">${doc.nama_bagian || 'Umum'}</td>
-              <td class="px-4 py-2"><span class="px-1.5 py-0.5 rounded bg-brand-bgLight">${doc.nama_kategori}</span></td>
+              <td class="px-4 py-2 text-brand-primary dark:text-brand-accentDark">${doc.nama_bagian || 'Umum'}</td>
+              <td class="px-4 py-2"><span class="px-1.5 py-0.5 rounded bg-brand-bgLight text-brand-primary dark:bg-brand-highlightDark/50 dark:text-brand-textLight">${doc.nama_kategori}</span></td>
               <td class="px-4 py-2">${doc.tanggal_upload_formatted}</td>
               <td class="px-4 py-2 text-center space-x-1">
                 <button onclick="handleDocumentDownload(${JSON.stringify(doc).replace(/"/g, '&quot;')})" class="text-blue-500"><i data-lucide="download" class="w-3.5 h-3.5 inline"></i></button>
@@ -1033,20 +1065,23 @@
 
     function renderPageKategori() {
       const form = document.getElementById('form-kategori');
-      form.onsubmit = (e) => {
-        e.preventDefault();
-        const catData = {
-          id: document.getElementById('cat-id').value,
-          nama_kategori: document.getElementById('cat-nama').value,
-          deskripsi: document.getElementById('cat-deskripsi').value
+      if (form) {
+        form.onsubmit = (e) => {
+          e.preventDefault();
+          const catData = {
+            id: document.getElementById('cat-id').value,
+            nama_kategori: document.getElementById('cat-nama').value,
+            deskripsi: document.getElementById('cat-deskripsi').value
+          };
+          executeApi('saveCategory', 'POST', { catData }).then((res) => {
+            showToast("Sukses", res.message, "success");
+            fetchCategories();
+            resetCategoryForm();
+          });
         };
-        executeApi('saveCategory', 'POST', { catData }).then((res) => {
-          showToast("Sukses", res.message, "success");
-          fetchCategories();
-          resetCategoryForm();
-        });
-      };
-      document.getElementById('btn-batal-cat').onclick = resetCategoryForm;
+      }
+      const btnBatal = document.getElementById('btn-batal-cat');
+      if (btnBatal) btnBatal.onclick = resetCategoryForm;
       fetchCategories();
     }
 
@@ -1056,10 +1091,10 @@
       tbody.innerHTML = '';
       state.categories.forEach(cat => {
         tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 text-[11px]">
+          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
             <td class="px-4 py-2 font-bold">${cat.nama_kategori}</td>
-            <td class="px-4 py-2 text-gray-500">${cat.deskripsi || '-'}</td>
-            <td class="px-4 py-2 text-center font-bold text-brand-primary">${cat.jumlah_dokumen || 0}</td>
+            <td class="px-4 py-2 text-gray-500 dark:text-gray-300">${cat.deskripsi || '-'}</td>
+            <td class="px-4 py-2 text-center font-bold text-brand-primary dark:text-brand-accentDark">${cat.jumlah_dokumen || 0}</td>
             <td class="px-4 py-2 text-center space-x-1.5">
               <button onclick="editCategory(${JSON.stringify(cat).replace(/"/g, '&quot;')})" class="text-amber-500"><i data-lucide="edit-3" class="w-3.5 h-3.5 inline"></i></button>
               <button onclick="deleteCategory('${cat.id}')" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i></button>
@@ -1107,9 +1142,9 @@
     function renderDriveBreadcrumbs() {
       const crumbs = document.getElementById('drive-breadcrumbs');
       if (!crumbs) return;
-      crumbs.innerHTML = `<button onclick="fetchDriveContents('root')" class="text-brand-primary font-bold hover:underline">Utama</button>`;
+      crumbs.innerHTML = `<button onclick="fetchDriveContents('root')" class="text-brand-primary dark:text-brand-accentDark font-bold hover:underline">Utama</button>`;
       if (state.drive.currentFolderId && state.drive.currentFolderId !== 'root') {
-        crumbs.innerHTML += ` <span class="text-gray-400">/</span> <span class="font-semibold text-gray-600 truncate max-w-[100px]">${state.drive.currentFolderName}</span>`;
+        crumbs.innerHTML += ` <span class="text-gray-400">/</span> <span class="font-semibold text-gray-600 dark:text-gray-300 truncate max-w-[100px]">${state.drive.currentFolderName}</span>`;
       }
     }
 
@@ -1123,16 +1158,16 @@
       }
       state.drive.folders?.forEach(fold => {
         container.innerHTML += `
-          <div onclick="fetchDriveContents('${fold.id}')" class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border hover:border-brand-primary/40 cursor-pointer flex flex-col items-center">
+          <div onclick="fetchDriveContents('${fold.id}')" class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 hover:border-brand-primary/40 cursor-pointer flex flex-col items-center">
             <i data-lucide="folder" class="w-8 h-8 text-amber-500 fill-amber-500/10"></i>
-            <p class="mt-1 text-[11px] font-bold truncate w-full text-center">${fold.name}</p>
+            <p class="mt-1 text-[11px] font-bold truncate w-full text-center text-gray-800 dark:text-gray-200">${fold.name}</p>
           </div>`;
       });
       state.drive.files?.forEach(file => {
         container.innerHTML += `
-          <div class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border flex flex-col items-center">
-            <i data-lucide="file-text" class="w-8 h-8 text-brand-primary"></i>
-            <p class="mt-1 text-[11px] font-bold truncate w-full text-center">${file.name}</p>
+          <div class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex flex-col items-center">
+            <i data-lucide="file-text" class="w-8 h-8 text-brand-primary dark:text-brand-accentDark"></i>
+            <p class="mt-1 text-[11px] font-bold truncate w-full text-center text-gray-800 dark:text-gray-200">${file.name}</p>
             <span class="text-[9px] text-gray-400">${(file.size / 1024).toFixed(0)} KB</span>
           </div>`;
       });
@@ -1141,39 +1176,47 @@
 
     function renderPageControlUser() {
       const sel = document.getElementById('user-bagian');
-      sel.innerHTML = '<option value="">-- Pilih Bagian --</option>';
-      state.departments.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.nama_bagian}</option>`);
+      if (sel) {
+        sel.innerHTML = '<option value="">-- Pilih Bagian --</option>';
+        state.departments.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.nama_bagian}</option>`);
+      }
 
       const list = document.getElementById('user-menu-checklist');
-      list.innerHTML = '';
-      state.menus.forEach(m => {
-        list.innerHTML += `
-          <label class="flex items-center space-x-2 p-1 cursor-pointer">
-            <input type="checkbox" value="${m.id}" class="user-menu-access-chk rounded text-brand-primary">
-            <span class="text-[11px] font-semibold">${m.nama_menu}</span>
-          </label>`;
-      });
-
-      document.getElementById('form-user').onsubmit = (e) => {
-        e.preventDefault();
-        const checked = [];
-        document.querySelectorAll('.user-menu-access-chk:checked').forEach(c => checked.push(c.value));
-        const userData = {
-          id: document.getElementById('user-id').value,
-          username: document.getElementById('user-username').value,
-          nama: document.getElementById('user-nama').value,
-          id_bagian: document.getElementById('user-bagian').value,
-          role: document.getElementById('user-role').value,
-          status: document.getElementById('user-status').value,
-          menu_akses: checked
-        };
-        executeApi('saveUser', 'POST', { userData }).then(res => {
-          showToast("Sukses", res.message, "success");
-          fetchUsers();
-          resetUserForm();
+      if (list) {
+        list.innerHTML = '';
+        state.menus.forEach(m => {
+          list.innerHTML += `
+            <label class="flex items-center space-x-2 p-1 cursor-pointer">
+              <input type="checkbox" value="${m.id}" class="user-menu-access-chk rounded text-brand-primary">
+              <span class="text-[11px] font-semibold text-gray-700 dark:text-gray-300">${m.nama_menu}</span>
+            </label>`;
         });
-      };
-      document.getElementById('btn-batal-user').onclick = resetUserForm;
+      }
+
+      const form = document.getElementById('form-user');
+      if (form) {
+        form.onsubmit = (e) => {
+          e.preventDefault();
+          const checked = [];
+          document.querySelectorAll('.user-menu-access-chk:checked').forEach(c => checked.push(c.value));
+          const userData = {
+            id: document.getElementById('user-id').value,
+            username: document.getElementById('user-username').value,
+            nama: document.getElementById('user-nama').value,
+            id_bagian: document.getElementById('user-bagian').value,
+            role: document.getElementById('user-role').value,
+            status: document.getElementById('user-status').value,
+            menu_akses: checked
+          };
+          executeApi('saveUser', 'POST', { userData }).then(res => {
+            showToast("Sukses", res.message, "success");
+            fetchUsers();
+            resetUserForm();
+          });
+        };
+      }
+      const btnBatal = document.getElementById('btn-batal-user');
+      if (btnBatal) btnBatal.onclick = resetUserForm;
       fetchUsers();
     }
 
@@ -1183,7 +1226,7 @@
       tbody.innerHTML = '';
       state.users.forEach(usr => {
         tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 text-[11px]">
+          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
             <td class="px-4 py-2 font-bold">@${usr.username}</td>
             <td class="px-4 py-2 font-semibold">${usr.nama}</td>
             <td class="px-4 py-2 text-center"><span class="px-1.5 py-0.5 rounded border border-brand-primary text-brand-primary">${usr.role}</span></td>
@@ -1214,18 +1257,21 @@
     }
 
     function renderPageBagian() {
-      document.getElementById('form-bagian').onsubmit = (e) => {
-        e.preventDefault();
-        const bagData = {
-          nama_bagian: document.getElementById('bag-nama').value,
-          kode_bagian: document.getElementById('bag-kode').value
+      const form = document.getElementById('form-bagian');
+      if (form) {
+        form.onsubmit = (e) => {
+          e.preventDefault();
+          const bagData = {
+            nama_bagian: document.getElementById('bag-nama').value,
+            kode_bagian: document.getElementById('bag-kode').value
+          };
+          executeApi('saveBagian', 'POST', { bagData }).then((res) => {
+            showToast("Sukses", res.message, "success");
+            document.getElementById('form-bagian').reset();
+            fetchBagian();
+          });
         };
-        executeApi('saveBagian', 'POST', { bagData }).then((res) => {
-          showToast("Sukses", res.message, "success");
-          document.getElementById('form-bagian').reset();
-          fetchBagian();
-        });
-      };
+      }
       fetchBagian();
     }
 
@@ -1235,7 +1281,7 @@
       tbody.innerHTML = '';
       state.departments.forEach(bag => {
         tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 text-[11px]">
+          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
             <td class="px-4 py-2 font-bold">${bag.kode_bagian}</td>
             <td class="px-4 py-2">${bag.nama_bagian}</td>
             <td class="px-4 py-2 text-center">
@@ -1269,11 +1315,11 @@
       tbody.innerHTML = '';
       state.history.forEach(hist => {
         tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 text-[11px]">
+          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
             <td class="px-4 py-2 text-gray-400">${hist.id}</td>
             <td class="px-4 py-2 font-bold">${hist.nama_dokumen}</td>
             <td class="px-4 py-2">${hist.diunduh_oleh}</td>
-            <td class="px-4 py-2 text-gray-500">${hist.tanggal_unduh_formatted}</td>
+            <td class="px-4 py-2 text-gray-500 dark:text-gray-300">${hist.tanggal_unduh_formatted}</td>
           </tr>`;
       });
     }
@@ -1291,33 +1337,43 @@
       tbody.innerHTML = '';
       state.loginHistory.forEach(log => {
         tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 text-[11px]">
+          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
             <td class="px-4 py-2 text-gray-400">${log.id}</td>
             <td class="px-4 py-2"><strong>${log.nama}</strong> (@${log.username})</td>
             <td class="px-4 py-2 text-center"><span class="px-1.5 py-0.5 rounded ${log.event_type === 'Login' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${log.event_type}</span></td>
             <td class="px-4 py-2">${log.device}</td>
-            <td class="px-4 py-2 text-gray-500">${log.tanggal_jam_formatted}</td>
+            <td class="px-4 py-2 text-gray-500 dark:text-gray-300">${log.tanggal_jam_formatted}</td>
           </tr>`;
       });
     }
 
     function renderPageBackup() {
-      document.getElementById('btn-proses-backup').onclick = function() {
-        this.disabled = true;
-        this.textContent = "Mengekspor & Mencadangkan Seluruh Basis Data...";
-        executeApi('backupDb', 'POST').then(res => {
-          this.disabled = false;
-          this.textContent = "Cadangkan Sekarang";
-          if (res.success) {
-            showToast("Berhasil", res.message, "success");
-            document.getElementById('backup-status-area').innerHTML = `
-              <div class="mt-4 p-3 bg-emerald-50 text-emerald-800 border rounded-xl">
-                <p class="font-bold text-xs">Pencadangan Excel Sukses!</p>
-                <a href="${res.downloadUrl}" target="_blank" class="mt-2 inline-block px-3 py-1.5 bg-emerald-600 text-white rounded text-xs">Ambil Berkas Excel (.xlsx)</a>
-              </div>`;
-          }
-        });
-      };
+      const btnProses = document.getElementById('btn-proses-backup');
+      if (btnProses) {
+        btnProses.onclick = function() {
+          this.disabled = true;
+          this.textContent = "Mengekspor & Mencadangkan Seluruh Basis Data...";
+          executeApi('backupDb', 'POST').then(res => {
+            const btn = document.getElementById('btn-proses-backup');
+            if (btn) {
+              btn.disabled = false;
+              btn.textContent = "Cadangkan Sekarang";
+            }
+            if (res.success) {
+              showToast("Berhasil", res.message, "success");
+              const statusArea = document.getElementById('backup-status-area');
+              if (statusArea) {
+                statusArea.innerHTML = `
+                  <div class="mt-4 p-3 bg-emerald-50 text-emerald-800 border border-emerald-200/50 rounded-xl">
+                    <p class="font-bold text-xs">Pencadangan Excel Sukses!</p>
+                    <a href="${res.downloadUrl}" target="_blank" class="mt-2 inline-block px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs transition-colors">Ambil Berkas Excel (.xlsx)</a>
+                  </div>`;
+                statusArea.classList.remove('hidden');
+              }
+            }
+          });
+        };
+      }
     }
 
     // ==========================================
@@ -1349,6 +1405,31 @@
     // GLOBAL UI EVENT LISTENERS
     // ==========================================
     function setupEventListeners() {
+      // Toggle Menu Sidebar Mobile
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      const openBtn = document.getElementById('open-sidebar-btn');
+      const closeBtn = document.getElementById('close-sidebar-btn');
+
+      if (openBtn) {
+        openBtn.onclick = () => {
+          sidebar.classList.remove('-translate-x-full');
+          overlay.classList.remove('hidden');
+        };
+      }
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+        };
+      }
+      if (overlay) {
+        overlay.onclick = () => {
+          sidebar.classList.add('-translate-x-full');
+          overlay.classList.add('hidden');
+        };
+      }
+
       document.getElementById('dark-mode-toggle').onclick = toggleDarkMode;
       document.getElementById('login-dark-toggle').onclick = toggleDarkMode;
       
@@ -1461,7 +1542,7 @@
             listContainer.innerHTML += `
               <label class="flex items-center space-x-1.5 cursor-pointer">
                 <input type="checkbox" value="${bag.id}" class="doc-chk-bag-akses rounded text-brand-primary">
-                <span>${bag.nama_bagian}</span>
+                <span class="text-gray-700 dark:text-gray-300">${bag.nama_bagian}</span>
               </label>
             `;
           });

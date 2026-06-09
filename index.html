@@ -52,6 +52,9 @@
   <div id="login-wrapper" class="min-h-screen flex items-center justify-center p-4">
     <div class="bg-white dark:bg-brand-surfaceDark max-w-md w-full rounded-2xl shadow-2xl border border-brand-muted/30 dark:border-brand-highlightDark overflow-hidden">
       <div class="p-8 bg-brand-primary dark:bg-brand-sidebarDark text-white text-center relative">
+        <button id="login-settings-btn" class="absolute top-4 left-4 p-2 rounded-full hover:bg-black/10" title="Atur API">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+        </button>
         <button id="login-dark-toggle" class="absolute top-4 right-4 p-2 rounded-full hover:bg-black/10" title="Ubah Tema">
           <i data-lucide="moon" class="w-5 h-5"></i>
         </button>
@@ -249,6 +252,26 @@
         <div class="flex justify-end space-x-2 pt-2 border-t border-brand-muted/20">
           <button type="button" class="close-modal-doc px-3 py-1.5 border border-brand-muted dark:border-brand-highlightDark text-gray-700 dark:text-white rounded-lg">Batal</button>
           <button type="submit" id="btn-submit-doc" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL SETTINGS (CONFIG API) -->
+  <div id="modal-settings" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 hidden">
+    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl shadow-xl max-w-sm w-full border border-brand-muted/30 dark:border-brand-highlightDark">
+      <div class="p-4 bg-brand-primary text-white flex justify-between items-center">
+        <h3 class="font-bold text-xs">Konfigurasi API Google Cloud</h3>
+        <button id="close-modal-settings"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <form id="form-settings" class="p-5 space-y-3 text-[11px]">
+        <div>
+          <label class="block text-gray-500 mb-1">Web App API URL</label>
+          <input type="url" id="settings-api-url" class="block w-full py-1.5 px-2 border rounded-lg focus:ring-1 focus:ring-brand-primary text-xs dark:bg-brand-bgDeep dark:text-white">
+        </div>
+        <div class="flex justify-end space-x-2 pt-1">
+          <button type="button" id="btn-clear-api" class="px-3 py-1.5 border text-red-500 dark:border-red-900 rounded-lg">Gunakan Demo Lokal</button>
+          <button type="submit" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg font-bold">Simpan & Sync</button>
         </div>
       </form>
     </div>
@@ -508,6 +531,20 @@
     // Masukkan Web App URL dari Deployment Google Apps Script di dalam tanda kutip ini:
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxQav7mP2By-7u78IL_7rHklmBdAdplgoHV_pC5RScUnUVr5Q6myqHW2Jr3K4PcmFtR/exec"; 
 
+    // Menu tetap didefinisikan secara lokal untuk mencegah kegagalan menu akibat API tidak ada
+    const APP_MENUS = [
+      {id: 'M00', nama_menu: 'Dashboard', icon: 'layout-dashboard', status: 'Aktif'},
+      {id: 'M01', nama_menu: 'Daftar Dokumen', icon: 'folder', status: 'Aktif'},
+      {id: 'M02', nama_menu: 'Kategori Dokumen', icon: 'tag', status: 'Aktif'},
+      {id: 'M03', nama_menu: 'File Manager', icon: 'hard-drive', status: 'Aktif'},
+      {id: 'M04', nama_menu: 'Control User', icon: 'users', status: 'Aktif'},
+      {id: 'M04B', nama_menu: 'Manajemen Bagian', icon: 'building-2', status: 'Aktif'},
+      {id: 'M05', nama_menu: 'Control Menu', icon: 'sliders', status: 'Aktif'},
+      {id: 'M06', nama_menu: 'Riwayat Unduhan', icon: 'clock', status: 'Aktif'}, 
+      {id: 'M07', nama_menu: 'Backup Database', icon: 'database', status: 'Aktif'},
+      {id: 'M08', nama_menu: 'Log Keamanan Sesi', icon: 'activity', status: 'Aktif'}
+    ];
+
     const pageTitles = {
       'dashboard': 'Dasbor Ringkasan Arsip',
       'daftar-dokumen': 'Daftar Dokumen Arsip',
@@ -548,19 +585,27 @@
         let response;
         if (method === 'GET') {
           const params = new URLSearchParams({ action, ...data }).toString();
-          response = await fetch(`${GAS_API_URL}?${params}`, { method: 'GET', mode: 'cors' });
+          response = await fetch(`${GAS_API_URL}?${params}`, { method: 'GET' }); // Fetch tanpa mode 'cors' custom
         } else {
           response = await fetch(GAS_API_URL, {
             method: 'POST',
-            mode: 'cors',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Mode plain text agar tidak kena block preflight OPTIONS Google
             body: JSON.stringify({ action, ...data })
           });
         }
         if (!response.ok) throw new Error('HTTP ' + response.status);
-        return await response.json();
+        const result = await response.json();
+
+        // Antisipasi bila Apps Script mengembalikan { success: false, message: "Aksi GET tidak dikenali." }
+        if (result && result.success === false && result.message && result.message.includes("tidak dikenali")) {
+          console.warn("API Endpoint " + action + " tidak valid. Beralih menggunakan skema data offline.");
+          return handleMockSimulation(action, method, data);
+        }
+
+        return result;
       } catch (error) {
-        showToast("Offline Mode", "Beralih ke database demo sementara.", "warning");
+        console.error("API Error: ", error);
+        showToast("Koneksi API Gagal", "Beralih ke mode luring/demo sementara.", "warning");
         return handleMockSimulation(action, method, data);
       }
     }
@@ -578,19 +623,6 @@
                 menu_akses: ["M00", "M01", "M02", "M03", "M04", "M04B", "M05", "M06", "M07", "M08"]
               }
             });
-          } else if (action === 'getMenusData') {
-            resolve([
-              {id: 'M00', nama_menu: 'Dashboard', icon: 'layout-dashboard', status: 'Aktif'},
-              {id: 'M01', nama_menu: 'Daftar Dokumen', icon: 'folder', status: 'Aktif'},
-              {id: 'M02', nama_menu: 'Kategori Dokumen', icon: 'tag', status: 'Aktif'},
-              {id: 'M03', nama_menu: 'File Manager', icon: 'hard-drive', status: 'Aktif'},
-              {id: 'M04', nama_menu: 'Control User', icon: 'users', status: 'Aktif'},
-              {id: 'M04B', nama_menu: 'Manajemen Bagian', icon: 'building-2', status: 'Aktif'},
-              {id: 'M05', nama_menu: 'Control Menu', icon: 'sliders', status: 'Aktif'},
-              {id: 'M06', nama_menu: 'Daftar Riwayat Unduhan', icon: 'clock', status: 'Aktif'}, 
-              {id: 'M07', nama_menu: 'Backup Database', icon: 'database', status: 'Aktif'},
-              {id: 'M08', nama_menu: 'Log Keamanan Sesi', icon: 'activity', status: 'Aktif'}
-            ]);
           } else if (action === 'getDocuments') {
             resolve(state.documents.length ? state.documents : [
               {id: "DOC1", nomor_arsip: "ARS-2026-001", nama_dokumen: "Surat Keputusan Direksi", id_kategori: "CAT1", nama_kategori: "Keputusan", id_bagian: "DEP1", nama_bagian: "Direksi", tanggal_upload_formatted: "01-06-2026", diupload_oleh: "Admin", file_url_drive: "https://google.com", ukuran_file: 2048576, akses_semua_bagian: true}
@@ -641,30 +673,42 @@
     // --- FUNGSI AMBIL DATA SECARA ASINKRON (DATA FETCHING) ---
     function fetchDocuments() {
       executeApi('getDocuments').then(res => {
-        state.documents = res;
+        state.documents = Array.isArray(res) ? res : [];
         applyDocFilters();
-      }).catch(err => showToast("Gagal", "Gagal memuat dokumen: " + err.message, "danger"));
+      }).catch(err => {
+        state.documents = [];
+        showToast("Gagal", "Gagal memuat dokumen.", "danger");
+      });
     }
 
     function fetchCategories() {
       executeApi('getCategories').then(res => {
-        state.categories = res;
+        state.categories = Array.isArray(res) ? res : [];
         renderCategoriesTable();
-      }).catch(err => showToast("Gagal", "Gagal memuat kategori: " + err.message, "danger"));
+      }).catch(err => {
+        state.categories = [];
+        showToast("Gagal", "Gagal memuat kategori.", "danger");
+      });
     }
 
     function fetchUsers() {
       executeApi('getUsers').then(res => {
-        state.users = res;
+        state.users = Array.isArray(res) ? res : [];
         renderUsersTable();
-      }).catch(err => showToast("Gagal", "Gagal memuat pengguna: " + err.message, "danger"));
+      }).catch(err => {
+        state.users = [];
+        showToast("Gagal", "Gagal memuat pengguna.", "danger");
+      });
     }
 
     function fetchBagian() {
       executeApi('getBagian').then(res => {
-        state.departments = res;
+        state.departments = Array.isArray(res) ? res : [];
         renderBagianTable();
-      }).catch(err => showToast("Gagal", "Gagal memuat divisi: " + err.message, "danger"));
+      }).catch(err => {
+        state.departments = [];
+        showToast("Gagal", "Gagal memuat divisi.", "danger");
+      });
     }
 
     // --- FUNGSI KEAMANAN & JEJAK PERANGKAT ---
@@ -684,7 +728,7 @@
     }
 
     // --- FUNGSI DOWNLOAD ARSIP AMAN ---
-    function handleDocumentDownload(doc) {
+    window.handleDocumentDownload = function(doc) {
       const role = state.currentUser ? state.currentUser.role : 'User';
       const userBagian = state.currentUser ? state.currentUser.id_bagian : '';
       const isAllowed = role === 'Admin' || doc.akses_semua_bagian || (doc.akses_bagian_tertentu && doc.akses_bagian_tertentu.includes(userBagian));
@@ -722,7 +766,7 @@
       lucide.createIcons();
     }
 
-    function toggleMenuStatus(menuId) {
+    window.toggleMenuStatus = function(menuId) {
       const menu = state.menus.find(m => m.id === menuId);
       if (menu) {
         menu.status = menu.status === 'Aktif' ? 'Nonaktif' : 'Aktif';
@@ -810,7 +854,13 @@
     function updateSyncStatus() {
       const dot = document.getElementById('conn-dot');
       const text = document.getElementById('conn-text');
-      const active = GAS_API_URL && GAS_API_URL.trim() !== '' && !GAS_API_URL.includes("YOUR_");
+      
+      const urlAPI = document.getElementById('settings-api-url') ? document.getElementById('settings-api-url').value : null;
+      let activeUrl = GAS_API_URL || urlAPI;
+      if (localStorage.getItem('gas_api_url')) activeUrl = localStorage.getItem('gas_api_url');
+
+      const active = activeUrl && activeUrl.trim() !== '' && !activeUrl.includes("YOUR_");
+      
       if (dot) dot.className = active ? "w-1.5 h-1.5 rounded-full bg-emerald-500" : "w-1.5 h-1.5 rounded-full bg-amber-500";
       if (text) text.textContent = active ? "Sync Online" : "Demo Offline";
     }
@@ -834,13 +884,18 @@
     }
 
     function fetchMenusAndStart() {
-      executeApi('getMenusData').then(menus => {
-        state.menus = menus;
-        executeApi('getBagian').then(bagians => {
-          state.departments = bagians;
-          renderSidebarMenu();
-          navigateTo('dashboard');
-        });
+      // Menggunakan variabel global statis untuk menus untuk menghindari backend crash saat endpoint ini absen
+      state.menus = APP_MENUS;
+
+      executeApi('getBagian').then(bagians => {
+        state.departments = Array.isArray(bagians) ? bagians : [];
+        renderSidebarMenu();
+        navigateTo('dashboard');
+      }).catch(err => {
+        console.error("Gagal getBagian:", err);
+        state.departments = [];
+        renderSidebarMenu();
+        navigateTo('dashboard');
       });
     }
 
@@ -871,7 +926,11 @@
         const btn = document.createElement('button');
         btn.className = `w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-semibold ${state.activePage === pId ? 'bg-brand-accent text-white' : 'text-brand-bgLight/85 hover:bg-black/10'}`;
         btn.innerHTML = `<i data-lucide="${menu.icon}" class="w-4 h-4"></i><span>${menu.nama_menu}</span>`;
-        btn.onclick = () => { navigateTo(pId); document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('sidebar-overlay').classList.add('hidden'); };
+        btn.onclick = () => { 
+          navigateTo(pId); 
+          document.getElementById('sidebar').classList.add('-translate-x-full'); 
+          document.getElementById('sidebar-overlay').classList.add('hidden'); 
+        };
         nav.appendChild(btn);
       });
       lucide.createIcons();
@@ -968,8 +1027,16 @@
     // ==========================================
     function renderPageDashboard() {
       let catL = false, docL = false;
-      executeApi('getCategories').then(res => { state.categories = res; catL = true; stats(); });
-      executeApi('getDocuments').then(res => { state.documents = res; docL = true; stats(); });
+      executeApi('getCategories').then(res => { 
+        state.categories = Array.isArray(res) ? res : []; 
+        catL = true; 
+        stats(); 
+      });
+      executeApi('getDocuments').then(res => { 
+        state.documents = Array.isArray(res) ? res : []; 
+        docL = true; 
+        stats(); 
+      });
 
       function stats() {
         if (!catL || !docL) return;
@@ -1013,11 +1080,11 @@
       if (btnTambah) btnTambah.onclick = () => openDocumentModal();
 
       executeApi('getCategories').then(categories => {
-        state.categories = categories;
+        state.categories = Array.isArray(categories) ? categories : [];
         const sel = document.getElementById('doc-filter-kategori');
         if (sel) {
           sel.innerHTML = '<option value="">Semua Kategori</option>';
-          categories.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`);
+          state.categories.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`);
         }
         if (state.activePage === 'daftar-dokumen') {
           fetchDocuments();
@@ -1129,7 +1196,7 @@
         container.innerHTML = `<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-brand-primary mx-auto"></div></div>`;
       }
       executeApi('getFolderContents', 'GET', { folderId }).then(contents => {
-        state.drive = contents;
+        state.drive = contents || { folders: [], files: [] };
         renderDriveBreadcrumbs();
         renderDriveGrid();
       });
@@ -1299,7 +1366,7 @@
 
     function fetchDownloadHistory() {
       executeApi('getDownloadHistory').then(res => {
-        state.history = res;
+        state.history = Array.isArray(res) ? res : [];
         renderDownloadHistoryTable();
       });
     }
@@ -1321,7 +1388,7 @@
 
     function fetchLoginHistory() {
       executeApi('getLoginHistory').then(res => {
-        state.loginHistory = res;
+        state.loginHistory = Array.isArray(res) ? res : [];
         renderLoginHistoryTable();
       });
     }
@@ -1451,8 +1518,17 @@
         const p = document.getElementById('login-password').value;
         const security = await fetchSecurityFootprint();
         
+        const loginBtn = document.getElementById('btn-login');
+        if (loginBtn) {
+          loginBtn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Otentikasi...</span>`;
+        }
+
         executeApi('login', 'POST', { username: u, password: p, securityInfo: security })
           .then(res => {
+            if (loginBtn) {
+              loginBtn.innerHTML = `<span>Masuk Sistem</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+              lucide.createIcons();
+            }
             if (res.success) {
               state.isLoggedIn = true;
               state.currentUser = res.user;
@@ -1517,11 +1593,27 @@
           akses_semua_bagian: document.getElementById('doc-akses-semua').checked,
           akses_bagian_tertentu: checkedBagian
         };
+        
+        const btnSubmitDoc = document.getElementById('btn-submit-doc');
+        if (btnSubmitDoc) {
+            btnSubmitDoc.disabled = true;
+            btnSubmitDoc.textContent = 'Menyimpan...';
+        }
+
         executeApi('saveDocument', 'POST', { docData, fileDataObj: state.selectedFile })
           .then(res => {
+            if (btnSubmitDoc) {
+                btnSubmitDoc.disabled = false;
+                btnSubmitDoc.textContent = 'Simpan';
+            }
             showToast("Berhasil", res.message, "success");
             document.getElementById('modal-dokumen').classList.add('hidden');
             navigateTo(state.activePage);
+          }).catch(err => {
+            if (btnSubmitDoc) {
+                btnSubmitDoc.disabled = false;
+                btnSubmitDoc.textContent = 'Simpan';
+            }
           });
       };
 
@@ -1544,8 +1636,40 @@
         }
       };
 
-      document.getElementById('close-modal-folder').onclick = () => document.getElementById('modal-folder').classList.add('hidden');
-      document.getElementById('btn-cancel-folder').onclick = () => document.getElementById('modal-folder').classList.add('hidden');
+      const closeModalsFolder = [document.getElementById('close-modal-folder'), document.getElementById('btn-cancel-folder')];
+      closeModalsFolder.forEach(btn => {
+        if (btn) btn.onclick = () => document.getElementById('modal-folder').classList.add('hidden');
+      });
+      
+      const settingsModalsFolder = [document.getElementById('close-modal-settings'), document.getElementById('login-settings-btn')];
+      settingsModalsFolder.forEach(btn => {
+          if (btn) btn.onclick = () => {
+              const modal = document.getElementById('modal-settings');
+              if (modal.classList.contains('hidden')) {
+                  document.getElementById('settings-api-url').value = GAS_API_URL || localStorage.getItem('gas_api_url') || '';
+                  modal.classList.remove('hidden');
+              } else {
+                  modal.classList.add('hidden');
+              }
+          }
+      });
+      
+      document.getElementById('btn-clear-api').onclick = () => {
+        localStorage.removeItem('gas_api_url');
+        document.getElementById('modal-settings').classList.add('hidden');
+        updateSyncStatus();
+        showToast("Demo Mode", "Beralih ke mode luring/lokal.", "warning");
+      };
+
+      document.getElementById('form-settings').onsubmit = (e) => {
+        e.preventDefault();
+        const url = document.getElementById('settings-api-url').value.trim();
+        localStorage.setItem('gas_api_url', url);
+        document.getElementById('modal-settings').classList.add('hidden');
+        updateSyncStatus();
+        showToast("Tersimpan", "URL API berhasil dikonfigurasi.", "success");
+      };
+
       document.getElementById('form-new-folder').onsubmit = function(e) {
         e.preventDefault();
         const fName = document.getElementById('new-folder-name').value;

@@ -584,8 +584,10 @@
       try {
         let response;
         if (method === 'GET') {
+          // Anti-Cache: Tambahkan parameter waktu unik agar browser selalu menarik data terbaru dari server
+          data._t = new Date().getTime();
           const params = new URLSearchParams({ action, ...data }).toString();
-          response = await fetch(`${GAS_API_URL}?${params}`, { method: 'GET' }); // Fetch tanpa mode 'cors' custom
+          response = await fetch(`${GAS_API_URL}?${params}`, { method: 'GET', cache: 'no-store' });
         } else {
           response = await fetch(GAS_API_URL, {
             method: 'POST',
@@ -1098,8 +1100,19 @@
       const tbody = document.getElementById('tbl-body-documents');
       if (!tbody) return;
       tbody.innerHTML = '';
-      state.documents.filter(d => (d.nomor_arsip.toLowerCase().includes(q) || d.nama_dokumen.toLowerCase().includes(q)) && (!cat || d.id_kategori === cat))
-        .forEach(doc => {
+      
+      const filteredDocs = state.documents.filter(d => {
+        const noArsip = d.nomor_arsip ? String(d.nomor_arsip).toLowerCase() : '';
+        const nmDok = d.nama_dokumen ? String(d.nama_dokumen).toLowerCase() : '';
+        return (noArsip.includes(q) || nmDok.includes(q)) && (!cat || d.id_kategori === cat);
+      });
+
+      if (filteredDocs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">Tidak ada dokumen yang ditemukan.</td></tr>`;
+        return;
+      }
+
+      filteredDocs.forEach(doc => {
           tbody.innerHTML += `
             <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
               <td class="px-4 py-2 font-bold">${doc.nomor_arsip}</td>
@@ -1608,7 +1621,13 @@
             }
             showToast("Berhasil", res.message, "success");
             document.getElementById('modal-dokumen').classList.add('hidden');
-            navigateTo(state.activePage);
+            
+            // Refresh tabel langsung secara dinamis (tanpa loading kedip)
+            if (state.activePage === 'daftar-dokumen') {
+              fetchDocuments();
+            } else if (state.activePage === 'dashboard') {
+              renderPageDashboard();
+            }
           }).catch(err => {
             if (btnSubmitDoc) {
                 btnSubmitDoc.disabled = false;

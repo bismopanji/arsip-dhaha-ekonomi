@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arisan Cat Race - Lomba Lari Kucing Arisan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Share+Tech+Mono&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #090d16;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        .font-mono-digital {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Glassmorphism Card Effects */
+        .glass-panel {
+            background: rgba(19, 26, 43, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Fullscreen Arena Styling */
+        #arenaCard:fullscreen, #arenaCard:-webkit-full-screen {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            padding: 1.25rem;
+            background: #090d16;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #arenaCard:fullscreen #canvasContainer, #arenaCard:-webkit-full-screen #canvasContainer {
+            flex: 1;
+            height: 100%;
+            width: 100%;
+            min-height: 0;
+        }
+
+        /* Fallback Simulated Fullscreen for iframe permission restrictions */
+        .simulated-fullscreen {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            border-radius: 0 !important;
+            padding: 1.25rem !important;
+            background: #090d16 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+        .simulated-fullscreen #canvasContainer {
+            flex: 1 !important;
+            height: 100% !important;
+            min-height: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Glowing Effects */
+        .glow-purple {
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
+        }
+        .glow-button {
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.4);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.6);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
+
+    <!-- Top Header -->
+    <header class="w-full max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white text-xl shadow-lg shadow-purple-500/30">
+                <i class="fa-solid fa-cat"></i>
+            </div>
+            <div>
+                <h1 id="appTitle" class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 cursor-pointer select-none">
+                    Arisan Cat Race
+                </h1>
+                <p class="text-xs text-slate-400 font-medium">Kocok Arisan Lebih Seru dengan Lomba Lari Kucing</p>
+            </div>
+        </div>
+
+        <!-- Right Controls in Header: External Games Links & Sound Toggle -->
+        <div class="flex items-center gap-2 flex-wrap">
+            <!-- ========================================================================= -->
+            <!-- TOMBOL PERMAINAN 1 & 2 (UBAH 'href' DENGAN LINK GAME ANDA SECARA MANUAL) -->
+            <!-- ========================================================================= -->
+            <a href="https://github.com" target="_blank" id="gameLink1" title="Buka Permainan 1" 
+                class="glass-button px-3 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-amber-300 hover:border-amber-400/50 flex items-center gap-1.5 transition shadow-md bg-slate-900/40">
+                <i class="fa-solid fa-gamepad text-amber-400"></i>
+                <span id="gameText1">Permainan 1</span>
+            </a>
+
+            <a href="https://github.com" target="_blank" id="gameLink2" title="Buka Permainan 2" 
+                class="glass-button px-3 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-pink-300 hover:border-pink-400/50 flex items-center gap-1.5 transition shadow-md bg-slate-900/40">
+                <i class="fa-solid fa-dice text-pink-400"></i>
+                <span id="gameText2">Permainan 2</span>
+            </a>
+
+            <!-- Sound Toggle Button -->
+            <button id="soundToggleBtn" onclick="toggleSound()" class="glass-button px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 text-slate-300 hover:text-white">
+                <i id="soundIcon" class="fa-solid fa-volume-high text-purple-400"></i>
+                <span id="soundText">Suara: ON</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="w-full max-w-7xl mx-auto px-4 py-2 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 my-auto">
+        
+        <!-- LEFT PANEL: Participant Input & Settings -->
+        <section class="lg:col-span-4 flex flex-col gap-5">
+            <div class="glass-panel p-5 rounded-3xl flex flex-col gap-4 shadow-xl">
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2 text-slate-200 font-bold text-sm">
+                        <i class="fa-solid fa-users text-pink-500"></i>
+                        <span>Daftar Peserta Arisan</span>
+                    </div>
+                    <!-- Secret Admin Mode Indicator (Only visible when Admin Mode is ON) -->
+                    <span id="adminBadge" class="hidden text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30 px-2 py-0.5 rounded-full animate-pulse">
+                        <i class="fa-solid fa-user-shield mr-1"></i>ADMIN
+                    </span>
+                </div>
+
+                <!-- Admin Link Settings Panel (Hidden by default, shown when Admin Mode is ON) -->
+                <div id="adminLinksConfig" class="hidden p-3 bg-red-950/30 border border-red-500/30 rounded-2xl space-y-2">
+                    <div class="flex items-center justify-between text-[11px] text-red-400 font-bold">
+                        <span><i class="fa-solid fa-link mr-1"></i>Edit Link Permainan Lain:</span>
+                        <button onclick="updateGameLinks()" class="bg-red-600 hover:bg-red-500 text-white px-2 py-0.5 rounded text-[10px] font-bold">Simpan</button>
+                    </div>
+                    <div class="space-y-1.5">
+                        <input type="text" id="link1Input" placeholder="URL Permainan 1 (misal: https://...)" 
+                            class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs text-amber-300 placeholder-slate-500 focus:outline-none focus:border-amber-400">
+                        <input type="text" id="link2Input" placeholder="URL Permainan 2 (misal: https://...)" 
+                            class="w-full bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1 text-xs text-pink-300 placeholder-slate-500 focus:outline-none focus:border-pink-400">
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Masukkan nama peserta (pisahkan dengan baris baru atau koma).
+                </p>
+
+                <!-- Textarea for input names -->
+                <textarea id="namesInput" rows="5" 
+                    class="w-full bg-slate-900/90 border border-slate-700/60 rounded-2xl p-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500/80 transition-all resize-none font-medium"
+                    placeholder="Agus Wijaya&#10;Dewi Lestari&#10;Rina Kurnia&#10;Ahmad Fauzi&#10;Maya Putri&#10;Doni Pratama"></textarea>
+
+                <!-- Action Buttons for Input -->
+                <div class="grid grid-cols-12 gap-2">
+                    <button onclick="updateParticipantsFromInput()" class="col-span-8 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white py-2.5 px-3 rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrows-rotate"></i> Update Peserta
+                    </button>
+                    <button onclick="shuffleParticipants()" title="Acak urutan" class="col-span-2 glass-button text-slate-300 py-2.5 rounded-xl text-xs font-bold hover:text-white flex items-center justify-center">
+                        <i class="fa-solid fa-shuffle"></i>
+                    </button>
+                    <button onclick="clearParticipants()" title="Hapus semua" class="col-span-2 glass-button text-red-400 hover:bg-red-500/10 border-red-500/20 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+
+                <!-- Active Participants Chips -->
+                <div class="space-y-2 pt-2 border-t border-slate-800">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-slate-400 font-semibold">Peserta Aktif (<span id="participantCount">0</span>)</span>
+                        <button onclick="loadSampleData()" class="text-purple-400 hover:text-purple-300 text-[11px] font-medium underline underline-offset-2">
+                            Isi Contoh Nama
+                        </button>
+                    </div>
+
+                    <div id="participantPills" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1">
+                        <!-- Dynamic Pills generated by JS -->
+                    </div>
+                    <p class="text-[10px] text-slate-500 italic">*Klik tombol X untuk menghapus nama</p>
+                </div>
+
+                <!-- Race Duration Manual Input -->
+                <div class="pt-3 border-t border-slate-800 flex items-center justify-between">
+                    <label for="timerInput" class="text-xs text-slate-300 font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-stopwatch text-amber-400"></i> Durasi Balap:
+                    </label>
+                    <div class="flex items-center gap-1.5">
+                        <input type="number" id="timerInput" min="5" max="180" value="15" 
+                            class="w-16 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-center text-xs text-amber-300 font-bold focus:outline-none focus:border-amber-400">
+                        <span class="text-xs text-slate-400 font-medium">detik</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Winners History Log -->
+            <div class="glass-panel p-4 rounded-3xl flex flex-col gap-3 shadow-lg flex-1 min-h-[140px]">
+                <div class="flex items-center justify-between text-xs">
+                    <span class="font-bold text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-trophy"></i> Riwayat Pemenang
+                    </span>
+                    <button onclick="resetHistory()" class="text-slate-500 hover:text-slate-300 text-[11px]">
+                        Reset Log
+                    </button>
+                </div>
+                
+                <div id="winnerHistoryList" class="flex flex-col gap-1.5 overflow-y-auto max-h-36 pr-1 text-xs">
+                    <p id="emptyHistoryText" class="text-slate-500 text-center py-4 italic text-[11px]">
+                        Belum ada pemenang yang terpilih
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: Race Track Arena -->
+        <section id="arenaCard" class="lg:col-span-8 glass-panel p-5 rounded-3xl flex flex-col justify-between gap-4 shadow-2xl relative border border-purple-500/20">
+            
+            <!-- Canvas Container for Race Track with Top Controls Overlay -->
+            <div id="canvasContainer" class="w-full flex-1 min-h-[420px] bg-slate-950 rounded-2xl border-2 border-slate-800 overflow-hidden relative shadow-2xl">
+                
+                <!-- Overlay Top Control Bar (Style from Reference Image) -->
+                <div class="absolute top-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none select-none">
+                    
+                    <!-- Left Control Group -->
+                    <div class="flex items-center gap-2 pointer-events-auto">
+                        <div class="bg-black/80 backdrop-blur-md p-1.5 rounded-xl border border-white/10 flex items-center gap-1 shadow-lg">
+                            <button onclick="toggleAdminMode()" title="Pengaturan Admin Rahasia" class="w-8 h-8 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-white flex items-center justify-center text-xs transition active:scale-95">
+                                <i class="fa-solid fa-gear"></i>
+                            </button>
+                            <button onclick="toggleSound()" title="Toggle Suara" class="w-8 h-8 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-white flex items-center justify-center text-xs transition active:scale-95">
+                                <i id="soundIconCanvas" class="fa-solid fa-volume-high text-amber-400"></i>
+                            </button>
+                            <button onclick="playWhistleSound()" title="Tes Wisel" class="w-8 h-8 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-white flex items-center justify-center text-xs transition active:scale-95">
+                                <i class="fa-solid fa-bell text-pink-400"></i>
+                            </button>
+                        </div>
+                        <button onclick="shuffleParticipants()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-2 rounded-xl text-xs font-bold shadow-lg flex items-center gap-1.5 transition active:scale-95">
+                            <i class="fa-solid fa-shuffle"></i>
+                            <span class="hidden sm:inline">Shuffle Characters</span>
+                        </button>
+                    </div>
+
+                    <!-- Center Giant Timer Display -->
+                    <div class="flex items-center gap-3 pointer-events-auto">
+                        <div class="hidden sm:flex flex-col items-end text-xs font-extrabold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+                            <button onclick="startRace()" class="hover:text-amber-300 transition cursor-pointer">Start</button>
+                            <button onclick="resetRace()" class="hover:text-amber-300 transition cursor-pointer">Clear</button>
+                        </div>
+                        <div class="bg-slate-100 border-4 border-slate-900 px-5 py-1 rounded-2xl shadow-2xl flex items-center justify-center">
+                            <span id="digitalTimer" class="font-mono-digital text-2xl sm:text-4xl font-extrabold tracking-widest text-slate-950">
+                                00:00:15
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Right Controls (Fullscreen) -->
+                    <div class="flex items-center gap-2 pointer-events-auto">
+                        <button onclick="toggleFullscreen()" title="Layar Penuh Arena" class="bg-black/80 hover:bg-slate-800 text-white p-2.5 rounded-xl text-xs font-bold border border-white/10 shadow-lg flex items-center justify-center transition active:scale-95">
+                            <i id="fullscreenIcon" class="fa-solid fa-expand text-base text-purple-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <canvas id="raceCanvas" class="w-full h-full block"></canvas>
+            </div>
+
+            <!-- Start Race Big Button -->
+            <div class="w-full">
+                <button id="startRaceBtn" onclick="startRace()" 
+                    class="w-full py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:from-purple-500 hover:via-pink-500 hover:to-amber-400 text-white font-extrabold text-base rounded-2xl transition-all shadow-xl glow-button tracking-wider uppercase flex items-center justify-center gap-3 active:scale-[0.99]">
+                    <i class="fa-solid fa-flag-checkered text-xl animate-bounce"></i>
+                    <span>Kocok Arisan Sekarang</span>
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-7xl mx-auto px-4 py-3 text-center text-[11px] text-slate-500">
+        &copy; Arisan Cat Race Game. Siap digunakan untuk GitHub Pages.
+    </footer>
+
+    <!-- Winner Announcement Modal -->
+    <div id="winnerModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-purple-500/40 rounded-3xl p-6 max-w-sm w-full text-center flex flex-col items-center gap-4 shadow-2xl glow-purple animate-in fade-in zoom-in duration-300">
+            <div class="w-20 h-20 bg-amber-400/10 border-2 border-amber-400 rounded-full flex items-center justify-center text-amber-400 text-4xl shadow-lg shadow-amber-400/20 animate-bounce">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+            <div>
+                <span class="text-xs font-bold text-pink-400 tracking-widest uppercase">Pemenang Arisan!</span>
+                <h2 id="winnerNameText" class="text-2xl font-black text-white mt-1 bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-pink-400 to-purple-400">
+                    -
+                </h2>
+                <p id="winnerSubtext" class="text-xs text-slate-400 mt-1">Selamat kepada pemenang ronde ini!</p>
+            </div>
+            <button onclick="closeWinnerModal()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white py-3 rounded-xl font-bold text-xs tracking-wider uppercase shadow-lg">
+                Tutup & Lanjutkan
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let participants = ['Agus Wijaya', 'Dewi Lestari', 'Rina Kurnia', 'Ahmad Fauzi', 'Maya Putri', 'Doni Pratama'];
+        let blockedParticipants = new Set(); // Secret blocked participants
+        let isAdminMode = false;
+        let isSoundOn = true;
+        
+        // Race Engine Variables
+        let cats = [];
+        let isRacing = false;
+        let raceStartTime = 0;
+        let raceDuration = 15; // default 15 seconds
+        let remainingSeconds = 15;
+        let raceAnimFrame = null;
+        let winnerDeclared = false;
+        let historyLog = [];
+
+        // Colors palette for cats
+        const CAT_COLORS = [
+            '#f97316', '#3b82f6', '#ec4899', '#10b981', 
+            '#a855f7', '#eab308', '#06b6d4', '#f43f5e',
+            '#8b5cf6', '#14b8a6', '#f59e0b', '#6366f1'
+        ];
+
+        // Costumes types for cats
+        const COSTUME_TYPES = ['goggles', 'suit', 'chef', 'beanie', 'crown', 'cape'];
+
+        // Canvas element setup
+        const canvas = document.getElementById('raceCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playWhistleSound() {
+            if (!isSoundOn) return;
+            initAudio();
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(2400, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch(e){}
+        }
+
+        function playVictorySound() {
+            if (!isSoundOn) return;
+            initAudio();
+            try {
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.12);
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime + i * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + i * 0.12 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + i * 0.12);
+                    osc.stop(audioCtx.currentTime + i * 0.12 + 0.35);
+                });
+            } catch(e){}
+        }
+
+        function toggleSound() {
+            isSoundOn = !isSoundOn;
+            const icon1 = document.getElementById('soundIcon');
+            const icon2 = document.getElementById('soundIconCanvas');
+            const text = document.getElementById('soundText');
+            const cls = isSoundOn ? 'fa-solid fa-volume-high text-amber-400' : 'fa-solid fa-volume-xmark text-slate-500';
+            
+            if (icon1) icon1.className = cls;
+            if (icon2) icon2.className = cls;
+            if (text) text.textContent = isSoundOn ? 'Suara: ON' : 'Suara: OFF';
+        }
+
+        function renderParticipantPills() {
+            const container = document.getElementById('participantPills');
+            const countEl = document.getElementById('participantCount');
+            countEl.textContent = participants.length;
+
+            container.innerHTML = '';
+            participants.forEach((name, idx) => {
+                const pill = document.createElement('div');
+                const isBlocked = blockedParticipants.has(name);
+
+                pill.className = `flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold cursor-pointer select-none transition-all ${
+                    isBlocked && isAdminMode 
+                        ? 'bg-red-950/80 text-red-300 border border-red-500/50' 
+                        : 'bg-slate-800/80 text-slate-200 border border-slate-700/60 hover:border-purple-500/50'
+                }`;
+
+                // Admin block click handler
+                pill.onclick = (e) => {
+                    if (isAdminMode) {
+                        toggleBlockParticipant(name);
+                    }
+                };
+
+                let content = `<span>${escapeHtml(name)}</span>`;
+                if (isAdminMode && isBlocked) {
+                    content += `<span class="text-red-400 text-[10px]" title="Peserta Terblokir Dari Juara 1">⛔</span>`;
+                }
+                
+                // Delete button
+                content += `<button onclick="removeParticipant(${idx}); event.stopPropagation();" class="text-slate-400 hover:text-red-400 ml-0.5"><i class="fa-solid fa-xmark"></i></button>`;
+                
+                pill.innerHTML = content;
+                container.appendChild(pill);
+            });
+
+            // Sync with textarea input text
+            document.getElementById('namesInput').value = participants.join('\n');
+            initCatObjects();
+            drawTrack();
+        }
+
+        function updateParticipantsFromInput() {
+            const raw = document.getElementById('namesInput').value;
+            const list = raw.split(/[\n,]+/).map(s => s.trim()).filter(s => s.length > 0);
+            if (list.length === 0) {
+                showToast('Masukkan setidaknya 1 nama peserta!');
+                return;
+            }
+            participants = list;
+            renderParticipantPills();
+            showToast('Daftar peserta diperbarui!');
+        }
+
+        function removeParticipant(index) {
+            if (participants.length <= 1) {
+                showToast('Minimal harus ada 1 peserta!');
+                return;
+            }
+            const removed = participants.splice(index, 1)[0];
+            blockedParticipants.delete(removed);
+            renderParticipantPills();
+        }
+
+        function shuffleParticipants() {
+            for (let i = participants.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [participants[i], participants[j]] = [participants[j], participants[i]];
+            }
+            renderParticipantPills();
+            showToast('Urutan peserta diacak!');
+        }
+
+        function clearParticipants() {
+            participants = [];
+            blockedParticipants.clear();
+            renderParticipantPills();
+        }
+
+        function loadSampleData() {
+            participants = ['Agus Wijaya', 'Dewi Lestari', 'Rina Kurnia', 'Ahmad Fauzi', 'Maya Putri', 'Doni Pratama'];
+            blockedParticipants.clear();
+            renderParticipantPills();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function toggleAdminMode() {
+            isAdminMode = !isAdminMode;
+            const badge = document.getElementById('adminBadge');
+            const linksConfig = document.getElementById('adminLinksConfig');
+            
+            if (isAdminMode) {
+                if (badge) badge.classList.remove('hidden');
+                if (linksConfig) linksConfig.classList.remove('hidden');
+                showToast('🛡️ Admin Mode AKTIF: Klik nama peserta untuk blokir / Edit link permainan!');
+            } else {
+                if (badge) badge.classList.add('hidden');
+                if (linksConfig) linksConfig.classList.add('hidden');
+                showToast('Admin Mode Nonaktif');
+            }
+            renderParticipantPills();
+        }
+
+        // Functions to update and load external game links
+        function updateGameLinks() {
+            const input1 = document.getElementById('link1Input');
+            const input2 = document.getElementById('link2Input');
+            const link1 = document.getElementById('gameLink1');
+            const link2 = document.getElementById('gameLink2');
+
+            if (input1 && input1.value.trim()) {
+                const url1 = input1.value.trim();
+                link1.href = url1;
+                localStorage.setItem('arisan_cat_game_link1', url1);
+            }
+            if (input2 && input2.value.trim()) {
+                const url2 = input2.value.trim();
+                link2.href = url2;
+                localStorage.setItem('arisan_cat_game_link2', url2);
+            }
+            showToast('Link permainan berhasil disimpan!');
+        }
+
+        function loadGameLinks() {
+            const savedUrl1 = localStorage.getItem('arisan_cat_game_link1');
+            const savedUrl2 = localStorage.getItem('arisan_cat_game_link2');
+            const link1 = document.getElementById('gameLink1');
+            const link2 = document.getElementById('gameLink2');
+            const input1 = document.getElementById('link1Input');
+            const input2 = document.getElementById('link2Input');
+
+            if (savedUrl1) {
+                if (link1) link1.href = savedUrl1;
+                if (input1) input1.value = savedUrl1;
+            }
+            if (savedUrl2) {
+                if (link2) link2.href = savedUrl2;
+                if (input2) input2.value = savedUrl2;
+            }
+        }
+
+        function toggleBlockParticipant(name) {
+            if (blockedParticipants.has(name)) {
+                blockedParticipants.delete(name);
+                showToast(`Batal blokir: ${name}`);
+            } else {
+                blockedParticipants.add(name);
+                showToast(`⛔ Peserta DIBLOKIR dari Juara 1: ${name}`);
+            }
+            renderParticipantPills();
+        }
+
+        // Secret Shortcut Listener: Alt + S
+        window.addEventListener('keydown', (e) => {
+            if (e.altKey && (e.key === 's' || e.key === 'S')) {
+                e.preventDefault();
+                toggleAdminMode();
+            }
+        });
+
+        // Mobile Secret Long Press on Title
+        let titlePressTimer = null;
+        const appTitleEl = document.getElementById('appTitle');
+        appTitleEl.addEventListener('touchstart', () => {
+            titlePressTimer = setTimeout(toggleAdminMode, 1500);
+        });
+        appTitleEl.addEventListener('touchend', () => {
+            clearTimeout(titlePressTimer);
+        });
+
+        function initCatObjects() {
+            cats = participants.map((name, index) => {
+                return {
+                    id: index,
+                    name: name,
+                    progress: 0, // 0 to 1
+                    speedFactor: 0.85 + Math.random() * 0.35,
+                    color: CAT_COLORS[index % CAT_COLORS.length],
+                    costume: COSTUME_TYPES[index % COSTUME_TYPES.length],
+                    isBlocked: blockedParticipants.has(name),
+                    legPhase: Math.random() * Math.PI * 2,
+                    tailAngle: 0
+                };
+            });
+        }
+
+        function resizeCanvas() {
+            const container = document.getElementById('canvasContainer');
+            if (!container) return;
+            canvas.width = container.clientWidth;
+            canvas.height = Math.max(container.clientHeight, participants.length * 62 + 90);
+            drawTrack();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        function drawTrack() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const numLanes = Math.max(participants.length, 1);
+            const grassHeight = Math.max(55, canvas.height * 0.14);
+            const trackHeight = canvas.height - grassHeight;
+            const laneHeight = trackHeight / numLanes;
+
+            // 1. Draw Top Cartoon Grass Bank & Shore Line
+            ctx.fillStyle = '#2e7d32'; // Green grass background
+            ctx.fillRect(0, 0, canvas.width, grassHeight);
+
+            // Draw cartoon bushes on grass
+            ctx.fillStyle = '#1b5e20';
+            for (let bx = 20; bx < canvas.width; bx += 90) {
+                ctx.beginPath();
+                ctx.arc(bx, grassHeight - 14, 18, 0, Math.PI * 2);
+                ctx.arc(bx + 14, grassHeight - 18, 22, 0, Math.PI * 2);
+                ctx.arc(bx + 28, grassHeight - 12, 16, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw Earth Shore Line
+            ctx.fillStyle = '#5d4037';
+            ctx.fillRect(0, grassHeight - 6, canvas.width, 8);
+
+            // 2. Draw Water River Lanes
+            for (let i = 0; i < numLanes; i++) {
+                const y = grassHeight + i * laneHeight;
+                ctx.fillStyle = i % 2 === 0 ? '#0288d1' : '#039be5';
+                ctx.fillRect(0, y, canvas.width, laneHeight);
+
+                // Water ripples / Lane Dividers
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+
+                // Decorative wave accent line inside lane
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctx.beginPath();
+                ctx.moveTo(0, y + laneHeight * 0.6);
+                ctx.bezierCurveTo(canvas.width * 0.25, y + laneHeight * 0.5, canvas.width * 0.75, y + laneHeight * 0.7, canvas.width, y + laneHeight * 0.6);
+                ctx.stroke();
+            }
+
+            // 3. Slanted / Diagonal Checkered Start Line (3D Perspective like Reference Image 2)
+            const topX = 180;
+            const bottomX = 70;
+            const finishX = canvas.width - 55;
+
+            // Draw Checkered Blocks along Angled Start Line
+            const steps = Math.max(numLanes * 4, 20);
+            for (let s = 0; s < steps; s++) {
+                const t1 = s / steps;
+                const t2 = (s + 1) / steps;
+                const y1 = grassHeight + trackHeight * t1;
+                const y2 = grassHeight + trackHeight * t2;
+                const cx = topX + (bottomX - topX) * ((t1 + t2) / 2);
+
+                for (let col = 0; col < 2; col++) {
+                    ctx.fillStyle = (s + col) % 2 === 0 ? '#ffffff' : '#000000';
+                    const ox = (col - 1) * 12;
+                    ctx.fillRect(cx + ox, y1, 12, y2 - y1 + 1);
+                }
+            }
+
+            // Draw Start Line Borders
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(topX - 12, grassHeight);
+            ctx.lineTo(bottomX - 12, canvas.height);
+            ctx.moveTo(topX + 12, grassHeight);
+            ctx.lineTo(bottomX + 12, canvas.height);
+            ctx.stroke();
+
+            // 4. Draw Large Italicized Lane Numbers next to Start Line (like Reference Image 2)
+            for (let i = 0; i < numLanes; i++) {
+                const laneRatio = (i + 0.5) / numLanes;
+                const laneY = grassHeight + i * laneHeight + laneHeight / 2;
+                const laneStartX = topX + (bottomX - topX) * laneRatio;
+
+                ctx.save();
+                ctx.font = 'italic bold 32px "Share Tech Mono", monospace, sans-serif';
+                ctx.fillStyle = '#0f172a';
+                ctx.textAlign = 'left';
+                ctx.fillText(`${i + 1}`, laneStartX + 20, laneY + 10);
+                ctx.restore();
+            }
+
+            // 5. Draw Right Finish Line Banner
+            const squareSize = 10;
+            const rows = Math.ceil(trackHeight / squareSize);
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < 2; c++) {
+                    ctx.fillStyle = (r + c) % 2 === 0 ? '#ffffff' : '#000000';
+                    ctx.fillRect(finishX + c * squareSize, grassHeight + r * squareSize, squareSize, squareSize);
+                }
+            }
+
+            // 6. Draw Cats
+            cats.forEach((cat, index) => {
+                const laneRatio = (index + 0.5) / numLanes;
+                const laneY = grassHeight + index * laneHeight + laneHeight / 2;
+                const laneStartX = topX + (bottomX - topX) * laneRatio;
+
+                const catX = laneStartX + cat.progress * (finishX - laneStartX);
+                drawCat(ctx, catX, laneY, cat);
+            });
+        }
+
+        function drawCat(ctx, x, y, cat) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Legs animation
+            const legOffset = Math.sin(cat.legPhase) * 8;
+            
+            // Cat Back Legs
+            ctx.strokeStyle = cat.color;
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(-10, 4);
+            ctx.lineTo(-14 + legOffset, 14);
+            ctx.moveTo(10, 4);
+            ctx.lineTo(14 - legOffset, 14);
+            ctx.stroke();
+
+            // Tail
+            ctx.strokeStyle = cat.color;
+            ctx.lineWidth = 3.5;
+            ctx.beginPath();
+            ctx.moveTo(-18, 0);
+            ctx.quadraticCurveTo(-26, -12 + Math.sin(cat.legPhase * 0.8) * 6, -22, -18);
+            ctx.stroke();
+
+            // Body
+            ctx.fillStyle = cat.color;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 18, 11, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cat Number Badge on Body (Reference Image Style)
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(-2, 0, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 9px "Plus Jakarta Sans", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${cat.id + 1}`, -2, 0);
+
+            // Cat Front Legs
+            ctx.strokeStyle = cat.color;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(-6, 4);
+            ctx.lineTo(-2 - legOffset, 14);
+            ctx.moveTo(14, 4);
+            ctx.lineTo(18 + legOffset, 14);
+            ctx.stroke();
+
+            // Head
+            ctx.fillStyle = cat.color;
+            ctx.beginPath();
+            ctx.arc(16, -6, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Ears
+            ctx.beginPath();
+            ctx.moveTo(12, -14);
+            ctx.lineTo(16, -21);
+            ctx.lineTo(20, -14);
+            ctx.fill();
+
+            // Eyes
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(20, -8, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#090d16';
+            ctx.beginPath();
+            ctx.arc(21, -8, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Whiskers
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(22, -4);
+            ctx.lineTo(28, -6);
+            ctx.moveTo(22, -3);
+            ctx.lineTo(28, -2);
+            ctx.stroke();
+
+            // COSTUMES / ACCESSORIES (Inspired by Reference Image 2)
+            if (cat.costume === 'goggles') {
+                // Snorkel / Diving Goggles
+                ctx.fillStyle = '#38bdf8';
+                ctx.strokeStyle = '#0288d1';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(20, -8, 4.5, 0, Math.PI * 2);
+                ctx.fill(); ctx.stroke();
+                // Snorkel Tube
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.moveTo(16, -2); ctx.lineTo(24, -2); ctx.lineTo(24, -18);
+                ctx.stroke();
+            } else if (cat.costume === 'suit') {
+                // Executive Suit & Bowtie
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath();
+                ctx.moveTo(14, -1); ctx.lineTo(18, 5); ctx.lineTo(10, 5);
+                ctx.fill();
+                ctx.fillStyle = '#ef4444'; // Red Tie
+                ctx.beginPath();
+                ctx.moveTo(14, 0); ctx.lineTo(16, 6); ctx.lineTo(14, 10); ctx.lineTo(12, 6);
+                ctx.fill();
+            } else if (cat.costume === 'chef') {
+                // Chef Hat
+                ctx.fillStyle = '#ffffff';
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.rect(11, -22, 10, 8);
+                ctx.arc(16, -23, 7, 0, Math.PI * 2);
+                ctx.fill(); ctx.stroke();
+            } else if (cat.costume === 'beanie') {
+                // Winter Beanie
+                ctx.fillStyle = '#ec4899';
+                ctx.beginPath();
+                ctx.arc(16, -14, 8, Math.PI, 0);
+                ctx.fill();
+                ctx.fillStyle = '#ffffff'; // Pompom
+                ctx.beginPath(); ctx.arc(16, -22, 3, 0, Math.PI * 2); ctx.fill();
+            } else if (cat.costume === 'crown') {
+                // Golden Crown
+                ctx.fillStyle = '#fbbf24';
+                ctx.beginPath();
+                ctx.moveTo(10, -15); ctx.lineTo(10, -22); ctx.lineTo(13, -17);
+                ctx.lineTo(16, -24); ctx.lineTo(19, -17); ctx.lineTo(22, -22); ctx.lineTo(22, -15);
+                ctx.fill();
+            } else if (cat.costume === 'cape') {
+                // Superhero Red Cape
+                ctx.fillStyle = '#dc2626';
+                ctx.beginPath();
+                ctx.moveTo(6, -2); ctx.lineTo(-16, 6); ctx.lineTo(-12, -8);
+                ctx.fill();
+            }
+
+            ctx.restore();
+
+            // Clean Speech Bubble Name Tag above cat (Reference Image Style)
+            ctx.save();
+            ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
+            const nameWidth = ctx.measureText(cat.name).width;
+            const bubbleW = Math.max(nameWidth + 16, 42);
+            const bubbleH = 22;
+            const bubbleX = x - bubbleW / 2;
+            const bubbleY = y - 38;
+
+            // White Bubble Body
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(bubbleX, bubbleY, bubbleW, bubbleH, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            // Pointer Arrow
+            ctx.beginPath();
+            ctx.moveTo(x - 4, bubbleY + bubbleH);
+            ctx.lineTo(x + 4, bubbleY + bubbleH);
+            ctx.lineTo(x, bubbleY + bubbleH + 6);
+            ctx.closePath();
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.stroke();
+
+            // Name Text inside bubble
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(cat.name, x, bubbleY + bubbleH / 2);
+
+            ctx.restore();
+        }
+
+        function updateDigitalTimerDisplay(secondsLeft) {
+            const mins = Math.floor(secondsLeft / 60);
+            const secs = Math.floor(secondsLeft % 60);
+            const ms = Math.floor((secondsLeft % 1) * 100);
+
+            const mStr = String(mins).padStart(2, '0');
+            const sStr = String(secs).padStart(2, '0');
+            const msStr = String(ms).padStart(2, '0');
+
+            document.getElementById('digitalTimer').textContent = `${mStr}:${sStr}:${msStr}`;
+        }
+
+        function startRace() {
+            if (isRacing) return;
+            if (participants.length < 1) {
+                showToast('Masukkan minimal 1 nama peserta arisan!');
+                return;
+            }
+
+            // Sync manual timer input
+            const durationInput = parseInt(document.getElementById('timerInput').value) || 15;
+            raceDuration = Math.max(5, Math.min(180, durationInput));
+
+            initCatObjects();
+            winnerDeclared = false;
+            isRacing = true;
+            raceStartTime = performance.now();
+
+            // Disable button during race
+            const startBtn = document.getElementById('startRaceBtn');
+            startBtn.disabled = true;
+            startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            playWhistleSound();
+            showToast('Balapan dimulai! 🏁');
+
+            requestAnimationFrame(raceLoop);
+        }
+
+        function raceLoop(timestamp) {
+            if (!isRacing) return;
+
+            const elapsed = (timestamp - raceStartTime) / 1000;
+            remainingSeconds = Math.max(0, raceDuration - elapsed);
+            updateDigitalTimerDisplay(remainingSeconds);
+
+            // Calculate current leading progress
+            let maxProgress = 0;
+            cats.forEach(c => {
+                if (c.progress > maxProgress) maxProgress = c.progress;
+            });
+
+            // Update individual cat speeds & positions
+            cats.forEach(cat => {
+                cat.legPhase += 0.25;
+
+                // Base speed calculation
+                let speed = (1 / raceDuration) * cat.speedFactor * 0.016;
+                speed += (Math.random() - 0.48) * 0.003; // Random surge
+
+                // RIGGING LOGIC FOR SECRET BLOCKED PARTICIPANTS
+                if (cat.isBlocked) {
+                    // If blocked cat is near the finish line (82% or higher)
+                    if (cat.progress > 0.82) {
+                        // Drop speed drastically so others overtake it
+                        speed *= 0.1;
+                    }
+                }
+
+                cat.progress += Math.max(0, speed);
+
+                // Check winner condition
+                if (cat.progress >= 1.0 && !winnerDeclared) {
+                    cat.progress = 1.0;
+                    winnerDeclared = true;
+                    declareWinner(cat);
+                }
+            });
+
+            drawTrack();
+
+            if (remainingSeconds > 0 && !winnerDeclared) {
+                raceAnimFrame = requestAnimationFrame(raceLoop);
+            } else if (!winnerDeclared) {
+                // If time expired before anyone hit 1.0, declare leading cat winner
+                let leadCat = cats[0];
+                cats.forEach(c => {
+                    if (c.progress > leadCat.progress) leadCat = c;
+                });
+                leadCat.progress = 1.0;
+                declareWinner(leadCat);
+            }
+        }
+
+        function declareWinner(winningCat) {
+            isRacing = false;
+            if (raceAnimFrame) cancelAnimationFrame(raceAnimFrame);
+
+            // Re-enable start button
+            const startBtn = document.getElementById('startRaceBtn');
+            startBtn.disabled = false;
+            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            playVictorySound();
+
+            // Trigger confetti burst
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            // Update Winner Modal
+            document.getElementById('winnerNameText').textContent = winningCat.name;
+            document.getElementById('winnerModal').classList.remove('hidden');
+
+            // Log to History
+            const now = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            historyLog.unshift({ name: winningCat.name, time: now });
+            renderHistoryLog();
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winnerModal').classList.add('hidden');
+        }
+
+        function resetRace() {
+            isRacing = false;
+            if (raceAnimFrame) cancelAnimationFrame(raceAnimFrame);
+            
+            const startBtn = document.getElementById('startRaceBtn');
+            startBtn.disabled = false;
+            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            const durationInput = parseInt(document.getElementById('timerInput').value) || 15;
+            updateDigitalTimerDisplay(durationInput);
+
+            initCatObjects();
+            drawTrack();
+            showToast('Track direset');
+        }
+
+        function renderHistoryLog() {
+            const list = document.getElementById('winnerHistoryList');
+            if (historyLog.length === 0) {
+                list.innerHTML = `<p class="text-slate-500 text-center py-4 italic text-[11px]">Belum ada pemenang yang terpilih</p>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            historyLog.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-between p-2 rounded-xl bg-slate-900/80 border border-slate-800 text-xs';
+                row.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-amber-400/20 text-amber-300 font-bold text-[10px] flex items-center justify-center">
+                            #${idx + 1}
+                        </span>
+                        <span class="font-bold text-slate-100">${escapeHtml(item.name)}</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono">${item.time}</span>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function resetHistory() {
+            historyLog = [];
+            renderHistoryLog();
+        }
+
+        let isSimulatedFullscreen = false;
+
+        function toggleFullscreen() {
+            const arena = document.getElementById('arenaCard');
+
+            if (isSimulatedFullscreen) {
+                disableSimulatedFullscreen();
+                return;
+            }
+
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                try {
+                    let fsPromise = null;
+                    if (arena.requestFullscreen) {
+                        fsPromise = arena.requestFullscreen();
+                    } else if (arena.webkitRequestFullscreen) {
+                        fsPromise = arena.webkitRequestFullscreen();
+                    }
+
+                    if (fsPromise && fsPromise.catch) {
+                        fsPromise.catch(() => {
+                            enableSimulatedFullscreen();
+                        });
+                    }
+                } catch (e) {
+                    enableSimulatedFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        function enableSimulatedFullscreen() {
+            const arena = document.getElementById('arenaCard');
+            arena.classList.add('simulated-fullscreen');
+            isSimulatedFullscreen = true;
+            updateFullscreenIcon(true);
+            setTimeout(resizeCanvas, 100);
+        }
+
+        function disableSimulatedFullscreen() {
+            const arena = document.getElementById('arenaCard');
+            arena.classList.remove('simulated-fullscreen');
+            isSimulatedFullscreen = false;
+            updateFullscreenIcon(false);
+            setTimeout(resizeCanvas, 100);
+        }
+
+        function updateFullscreenIcon(isFullscreen) {
+            const icon = document.getElementById('fullscreenIcon');
+            if (icon) {
+                icon.className = isFullscreen ? 'fa-solid fa-compress text-base text-pink-400' : 'fa-solid fa-expand text-base text-purple-400';
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
+            updateFullscreenIcon(isFS);
+            setTimeout(resizeCanvas, 100);
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isSimulatedFullscreen) {
+                disableSimulatedFullscreen();
+            }
+        });
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 bg-purple-950/90 border border-purple-500/50 text-purple-100 text-xs px-4 py-2.5 rounded-2xl shadow-xl z-50 backdrop-blur-md animate-in fade-in slide-in-from-bottom-3 duration-200';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 2500);
+        }
+
+        window.onload = function() {
+            renderParticipantPills();
+            loadGameLinks();
+            resizeCanvas();
+            const durationInput = parseInt(document.getElementById('timerInput').value) || 15;
+            updateDigitalTimerDisplay(durationInput);
+        };
+    </script>
+</body>
+</html>

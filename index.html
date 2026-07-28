@@ -1,1705 +1,784 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem Informasi Arsip Online - PT BPR DHAHA EKONOMI</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Chart.js CDN untuk Diagram Visualisasi -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              primary: '#758467',
-              secondary: '#819171',
-              accent: '#9CAF88',
-              muted: '#CBD5C0',
-              bgLight: '#DFE6DA',
-              cardWhite: '#FFFFFF',
-              bgDeep: '#051F20',
-              sidebarDark: '#0B2B26',
-              surfaceDark: '#163832',
-              highlightDark: '#235347',
-              accentDark: '#8EB69B',
-              textLight: '#DAF1DE'
-            }
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roulette Arisan Online Interactive</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- JS Confetti Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            color: #f8fafc;
+            min-height: 100vh;
         }
-      }
-    }
-  </script>
-
-  <style>
-    * { transition: background-color 0.15s ease, border-color 0.15s ease; }
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #819171; border-radius: 3px; }
-    .dark ::-webkit-scrollbar-thumb { background: #235347; }
-  </style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+        }
+        .glow-button {
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.9);
+            transform: translateY(-2px);
+        }
+        .glow-button:active {
+            transform: translateY(1px);
+        }
+    </style>
 </head>
-<body class="bg-brand-bgLight dark:bg-brand-bgDeep text-gray-800 dark:text-brand-textLight min-h-screen flex flex-col font-sans antialiased">
-
-  <!-- ==================== WRAPPER LOGIN ==================== -->
-  <div id="login-wrapper" class="min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-brand-surfaceDark max-w-md w-full rounded-2xl shadow-2xl border border-brand-muted/30 dark:border-brand-highlightDark overflow-hidden">
-      <div class="p-8 bg-brand-primary dark:bg-brand-sidebarDark text-white text-center relative">
-        <button id="login-settings-btn" class="absolute top-4 left-4 p-2 rounded-full hover:bg-black/10" title="Atur API">
-          <i data-lucide="settings" class="w-5 h-5"></i>
-        </button>
-        <button id="login-dark-toggle" class="absolute top-4 right-4 p-2 rounded-full hover:bg-black/10" title="Ubah Tema">
-          <i data-lucide="moon" class="w-5 h-5"></i>
-        </button>
-        <div class="inline-flex p-3 bg-brand-accent dark:bg-brand-highlightDark rounded-2xl mb-3 shadow-inner">
-          <i data-lucide="archive" class="w-8 h-8 text-white"></i>
-        </div>
-        <h2 class="text-2xl font-bold tracking-wide">SI-Arsip Online</h2>
-        <p class="text-xs text-brand-bgLight/85 mt-1 font-semibold">PT BPR DHAHA EKONOMI</p>
-      </div>
-
-      <form id="form-login" class="p-8 space-y-4">
-        <div>
-          <label class="block text-xs font-bold uppercase text-gray-600 dark:text-brand-accentDark mb-1">Username</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i data-lucide="user" class="w-4 h-4"></i></span>
-            <input type="text" id="login-username" required placeholder="Masukkan username Anda..." class="block w-full pl-9 pr-3 py-2 border border-brand-muted/60 dark:border-brand-highlightDark dark:bg-brand-bgDeep dark:text-white rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-primary text-sm">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold uppercase text-gray-600 dark:text-brand-accentDark mb-1">Password</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i data-lucide="lock" class="w-4 h-4"></i></span>
-            <input type="password" id="login-password" required placeholder="Masukkan kata sandi Anda..." class="block w-full pl-9 pr-10 py-2 border border-brand-muted/60 dark:border-brand-highlightDark dark:bg-brand-bgDeep dark:text-white rounded-xl focus:outline-none focus:ring-1 focus:ring-brand-primary text-sm">
-            <button type="button" id="toggle-password-visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-brand-primary">
-              <i data-lucide="eye" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-
-        <button type="submit" id="btn-login" class="w-full py-2.5 bg-brand-primary hover:bg-brand-secondary text-white font-bold rounded-xl shadow transition-all flex items-center justify-center space-x-2">
-          <span>Masuk Sistem</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </button>
-
-        <div class="pt-5 border-t border-brand-muted/25 dark:border-brand-highlightDark/35 text-center">
-          <p class="text-[11px] text-gray-400 dark:text-brand-muted/50 font-medium tracking-wide leading-relaxed">
-            Copyright &copy; 2026 PT BPR Dhaha Ekonomi.<br>All Rights Reserved.
-          </p>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ==================== WRAPPER UTAMA SPA ==================== -->
-  <div id="app-wrapper" class="flex h-screen overflow-hidden hidden">
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="w-60 bg-brand-primary dark:bg-brand-sidebarDark text-white flex flex-col flex-shrink-0 z-20 shadow-lg transform -translate-x-full md:translate-x-0 transition-transform duration-200">
-      <div class="p-5 flex items-center justify-between border-b border-brand-accent/30 dark:border-brand-highlightDark/50">
-        <div class="flex items-center space-x-2">
-          <div class="p-2 bg-brand-accent dark:bg-brand-highlightDark rounded-lg"><i data-lucide="archive" class="w-5 h-5 text-white"></i></div>
-          <div>
-            <span class="font-bold text-sm tracking-wide block leading-none">SI-Arsip</span>
-            <span class="text-[8px] text-brand-muted/90 uppercase tracking-widest mt-0.5 block">BPR DHAHA</span>
-          </div>
-        </div>
-        <button id="close-sidebar-btn" class="md:hidden p-1 hover:bg-black/20 rounded"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-
-      <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto" id="main-navigation"></nav>
-
-      <div class="p-4 border-t border-brand-accent/30 dark:border-brand-highlightDark/50 bg-black/10 space-y-2">
-        <div class="flex items-center space-x-2">
-          <div id="user-avatar" class="w-8 h-8 rounded-full bg-brand-secondary flex items-center justify-center font-bold text-xs border border-brand-muted">-</div>
-          <div class="flex-1 min-w-0">
-            <p id="user-display-name" class="text-xs font-semibold truncate">Mengambil...</p>
-            <p id="user-display-role" class="text-[10px] text-brand-muted truncate">Loading</p>
-          </div>
-        </div>
-        <button id="btn-logout" class="w-full flex items-center justify-center space-x-1 py-1.5 bg-red-600/20 hover:bg-red-600 hover:text-white rounded-lg text-[11px] font-bold text-red-200">
-          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-          <span>Keluar</span>
-        </button>
-      </div>
-    </aside>
-
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-10 hidden md:hidden"></div>
-
-    <!-- AREA KONTEN -->
-    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-      <header class="bg-brand-cardWhite dark:bg-brand-surfaceDark h-14 shadow flex items-center justify-between px-4 flex-shrink-0 z-10 border-b border-brand-muted/20">
-        <div class="flex items-center">
-          <button id="open-sidebar-btn" class="md:hidden mr-3 p-1.5 rounded hover:bg-gray-100 text-brand-primary"><i data-lucide="menu" class="w-5 h-5"></i></button>
-          <div>
-            <h1 id="page-title" class="text-sm md:text-base font-bold text-brand-primary dark:text-brand-accentDark leading-none">Dasbor</h1>
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <button id="dark-mode-toggle" class="p-1.5 rounded-full hover:bg-gray-100 text-brand-primary">
-            <i data-lucide="sun" id="sun-icon" class="w-4 h-4 hidden"></i>
-            <i data-lucide="moon" id="moon-icon" class="w-4 h-4"></i>
-          </button>
-          <div class="h-5 w-px bg-gray-200"></div>
-          <div id="connection-indicator" class="flex items-center space-x-1 text-[10px] px-2 py-0.5 rounded-full border">
-            <span id="conn-dot" class="w-1.5 h-1.5 rounded-full"></span>
-            <span id="conn-text">Sync</span>
-          </div>
-        </div>
-      </header>
-
-      <main class="flex-1 overflow-y-auto p-4 md:p-6" id="main-content"></main>
-    </div>
-  </div>
-
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-4 right-4 z-50 transform translate-y-24 opacity-0 transition-all duration-200 max-w-xs w-full bg-white dark:bg-brand-surfaceDark shadow-xl rounded-lg border flex overflow-hidden">
-    <div id="toast-accent" class="w-1.5"></div>
-    <div class="p-3 flex items-start space-x-2">
-      <div id="toast-icon-container" class="p-0.5"><i data-lucide="check-circle-2" id="toast-icon" class="w-4 h-4 text-brand-primary"></i></div>
-      <div>
-        <p id="toast-title" class="font-bold text-xs">Berhasil</p>
-        <p id="toast-msg" class="text-[10px] text-gray-500 mt-0.5"></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONFIRM MODAL -->
-  <div id="custom-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 hidden">
-    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl shadow-xl max-w-sm w-full overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark">
-      <div class="p-5 space-y-3">
-        <h3 id="confirm-title" class="text-sm font-bold text-brand-primary">Konfirmasi</h3>
-        <p id="confirm-message" class="text-xs text-gray-500"></p>
-        <div class="flex justify-end space-x-2 pt-1">
-          <button id="btn-confirm-cancel" class="px-3 py-1.5 border text-gray-700 dark:text-white rounded-lg text-xs font-semibold">Batal</button>
-          <button id="btn-confirm-proceed" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg text-xs font-bold">Lanjutkan</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL DOKUMEN -->
-  <div id="modal-dokumen" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/55 hidden">
-    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl shadow-xl max-w-md w-full overflow-hidden border border-brand-muted/20 flex flex-col max-h-[90vh]">
-      <div class="p-4 bg-brand-primary text-white flex justify-between items-center">
-        <h3 id="modal-doc-title" class="font-bold text-sm">Formulir Dokumen</h3>
-        <button class="close-modal-doc"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-      <form id="form-dokumen-detail" class="p-5 space-y-3 overflow-y-auto text-xs">
-        <input type="hidden" id="doc-id">
-        <input type="hidden" id="doc-file-id">
-        <input type="hidden" id="doc-file-url">
-        
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-gray-500 mb-1">No. Arsip</label>
-            <input type="text" id="doc-nomor" required class="block w-full py-1.5 px-2.5 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-          <div>
-            <label class="block font-bold text-gray-500 mb-1">Nama Dokumen</label>
-            <input type="text" id="doc-nama" required class="block w-full py-1.5 px-2.5 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-gray-500 mb-1">Kategori</label>
-            <select id="doc-id-kategori" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
-          </div>
-          <div>
-            <label class="block font-bold text-gray-500 mb-1">Divisi</label>
-            <select id="doc-id-bagian" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-bold text-gray-500 mb-1">Deskripsi</label>
-          <textarea id="doc-deskripsi" rows="2" class="block w-full py-1.5 px-2.5 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></textarea>
-        </div>
-
-        <div id="drop-area" class="border border-dashed border-brand-muted/50 dark:border-brand-highlightDark rounded-xl p-3 text-center cursor-pointer">
-          <input type="file" id="doc-file" class="hidden">
-          <div onclick="document.getElementById('doc-file').click()" class="space-y-1">
-            <p class="font-semibold text-[11px] text-gray-600 dark:text-gray-300">Klik / Seret Berkas Di Sini</p>
-          </div>
-          <div id="file-info" class="hidden mt-2 p-1.5 bg-brand-bgLight/30 dark:bg-brand-highlightDark/30 rounded-lg flex items-center justify-between">
-            <span id="file-name-display" class="truncate text-[10px] text-brand-primary dark:text-brand-textLight">-</span>
-            <button type="button" id="btn-remove-file" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-          </div>
-        </div>
-
-        <div class="space-y-1 border-t border-brand-muted/20 pt-2">
-          <div class="flex items-center justify-between">
-            <span class="block font-bold text-gray-500">Otorisasi Unduh</span>
-            <label class="flex items-center space-x-1 cursor-pointer">
-              <input type="checkbox" id="doc-akses-semua" checked class="rounded text-brand-primary">
-              <span class="font-semibold text-gray-600 dark:text-gray-300">Semua Bagian</span>
-            </label>
-          </div>
-          <div id="doc-bagian-akses-list" class="hidden grid grid-cols-2 gap-2 bg-gray-50 dark:bg-brand-bgDeep p-3 rounded-xl border border-brand-muted/30 dark:border-brand-highlightDark/50 max-h-24 overflow-y-auto">
-            <!-- Pilihan checklist departemen otomatis -->
-          </div>
-        </div>
-
-        <div class="flex justify-end space-x-2 pt-2 border-t border-brand-muted/20">
-          <button type="button" class="close-modal-doc px-3 py-1.5 border border-brand-muted dark:border-brand-highlightDark text-gray-700 dark:text-white rounded-lg">Batal</button>
-          <button type="submit" id="btn-submit-doc" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg">Simpan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL SETTINGS (CONFIG API) -->
-  <div id="modal-settings" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 hidden">
-    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl shadow-xl max-w-sm w-full border border-brand-muted/30 dark:border-brand-highlightDark">
-      <div class="p-4 bg-brand-primary text-white flex justify-between items-center">
-        <h3 class="font-bold text-xs">Konfigurasi API Google Cloud</h3>
-        <button id="close-modal-settings"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-      <form id="form-settings" class="p-5 space-y-3 text-[11px]">
-        <div>
-          <label class="block text-gray-500 mb-1">Web App API URL</label>
-          <input type="url" id="settings-api-url" class="block w-full py-1.5 px-2 border rounded-lg focus:ring-1 focus:ring-brand-primary text-xs dark:bg-brand-bgDeep dark:text-white">
-        </div>
-        <div class="flex justify-end space-x-2 pt-1">
-          <button type="button" id="btn-clear-api" class="px-3 py-1.5 border text-red-500 dark:border-red-900 rounded-lg">Gunakan Demo Lokal</button>
-          <button type="submit" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg font-bold">Simpan & Sync</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL FOLDER -->
-  <div id="modal-folder" class="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/55 hidden">
-    <div class="bg-white dark:bg-brand-surfaceDark rounded-xl max-w-xs w-full overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark">
-      <div class="p-4 bg-brand-primary text-white flex justify-between items-center">
-        <h3 class="font-bold text-xs">Folder Baru</h3>
-        <button id="close-modal-folder"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-      <form id="form-new-folder" class="p-5 space-y-3 text-xs">
-        <input type="text" id="new-folder-name" required placeholder="Nama folder..." class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-        <div class="flex justify-end space-x-2">
-          <button type="button" id="btn-cancel-folder" class="px-3 py-1.5 border border-brand-muted dark:border-brand-highlightDark text-gray-700 dark:text-white rounded-lg">Batal</button>
-          <button type="submit" class="px-4 py-1.5 bg-brand-primary text-white rounded-lg">Buat</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ==================== TEMPLATES ==================== -->
-  <template id="tpl-dashboard">
-    <div class="space-y-4">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex items-center justify-between">
-          <div>
-            <p class="text-[10px] text-gray-400 font-bold uppercase">Berkas Terarsip</p>
-            <h3 id="stat-total-docs" class="text-2xl font-extrabold text-brand-primary">0</h3>
-          </div>
-          <div class="p-3 bg-brand-primary/10 rounded-xl"><i data-lucide="file-text" class="w-6 h-6"></i></div>
-        </div>
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex items-center justify-between">
-          <div>
-            <p class="text-[10px] text-gray-400 font-bold uppercase">Ukuran Berkas</p>
-            <h3 id="stat-total-size" class="text-2xl font-extrabold text-brand-primary">0 MB</h3>
-          </div>
-          <div class="p-3 bg-brand-primary/10 rounded-xl"><i data-lucide="hard-drive" class="w-6 h-6"></i></div>
-        </div>
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex items-center justify-between">
-          <div>
-            <p class="text-[10px] text-gray-400 font-bold uppercase">Kategori Klasifikasi</p>
-            <h3 id="stat-total-cats" class="text-2xl font-extrabold text-brand-primary">0</h3>
-          </div>
-          <div class="p-3 bg-brand-primary/10 rounded-xl"><i data-lucide="tag" class="w-6 h-6"></i></div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 overflow-x-auto">
-          <h4 class="font-bold text-xs mb-3 flex items-center text-gray-800 dark:text-gray-200"><i data-lucide="history" class="w-4 h-4 mr-1"></i> Riwayat Arsip Terbaru</h4>
-          <table class="min-w-full text-xs">
-            <thead>
-              <tr class="text-left text-gray-400 border-b dark:border-brand-highlightDark/30">
-                <th class="pb-2">No. Arsip</th>
-                <th class="pb-2">Nama Berkas</th>
-                <th class="pb-2">Bagian</th>
-                <th class="pb-2 text-right">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="dash-recent-docs" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-600 dark:text-gray-300"></tbody>
-          </table>
-        </div>
-        <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex flex-col justify-center items-center">
-          <h4 class="font-bold text-xs self-start mb-2 text-gray-800 dark:text-gray-200"><i data-lucide="pie-chart" class="w-4 h-4 mr-1 inline"></i> Proporsi Kategori</h4>
-          <div class="relative w-40 h-40">
-            <canvas id="categoryChart"></canvas>
-            <div id="no-chart-data" class="hidden text-xs text-gray-450 text-center absolute inset-0 flex items-center justify-center">Kosong</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <template id="tpl-daftar-dokumen">
-    <div class="space-y-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl p-4 border border-brand-muted/20 dark:border-brand-highlightDark/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div class="flex-1 flex gap-2">
-          <input type="text" id="doc-search" placeholder="Cari nomor atau nama berkas..." class="block w-full py-1.5 px-3 border border-brand-muted/50 rounded-lg text-xs dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          <select id="doc-filter-kategori" class="py-1.5 px-2 border border-brand-muted/50 rounded-lg text-xs dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
-        </div>
-        <button id="btn-tambah-dokumen" class="px-4 py-1.5 bg-brand-primary text-white font-semibold text-xs rounded-lg shadow-sm">Tambah Baru</button>
-      </div>
-
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
-        <div class="overflow-x-auto">
-          <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
-            <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-              <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
-                <th class="px-4 py-3">No. Arsip</th>
-                <th class="px-4 py-3">Nama Dokumen</th>
-                <th class="px-4 py-3">Divisi</th>
-                <th class="px-4 py-3">Kategori</th>
-                <th class="px-4 py-3">Upload</th>
-                <th class="px-4 py-3 text-center">Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="tbl-body-documents" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </template>
-
-  <template id="tpl-kategori">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 h-fit">
-        <h3 id="form-cat-title" class="font-bold text-brand-primary text-xs mb-3 flex items-center"><i data-lucide="plus-circle" class="w-4 h-4 mr-1"></i> Tambah Kategori</h3>
-        <form id="form-kategori" class="space-y-3 text-xs">
-          <input type="hidden" id="cat-id">
-          <div>
-            <label class="block text-gray-500 mb-0.5">Nama Kategori</label>
-            <input type="text" id="cat-nama" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-          <div>
-            <label class="block text-gray-500 mb-0.5">Deskripsi</label>
-            <textarea id="cat-deskripsi" rows="2" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></textarea>
-          </div>
-          <button type="submit" class="w-full bg-brand-primary text-white font-bold py-1.5 rounded-lg shadow-sm">Simpan</button>
-          <button type="button" id="btn-batal-cat" class="hidden w-full bg-gray-200 text-gray-700 py-1.5 rounded-lg">Batal</button>
-        </form>
-      </div>
-
-      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
-        <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
-          <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-            <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
-              <th class="px-4 py-3">Kategori</th>
-              <th class="px-4 py-3">Deskripsi</th>
-              <th class="px-4 py-3 text-center">Berkas</th>
-              <th class="px-4 py-3 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="tbl-body-categories" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
-        </table>
-      </div>
-    </div>
-  </template>
-
-  <template id="tpl-file-manager">
-    <div class="space-y-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-3 border border-brand-muted/20 dark:border-brand-highlightDark/30 rounded-xl flex items-center justify-between">
-        <div class="flex items-center space-x-1" id="drive-breadcrumbs"></div>
-        <button id="btn-new-folder" class="px-3 py-1 bg-brand-primary text-white text-[11px] font-bold rounded-lg">Folder Baru</button>
-      </div>
-      <div id="drive-contents" class="grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
-    </div>
-  </template>
-
-  <template id="tpl-control-user">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 h-fit text-xs">
-        <h3 id="form-user-title" class="font-bold text-brand-primary text-xs mb-3 flex items-center"><i data-lucide="user-plus" class="w-4 h-4 mr-1"></i> Tambah User</h3>
-        <form id="form-user" class="space-y-3">
-          <input type="hidden" id="user-id">
-          <div>
-            <label class="block text-gray-500 mb-0.5">Username</label>
-            <input type="text" id="user-username" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-          <div id="pwd-field-group">
-            <label class="block text-gray-500 mb-0.5">Password</label>
-            <input type="password" id="user-password" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-          <div>
-            <label class="block text-gray-500 mb-0.5">Nama Lengkap</label>
-            <input type="text" id="user-nama" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-          <div>
-            <label class="block text-gray-500 mb-0.5">Bagian/Divisi</label>
-            <select id="user-bagian" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary"></select>
-          </div>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-gray-500 mb-0.5">Role</label>
-              <select id="user-role" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-              </select>
+<body class="flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="w-full bg-slate-900/60 backdrop-blur-md border-b border-white/10 py-4 px-6 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-pink-500 to-violet-600 p-2.5 rounded-xl text-white shadow-lg">
+                    <i class="fa-solid fa-dharmachakra text-2xl animate-spin-slow"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-400">
+                        Arisan Roulette
+                    </h1>
+                    <p class="text-xs text-slate-400">Kocok Arisan Lebih Seru & Transparan</p>
+                </div>
             </div>
-            <div>
-              <label class="block text-gray-500 mb-0.5">Status</label>
-              <select id="user-status" class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-                <option value="Aktif">Aktif</option>
-                <option value="Nonaktif">Nonaktif</option>
-              </select>
+            <div class="flex items-center gap-2">
+                <button id="audioToggleBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 text-xs font-semibold flex items-center gap-2 transition">
+                    <i class="fa-solid fa-volume-high text-emerald-400" id="audioIcon"></i>
+                    <span id="audioText">Suara: ON</span>
+                </button>
             </div>
-          </div>
-          <div class="pt-2">
-            <span class="block text-gray-500 mb-1 font-bold">Akses Menu SPA</span>
-            <div id="user-menu-checklist" class="space-y-1 bg-gray-50 dark:bg-brand-bgDeep p-2 rounded-lg max-h-32 overflow-y-auto border border-brand-muted/30 dark:border-brand-highlightDark/50"></div>
-          </div>
-          <button type="submit" class="w-full bg-brand-primary text-white font-bold py-1.5 rounded-lg shadow-sm">Simpan</button>
-          <button type="button" id="btn-batal-user" class="hidden w-full bg-gray-200 dark:bg-brand-highlightDark text-gray-700 dark:text-white py-1.5 rounded-lg">Batal</button>
-        </form>
-      </div>
+        </div>
+    </header>
 
-      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
-        <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
-          <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-            <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
-              <th class="px-4 py-3">Username</th>
-              <th class="px-4 py-3">Nama & Divisi</th>
-              <th class="px-4 py-3 text-center">Role</th>
-              <th class="px-4 py-3 text-center">Status</th>
-              <th class="px-4 py-3 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="tbl-body-users" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
-        </table>
-      </div>
+    <!-- Secret Admin Mode Indicator Banner (Invisible to public unless toggled) -->
+    <div id="secretAdminBanner" class="bg-amber-500/20 border-b border-amber-500/30 px-4 py-2 text-center text-xs text-amber-300 font-semibold hidden transition-all flex flex-wrap items-center justify-center gap-3 z-40">
+        <span><i class="fa-solid fa-user-ninja mr-1"></i> <strong>MODE ADMIN RAHASIA AKTIF</strong> — Klik nama peserta di bawah untuk ubah status Blokir/Bisa Menang</span>
+        <button id="closeAdminBtn" class="bg-amber-500/30 hover:bg-amber-500/50 px-2.5 py-1 rounded-lg text-[11px] text-amber-100 border border-amber-400/40 transition hover:scale-105">Tutup Mode Admin (Alt+S)</button>
     </div>
-  </template>
 
-  <template id="tpl-bagian">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-      <div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-4 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 h-fit text-xs">
-        <h3 class="font-bold text-brand-primary text-xs mb-3 flex items-center"><i data-lucide="plus-circle" class="w-4 h-4 mr-1"></i> Tambah Divisi</h3>
-        <form id="form-bagian" class="space-y-3">
-          <div>
-            <label class="block text-gray-500 mb-0.5">Nama Divisi</label>
-            <input type="text" id="bag-nama" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-          <div>
-            <label class="block text-gray-500 mb-0.5">Kode Singkat</label>
-            <input type="text" id="bag-kode" required class="block w-full py-1.5 px-2 border border-brand-muted/50 rounded-lg dark:bg-brand-bgDeep dark:text-white dark:border-brand-highlightDark focus:ring-1 focus:ring-brand-primary">
-          </div>
-          <button type="submit" class="w-full bg-brand-primary text-white font-bold py-1.5 rounded-lg shadow-sm">Simpan</button>
-        </form>
-      </div>
-
-      <div class="lg:col-span-2 bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30">
-        <table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30">
-          <thead class="bg-gray-50 dark:bg-brand-highlightDark/20">
-            <tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark">
-              <th class="px-4 py-3">Kode</th>
-              <th class="px-4 py-3">Divisi</th>
-              <th class="px-4 py-3 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="tbl-body-bagian" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-[11px] text-gray-700 dark:text-gray-300"></tbody>
-        </table>
-      </div>
-    </div>
-  </template>
-
-  <template id="tpl-control-menu"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30"><table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark"><th class="px-4 py-3">Menu</th><th class="px-4 py-3">Ikon</th><th class="px-4 py-3 text-center">Status</th><th class="px-4 py-3 text-center">Aksi</th></tr></thead><tbody id="tbl-body-menus" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-gray-700 dark:text-gray-300"></tbody></table></div></template>
-  <template id="tpl-riwayat-unduhan"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30"><table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark"><th class="px-4 py-3">Log</th><th class="px-4 py-3">Dokumen</th><th class="px-4 py-3">Diunduh Oleh</th><th class="px-4 py-3">Tanggal</th></tr></thead><tbody id="tbl-body-history" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-gray-700 dark:text-gray-300"></tbody></table></div></template>
-  <template id="tpl-riwayat-login"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark rounded-xl overflow-hidden border border-brand-muted/20 dark:border-brand-highlightDark/30"><table class="min-w-full text-xs divide-y divide-gray-200 dark:divide-brand-highlightDark/30"><thead class="bg-gray-50 dark:bg-brand-highlightDark/20"><tr class="text-left font-bold text-brand-primary dark:text-brand-accentDark"><th class="px-4 py-3">ID</th><th class="px-4 py-3">User</th><th class="px-4 py-3 text-center">Jenis</th><th class="px-4 py-3">Perangkat</th><th class="px-4 py-3">Waktu</th></tr></thead><tbody id="tbl-body-login-history" class="divide-y divide-gray-100 dark:divide-brand-highlightDark/30 text-gray-700 dark:text-gray-300"></tbody></table></div></template>
-  <template id="tpl-backup-db"><div class="bg-brand-cardWhite dark:bg-brand-surfaceDark p-5 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 max-w-md mx-auto text-xs space-y-4"><h3 class="font-bold text-sm text-brand-primary dark:text-brand-accentDark">Backup Excel</h3><button id="btn-proses-backup" class="w-full py-2 bg-brand-primary text-white font-bold rounded-lg">Cadangkan Sekarang</button><div id="backup-status-area" class="hidden"></div></div></template>
-
-  <!-- ==================== JAVASCRIPT LOGIC SPA ==================== -->
-  <script>
-    // ==========================================
-    // KONFIGURASI API GOOGLE APPS SCRIPT
-    // ==========================================
-    // Masukkan Web App URL dari Deployment Google Apps Script di dalam tanda kutip ini:
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxQav7mP2By-7u78IL_7rHklmBdAdplgoHV_pC5RScUnUVr5Q6myqHW2Jr3K4PcmFtR/exec"; 
-
-    // Menu tetap didefinisikan secara lokal untuk mencegah kegagalan menu akibat API tidak ada
-    const APP_MENUS = [
-      {id: 'M00', nama_menu: 'Dashboard', icon: 'layout-dashboard', status: 'Aktif'},
-      {id: 'M01', nama_menu: 'Daftar Dokumen', icon: 'folder', status: 'Aktif'},
-      {id: 'M02', nama_menu: 'Kategori Dokumen', icon: 'tag', status: 'Aktif'},
-      {id: 'M03', nama_menu: 'File Manager', icon: 'hard-drive', status: 'Aktif'},
-      {id: 'M04', nama_menu: 'Control User', icon: 'users', status: 'Aktif'},
-      {id: 'M04B', nama_menu: 'Manajemen Bagian', icon: 'building-2', status: 'Aktif'},
-      {id: 'M05', nama_menu: 'Control Menu', icon: 'sliders', status: 'Aktif'},
-      {id: 'M06', nama_menu: 'Riwayat Unduhan', icon: 'clock', status: 'Aktif'}, 
-      {id: 'M07', nama_menu: 'Backup Database', icon: 'database', status: 'Aktif'},
-      {id: 'M08', nama_menu: 'Log Keamanan Sesi', icon: 'activity', status: 'Aktif'}
-    ];
-
-    const pageTitles = {
-      'dashboard': 'Dasbor Ringkasan Arsip',
-      'daftar-dokumen': 'Daftar Dokumen Arsip',
-      'kategori': 'Manajemen Kategori',
-      'file-manager': 'Google Drive File Manager',
-      'control-user': 'Control Panel User',
-      'control-menu': 'Pengaturan Hak Akses Menu',
-      'riwayat-unduhan': 'Riwayat Unduhan Berkas',
-      'backup-db': 'Pencadangan Database',
-      'bagian': 'Manajemen Bagian',
-      'riwayat-login': 'Log Keamanan Sesi'
-    };
-
-    const adminOnlyPages = ['control-user', 'bagian', 'control-menu', 'riwayat-unduhan', 'backup-db', 'riwayat-login'];
-
-    const state = { 
-      isLoggedIn: false, 
-      activePage: 'dashboard', 
-      currentUser: null, 
-      menus: [], 
-      documents: [], 
-      categories: [], 
-      users: [], 
-      departments: [], 
-      history: [], 
-      loginHistory: [], 
-      drive: {}, 
-      darkMode: false, 
-      selectedFile: null 
-    };
-
-    async function executeApi(action, method = 'GET', data = {}) {
-      if (!GAS_API_URL || GAS_API_URL.trim() === '' || GAS_API_URL.includes("YOUR_")) {
-        return handleMockSimulation(action, method, data);
-      }
-      
-      try {
-        let response;
-        if (method === 'GET') {
-          // Anti-Cache: Tambahkan parameter waktu unik agar browser selalu menarik data terbaru dari server
-          data._t = new Date().getTime();
-          const params = new URLSearchParams({ action, ...data }).toString();
-          response = await fetch(`${GAS_API_URL}?${params}`, { method: 'GET', cache: 'no-store' });
-        } else {
-          response = await fetch(GAS_API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Mode plain text agar tidak kena block preflight OPTIONS Google
-            body: JSON.stringify({ action, ...data })
-          });
-        }
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        const result = await response.json();
-
-        // Antisipasi bila Apps Script mengembalikan { success: false, message: "Aksi GET tidak dikenali." }
-        if (result && result.success === false && result.message && result.message.includes("tidak dikenali")) {
-          console.warn("API Endpoint " + action + " tidak valid. Beralih menggunakan skema data offline.");
-          return handleMockSimulation(action, method, data);
-        }
-
-        return result;
-      } catch (error) {
-        console.error("API Error: ", error);
-        showToast("Koneksi API Gagal", "Beralih ke mode luring/demo sementara.", "warning");
-        return handleMockSimulation(action, method, data);
-      }
-    }
-
-    function handleMockSimulation(action, method, data) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          if (action === 'login') {
-            const role = data.username === 'admin' ? 'Admin' : 'User';
-            resolve({
-              success: data.username === 'admin' || data.username === 'user',
-              user: {
-                id: "MOCK_U", username: data.username, nama: role === 'Admin' ? "Administrator (Demo)" : "Karyawan (Demo)",
-                role, status: "Aktif", id_bagian: "DEP1",
-                menu_akses: ["M00", "M01", "M02", "M03", "M04", "M04B", "M05", "M06", "M07", "M08"]
-              }
-            });
-          } else if (action === 'getDocuments') {
-            resolve(state.documents.length ? state.documents : [
-              {id: "DOC1", nomor_arsip: "ARS-2026-001", nama_dokumen: "Surat Keputusan Direksi", id_kategori: "CAT1", nama_kategori: "Keputusan", id_bagian: "DEP1", nama_bagian: "Direksi", tanggal_upload_formatted: "01-06-2026", diupload_oleh: "Admin", file_url_drive: "https://google.com", ukuran_file: 2048576, akses_semua_bagian: true}
-            ]);
-          } else if (action === 'getCategories') {
-            resolve(state.categories.length ? state.categories : [{id: "CAT1", nama_kategori: "Keputusan", deskripsi: "Surat resmi", jumlah_dokumen: 1}]);
-          } else if (action === 'getBagian') {
-            resolve(state.departments.length ? state.departments : [{id: "DEP1", nama_bagian: "Direksi & Umum", kode_bagian: "DIR"}]);
-          } else if (action === 'getFolderContents') {
-            resolve({
-              currentFolderName: 'Utama', currentFolderId: 'root', folders: [],
-              files: [{id: 'f1', name: 'Manual.pdf', size: 1048576, url: 'https://docs.google.com'}]
-            });
-          } else if (action === 'saveDocument') {
-            const doc = data.docData;
-            doc.id = doc.id || "DOC" + Date.now();
-            doc.tanggal_upload_formatted = "Hari Ini";
-            doc.diupload_oleh = "Administrator";
-            doc.nama_kategori = "Keputusan";
-            doc.nama_bagian = "Direksi";
-            if (!data.docData.id) state.documents.push(doc);
-            resolve({ success: true, message: "Tersimpan secara lokal." });
-          } else if (action === 'getLoginHistory') {
-            resolve([{id: "LOG01", nama: "Administrator", username: "admin", role: "Admin", event_type: "Login", device: "Desktop", lokasi: "Kediri", tanggal_jam_formatted: "08-06-2026"}]);
-          } else if (action === 'getDownloadHistory') {
-            resolve([{id: "DL01", nama_dokumen: "Surat Keputusan", diunduh_oleh: "Budi", tanggal_unduh_formatted: "08-06-2026"}]);
-          } else {
-            resolve({ success: true });
-          }
-        }, 150);
-      });
-    }
-
-    function showToast(title, message, type = 'success') {
-      const toast = document.getElementById('toast');
-      const accent = document.getElementById('toast-accent');
-      const icon = document.getElementById('toast-icon');
-      if (!toast) return;
-      document.getElementById('toast-title').textContent = title;
-      document.getElementById('toast-msg').textContent = message;
-      accent.className = type === 'success' ? 'w-1.5 bg-brand-primary' : (type === 'warning' ? 'w-1.5 bg-amber-500' : 'w-1.5 bg-red-500');
-      icon.setAttribute('data-lucide', type === 'success' ? 'check-circle-2' : 'alert-triangle');
-      lucide.createIcons();
-      toast.classList.remove('translate-y-24', 'opacity-0');
-      setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3000);
-    }
-
-    // --- FUNGSI AMBIL DATA SECARA ASINKRON (DATA FETCHING) ---
-    function fetchDocuments() {
-      executeApi('getDocuments').then(res => {
-        state.documents = Array.isArray(res) ? res : [];
-        applyDocFilters();
-      }).catch(err => {
-        state.documents = [];
-        showToast("Gagal", "Gagal memuat dokumen.", "danger");
-      });
-    }
-
-    function fetchCategories() {
-      executeApi('getCategories').then(res => {
-        state.categories = Array.isArray(res) ? res : [];
-        renderCategoriesTable();
-      }).catch(err => {
-        state.categories = [];
-        showToast("Gagal", "Gagal memuat kategori.", "danger");
-      });
-    }
-
-    function fetchUsers() {
-      executeApi('getUsers').then(res => {
-        state.users = Array.isArray(res) ? res : [];
-        renderUsersTable();
-      }).catch(err => {
-        state.users = [];
-        showToast("Gagal", "Gagal memuat pengguna.", "danger");
-      });
-    }
-
-    function fetchBagian() {
-      executeApi('getBagian').then(res => {
-        state.departments = Array.isArray(res) ? res : [];
-        renderBagianTable();
-      }).catch(err => {
-        state.departments = [];
-        showToast("Gagal", "Gagal memuat divisi.", "danger");
-      });
-    }
-
-    // --- FUNGSI KEAMANAN & JEJAK PERANGKAT ---
-    async function fetchSecurityFootprint() {
-      let location = "Kediri, Jawa Timur, Indonesia"; 
-      let device = "Desktop";
-      const ua = navigator.userAgent;
-      if (/tablet|ipad|playbook|silk/i.test(ua)) device = "Tablet";
-      else if (/Mobile|Android|iPhone|iPad|Phone/i.test(ua)) device = "Ponsel Pintar";
-      
-      let os = "OS Desktop";
-      if (ua.indexOf("Win") !== -1) os = "Windows";
-      else if (ua.indexOf("Mac") !== -1) os = "macOS";
-      else if (ua.indexOf("Linux") !== -1) os = "Linux";
-      device = `${device} (${os})`;
-      return { device, location };
-    }
-
-    // --- FUNGSI DOWNLOAD ARSIP AMAN ---
-    window.handleDocumentDownload = function(doc) {
-      const role = state.currentUser ? state.currentUser.role : 'User';
-      const userBagian = state.currentUser ? state.currentUser.id_bagian : '';
-      const isAllowed = role === 'Admin' || doc.akses_semua_bagian || (doc.akses_bagian_tertentu && doc.akses_bagian_tertentu.includes(userBagian));
-
-      if (!isAllowed) {
-        showToast("Ditolak", "Bagian Anda tidak diizinkan mendownload dokumen ini.", "danger");
-        return;
-      }
-      executeApi('logDownload', 'POST', { docId: doc.id, docName: doc.nama_dokumen })
-        .then(() => {
-          showToast("Pengunduhan", "Arsip dibuka di tab baru.", "success");
-          window.open(doc.file_url_drive, '_blank');
-        });
-    }
-
-    // --- RENDERING TABEL KONTROL HAK AKSES MENU ---
-    function renderMenusTable() {
-      const tbody = document.getElementById('tbl-body-menus');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      state.menus.forEach(m => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-xs';
-        tr.innerHTML = `
-          <td class="px-6 py-4 font-bold text-gray-400">${m.id}</td>
-          <td class="px-6 py-4 font-bold">${m.nama_menu}</td>
-          <td class="px-6 py-4"><i data-lucide="${m.icon}" class="w-5 h-5 text-brand-primary"></i></td>
-          <td class="px-6 py-4 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${m.status}</span></td>
-          <td class="px-6 py-4 text-center">
-            <button class="p-1 bg-brand-primary/10 text-brand-primary rounded" onclick="toggleMenuStatus('${m.id}')"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-      lucide.createIcons();
-    }
-
-    window.toggleMenuStatus = function(menuId) {
-      const menu = state.menus.find(m => m.id === menuId);
-      if (menu) {
-        menu.status = menu.status === 'Aktif' ? 'Nonaktif' : 'Aktif';
-        showToast("Sukses", `Menu ${menu.nama_menu} diubah menjadi ${menu.status}`);
-        renderMenusTable();
-        renderSidebarMenu();
-      }
-    }
-
-    // --- BUKA MODAL DOKUMEN (TAMBAH/EDIT) ---
-    window.openDocumentModal = function(doc = null) {
-      const modal = document.getElementById('modal-dokumen');
-      const title = document.getElementById('modal-doc-title');
-      const form = document.getElementById('form-dokumen-detail');
-      if (!modal || !form) return;
-      
-      form.reset();
-
-      document.getElementById('doc-id').value = doc ? doc.id : '';
-      document.getElementById('doc-nomor').value = doc ? doc.nomor_arsip : '';
-      document.getElementById('doc-nama').value = doc ? doc.nama_dokumen : '';
-      document.getElementById('doc-deskripsi').value = doc ? doc.deskripsi : '';
-      document.getElementById('doc-file-id').value = doc ? doc.file_id_drive : '';
-      document.getElementById('doc-file-url').value = doc ? doc.file_url_drive : '';
-      document.getElementById('doc-akses-semua').checked = doc ? doc.akses_semua_bagian : true;
-
-      // Inisialisasi daftar otorisasi bagian
-      const listContainer = document.getElementById('doc-bagian-akses-list');
-      if (listContainer) {
-        if (doc && !doc.akses_semua_bagian) {
-          listContainer.classList.remove('hidden');
-          listContainer.innerHTML = '';
-          state.departments.forEach(bag => {
-            const isChecked = doc.akses_bagian_tertentu && doc.akses_bagian_tertentu.includes(bag.id);
-            listContainer.innerHTML += `
-              <label class="flex items-center space-x-1.5 cursor-pointer">
-                <input type="checkbox" value="${bag.id}" ${isChecked ? 'checked' : ''} class="doc-chk-bag-akses rounded text-brand-primary">
-                <span>${bag.nama_bagian}</span>
-              </label>`;
-          });
-        } else {
-          listContainer.classList.add('hidden');
-        }
-      }
-
-      // Populate dropdown kategori
-      const catSel = document.getElementById('doc-id-kategori');
-      if (catSel) {
-        catSel.innerHTML = '';
-        state.categories.forEach(c => {
-          catSel.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`;
-        });
-        if (doc) catSel.value = doc.id_kategori;
-      }
-
-      // Populate dropdown bagian/divisi
-      const bagSel = document.getElementById('doc-id-bagian');
-      if (bagSel) {
-        bagSel.innerHTML = '';
-        state.departments.forEach(b => {
-          bagSel.innerHTML += `<option value="${b.id}">${b.nama_bagian}</option>`;
-        });
-        if (doc) bagSel.value = doc.id_bagian;
-      }
-
-      if (title) {
-        title.innerHTML = doc ? `<i data-lucide="edit" class="w-4 h-4 mr-1 inline-block"></i> Edit Dokumen` : `<i data-lucide="file-plus" class="w-4 h-4 mr-1 inline-block"></i> Tambah Dokumen Baru`;
-      }
-      
-      const fileInfo = document.getElementById('file-info');
-      if (fileInfo) fileInfo.classList.add('hidden');
-      state.selectedFile = null;
-
-      modal.classList.remove('hidden');
-      lucide.createIcons();
-    };
-
-    window.onload = function() {
-      updateSyncStatus();
-      detectSystemTheme();
-      setupEventListeners();
-      lucide.createIcons();
-    };
-
-    function updateSyncStatus() {
-      const dot = document.getElementById('conn-dot');
-      const text = document.getElementById('conn-text');
-      
-      const urlAPI = document.getElementById('settings-api-url') ? document.getElementById('settings-api-url').value : null;
-      let activeUrl = GAS_API_URL || urlAPI;
-      if (localStorage.getItem('gas_api_url')) activeUrl = localStorage.getItem('gas_api_url');
-
-      const active = activeUrl && activeUrl.trim() !== '' && !activeUrl.includes("YOUR_");
-      
-      if (dot) dot.className = active ? "w-1.5 h-1.5 rounded-full bg-emerald-500" : "w-1.5 h-1.5 rounded-full bg-amber-500";
-      if (text) text.textContent = active ? "Sync Online" : "Demo Offline";
-    }
-
-    function detectSystemTheme() {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark');
-        state.darkMode = true;
-        document.getElementById('sun-icon').classList.remove('hidden');
-        document.getElementById('moon-icon').classList.add('hidden');
-      }
-    }
-
-    function toggleDarkMode() {
-      state.darkMode = !state.darkMode;
-      document.documentElement.classList.toggle('dark', state.darkMode);
-      localStorage.setItem('theme', state.darkMode ? 'dark' : 'light');
-      document.getElementById('sun-icon').classList.toggle('hidden', !state.darkMode);
-      document.getElementById('moon-icon').classList.toggle('hidden', state.darkMode);
-      if (state.activePage === 'dashboard') renderPageDashboard();
-    }
-
-    function fetchMenusAndStart() {
-      // Menggunakan variabel global statis untuk menus untuk menghindari backend crash saat endpoint ini absen
-      state.menus = APP_MENUS;
-
-      executeApi('getBagian').then(bagians => {
-        state.departments = Array.isArray(bagians) ? bagians : [];
-        renderSidebarMenu();
-        navigateTo('dashboard');
-      }).catch(err => {
-        console.error("Gagal getBagian:", err);
-        state.departments = [];
-        renderSidebarMenu();
-        navigateTo('dashboard');
-      });
-    }
-
-    function renderSidebarMenu() {
-      const nav = document.getElementById('main-navigation');
-      if (!nav) return;
-      nav.innerHTML = '';
-      
-      const role = state.currentUser ? state.currentUser.role : 'User';
-      const allowedMenus = state.currentUser ? state.currentUser.menu_akses || [] : [];
-      
-      state.menus.forEach(menu => {
-        if (menu.status !== 'Aktif') return;
-        // PENTING: Menyembunyikan menu pada antarmuka sidebar jika hak akses user (bukan Admin) tidak diizinkan.
-        if (role !== 'Admin' && !allowedMenus.includes(menu.id)) return;
+    <!-- Main Content Grid -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        let pId = 'daftar-dokumen';
-        if (menu.nama_menu.includes('Dashboard')) pId = 'dashboard';
-        else if (menu.nama_menu.includes('Kategori')) pId = 'kategori';
-        else if (menu.nama_menu.includes('File Manager')) pId = 'file-manager';
-        else if (menu.nama_menu.includes('User')) pId = 'control-user';
-        else if (menu.nama_menu.includes('Bagian')) pId = 'bagian';
-        else if (menu.nama_menu.includes('Menu')) pId = 'control-menu';
-        else if (menu.nama_menu.includes('Unduhan')) pId = 'riwayat-unduhan';
-        else if (menu.nama_menu.includes('Sesi')) pId = 'riwayat-login';
-        else if (menu.nama_menu.includes('Backup')) pId = 'backup-db';
+        <!-- Left Column: Name Inputs & Controls -->
+        <section class="lg:col-span-4 bg-slate-900/70 border border-white/10 backdrop-blur-md rounded-2xl p-5 shadow-xl flex flex-col gap-5">
+            <div>
+                <h2 class="text-lg font-bold flex items-center gap-2 text-pink-300 mb-1">
+                    <i class="fa-solid fa-users"></i> Daftar Peserta Arisan
+                </h2>
+                <p class="text-xs text-slate-400">Masukkan nama peserta (pisahkan dengan baris baru atau koma).</p>
+            </div>
 
-        const btn = document.createElement('button');
-        btn.className = `w-full flex items-center space-x-2 px-3 py-2 rounded-xl text-xs font-semibold ${state.activePage === pId ? 'bg-brand-accent text-white' : 'text-brand-bgLight/85 hover:bg-black/10'}`;
-        btn.innerHTML = `<i data-lucide="${menu.icon}" class="w-4 h-4"></i><span>${menu.nama_menu}</span>`;
-        btn.onclick = () => { 
-          navigateTo(pId); 
-          document.getElementById('sidebar').classList.add('-translate-x-full'); 
-          document.getElementById('sidebar-overlay').classList.add('hidden'); 
-        };
-        nav.appendChild(btn);
-      });
-      lucide.createIcons();
-    }
+            <!-- Input Form -->
+            <div class="flex flex-col gap-3">
+                <textarea id="namesInput" rows="5" class="w-full bg-slate-950/80 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition resize-none text-slate-100 placeholder-slate-500" placeholder="Contoh:&#10;Budi&#10;Siti&#10;Agus&#10;Dewi&#10;Rina"></textarea>
+                
+                <div class="flex gap-2">
+                    <button id="updateListBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrows-rotate"></i> Update Roulette
+                    </button>
+                    <button id="shuffleListBtn" title="Acak Posisi Nama" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-semibold py-2.5 px-3 rounded-xl text-sm transition">
+                        <i class="fa-solid fa-shuffle"></i>
+                    </button>
+                    <button id="clearListBtn" title="Hapus Semua" class="bg-slate-800 hover:bg-red-950/50 border border-slate-700 text-red-400 hover:text-red-300 font-semibold py-2.5 px-3 rounded-xl text-sm transition">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
 
-    function navigateTo(pageId) {
-      // Otorisasi Hak Akses Navigasi Halaman SPA
-      const userRole = state.currentUser ? state.currentUser.role : 'User';
-      if (adminOnlyPages.includes(pageId) && userRole !== 'Admin') {
-        showToast("Akses Dilarang", "Halaman ini memerlukan otorisasi Administrator.", "warning");
-        navigateTo('dashboard');
-        return;
-      }
+            <!-- Active Names Counter -->
+            <div class="border-t border-slate-800 pt-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-slate-400">Peserta Aktif (<span id="participantCount" class="text-pink-400 font-bold">0</span>)</span>
+                    <button id="presetBtn" class="text-xs text-indigo-400 hover:underline">Isi Contoh Nama</button>
+                </div>
+                
+                <!-- Tag List -->
+                <div id="participantTags" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-1">
+                    <!-- Dynamic Tag Chips inserted here -->
+                </div>
+                <p class="text-[10px] text-slate-500 mt-2 italic flex justify-between items-center">
+                    <span>*Klik tombol X untuk menghapus nama</span>
+                    <span id="adminStatusIndicator" class="text-amber-400 font-semibold hidden"><i class="fa-solid fa-shield-halved"></i> Mode Admin Aktif</span>
+                </p>
+            </div>
 
-      state.activePage = pageId;
-      renderSidebarMenu();
-      document.getElementById('page-title').textContent = pageTitles[pageId] || 'SI-Arsip';
-      
-      const main = document.getElementById('main-content');
-      main.innerHTML = `<div class="flex items-center justify-center h-40"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-brand-primary"></div></div>`;
-      
-      setTimeout(() => {
-        const tpl = document.getElementById(`tpl-${pageId}`);
-        if (tpl) {
-          main.innerHTML = '';
-          main.appendChild(tpl.content.cloneNode(true));
-          initPageModule(pageId);
-        }
-      }, 50);
-    }
+            <!-- Winner Log -->
+            <div class="border-t border-slate-800 pt-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-trophy text-amber-400"></i> Riwayat Pemenang
+                    </span>
+                    <button id="clearHistoryBtn" class="text-[11px] text-slate-500 hover:text-slate-300">Reset Log</button>
+                </div>
+                <ul id="winnerHistory" class="space-y-1.5 max-h-36 overflow-y-auto text-xs">
+                    <li class="text-slate-500 italic text-center py-2" id="emptyHistoryMsg">Belum ada pemenang yang terpilih</li>
+                </ul>
+            </div>
+        </section>
 
-    function initPageModule(pageId) {
-      lucide.createIcons();
-      if (pageId === 'dashboard') renderPageDashboard();
-      else if (pageId === 'daftar-dokumen') renderPageDaftarDokumen();
-      else if (pageId === 'kategori') renderPageKategori();
-      else if (pageId === 'file-manager') renderPageFileManager();
-      else if (pageId === 'control-user') renderPageControlUser();
-      else if (pageId === 'bagian') renderPageBagian();
-      else if (pageId === 'control-menu') renderMenusTable();
-      else if (pageId === 'riwayat-unduhan') fetchDownloadHistory();
-      else if (pageId === 'riwayat-login') fetchLoginHistory();
-      else if (pageId === 'backup-db') renderPageBackup();
-    }
-
-    // --- FUNGSI CHART / DIAGRAM VISUALISASI ---
-    function renderPageChart(labels, dataSet, chartColors) {
-      const totalItems = dataSet.reduce((acc, curr) => acc + curr, 0);
-      const canvas = document.getElementById('categoryChart');
-      const placeholder = document.getElementById('no-chart-data');
-      if (!canvas || !placeholder) return;
-
-      if (totalItems === 0) {
-        canvas.classList.add('hidden');
-        placeholder.classList.remove('hidden');
-      } else {
-        canvas.classList.remove('hidden');
-        placeholder.classList.add('hidden');
-        const ctx = canvas.getContext('2d');
-        if (window.dashboardChart) window.dashboardChart.destroy();
-        window.dashboardChart = new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: labels,
-            datasets: [{
-              data: dataSet,
-              backgroundColor: chartColors.slice(0, labels.length),
-              borderColor: state.darkMode ? '#163832' : '#ffffff',
-              borderWidth: 2
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    const value = context.raw || 0;
-                    return ` ${context.label}: ${value} Berkas`;
-                  }
-                }
-              }
-            },
-            cutout: '72%'
-          }
-        });
-      }
-    }
-
-    // ==========================================
-    // MODULES FUNCTIONS
-    // ==========================================
-    function renderPageDashboard() {
-      let catL = false, docL = false;
-      executeApi('getCategories').then(res => { 
-        state.categories = Array.isArray(res) ? res : []; 
-        catL = true; 
-        stats(); 
-      });
-      executeApi('getDocuments').then(res => { 
-        state.documents = Array.isArray(res) ? res : []; 
-        docL = true; 
-        stats(); 
-      });
-
-      function stats() {
-        if (!catL || !docL) return;
-        if (state.activePage !== 'dashboard') return;
-
-        const totalDocsEl = document.getElementById('stat-total-docs');
-        const totalCatsEl = document.getElementById('stat-total-cats');
-        const totalSizeEl = document.getElementById('stat-total-size');
-
-        if (totalDocsEl) totalDocsEl.textContent = state.documents.length;
-        if (totalCatsEl) totalCatsEl.textContent = state.categories.length;
-
-        let sz = 0;
-        state.documents.forEach(d => sz += d.ukuran_file || 0);
-        if (totalSizeEl) totalSizeEl.textContent = (sz / (1024 * 1024)).toFixed(1) + " MB";
-
-        const rBody = document.getElementById('dash-recent-docs');
-        if (!rBody) return;
-        rBody.innerHTML = '';
-        state.documents.slice(0, 5).forEach(doc => {
-          rBody.innerHTML += `
-            <tr class="border-b dark:border-brand-highlightDark/30 hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10">
-              <td class="py-2 font-bold">${doc.nomor_arsip}</td>
-              <td class="py-2">${doc.nama_dokumen}</td>
-              <td class="py-2">${doc.nama_bagian || 'Umum'}</td>
-              <td class="py-2 text-right"><button onclick="handleDocumentDownload(${JSON.stringify(doc).replace(/"/g, '&quot;')})" class="text-brand-primary"><i data-lucide="download" class="w-4 h-4 inline"></i></button></td>
-            </tr>`;
-        });
-        renderPageChart(state.categories.map(c => c.nama_kategori), state.categories.map(c => c.jumlah_dokumen || 0), ['#758467', '#819171', '#9CAF88']);
-        lucide.createIcons();
-      }
-    }
-
-    function renderPageDaftarDokumen() {
-      const searchInput = document.getElementById('doc-search');
-      const filterKategori = document.getElementById('doc-filter-kategori');
-      const btnTambah = document.getElementById('btn-tambah-dokumen');
-      
-      if (searchInput) searchInput.oninput = applyDocFilters;
-      if (filterKategori) filterKategori.onchange = applyDocFilters;
-      if (btnTambah) btnTambah.onclick = () => openDocumentModal();
-
-      executeApi('getCategories').then(categories => {
-        state.categories = Array.isArray(categories) ? categories : [];
-        const sel = document.getElementById('doc-filter-kategori');
-        if (sel) {
-          sel.innerHTML = '<option value="">Semua Kategori</option>';
-          state.categories.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`);
-        }
-        if (state.activePage === 'daftar-dokumen') {
-          fetchDocuments();
-        }
-      });
-    }
-
-    function applyDocFilters() {
-      const q = document.getElementById('doc-search') ? document.getElementById('doc-search').value.toLowerCase() : '';
-      const cat = document.getElementById('doc-filter-kategori') ? document.getElementById('doc-filter-kategori').value : '';
-      const tbody = document.getElementById('tbl-body-documents');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      
-      const filteredDocs = state.documents.filter(d => {
-        const noArsip = d.nomor_arsip ? String(d.nomor_arsip).toLowerCase() : '';
-        const nmDok = d.nama_dokumen ? String(d.nama_dokumen).toLowerCase() : '';
-        return (noArsip.includes(q) || nmDok.includes(q)) && (!cat || d.id_kategori === cat);
-      });
-
-      if (filteredDocs.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-gray-500 dark:text-gray-400">Tidak ada dokumen yang ditemukan.</td></tr>`;
-        return;
-      }
-
-      filteredDocs.forEach(doc => {
-          tbody.innerHTML += `
-            <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
-              <td class="px-4 py-2 font-bold">${doc.nomor_arsip}</td>
-              <td class="px-4 py-2 font-semibold">${doc.nama_dokumen}</td>
-              <td class="px-4 py-2 text-brand-primary dark:text-brand-accentDark">${doc.nama_bagian || 'Umum'}</td>
-              <td class="px-4 py-2"><span class="px-1.5 py-0.5 rounded bg-brand-bgLight text-brand-primary dark:bg-brand-highlightDark/50 dark:text-brand-textLight">${doc.nama_kategori}</span></td>
-              <td class="px-4 py-2">${doc.tanggal_upload_formatted}</td>
-              <td class="px-4 py-2 text-center space-x-1">
-                <button onclick="handleDocumentDownload(${JSON.stringify(doc).replace(/"/g, '&quot;')})" class="text-blue-500"><i data-lucide="download" class="w-3.5 h-3.5 inline"></i></button>
-                <button onclick="openDocumentModal(${JSON.stringify(doc).replace(/"/g, '&quot;')})" class="text-amber-500"><i data-lucide="edit-3" class="w-3.5 h-3.5 inline"></i></button>
-                <button onclick="deleteDoc('${doc.id}')" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i></button>
-              </td>
-            </tr>`;
-        });
-      lucide.createIcons();
-    }
-
-    window.deleteDoc = function(id) {
-      showCustomConfirm("Hapus", "Hapus arsip ini?", () => {
-        executeApi('deleteDocument', 'POST', { docId: id }).then(res => {
-          showToast("Sukses", res.message);
-          fetchDocuments();
-        });
-      });
-    };
-
-    function renderPageKategori() {
-      const form = document.getElementById('form-kategori');
-      if (form) {
-        form.onsubmit = (e) => {
-          e.preventDefault();
-          const catData = {
-            id: document.getElementById('cat-id').value,
-            nama_kategori: document.getElementById('cat-nama').value,
-            deskripsi: document.getElementById('cat-deskripsi').value
-          };
-          executeApi('saveCategory', 'POST', { catData }).then((res) => {
-            showToast("Sukses", res.message, "success");
-            fetchCategories();
-            resetCategoryForm();
-          });
-        };
-      }
-      const btnBatal = document.getElementById('btn-batal-cat');
-      if (btnBatal) btnBatal.onclick = resetCategoryForm;
-      fetchCategories();
-    }
-
-    function renderCategoriesTable() {
-      const tbody = document.getElementById('tbl-body-categories');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      state.categories.forEach(cat => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
-            <td class="px-4 py-2 font-bold">${cat.nama_kategori}</td>
-            <td class="px-4 py-2 text-gray-500 dark:text-gray-300">${cat.deskripsi || '-'}</td>
-            <td class="px-4 py-2 text-center font-bold text-brand-primary dark:text-brand-accentDark">${cat.jumlah_dokumen || 0}</td>
-            <td class="px-4 py-2 text-center space-x-1.5">
-              <button onclick="editCategory(${JSON.stringify(cat).replace(/"/g, '&quot;')})" class="text-amber-500"><i data-lucide="edit-3" class="w-3.5 h-3.5 inline"></i></button>
-              <button onclick="deleteCategory('${cat.id}')" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i></button>
-            </td>
-          </tr>`;
-      });
-      lucide.createIcons();
-    }
-
-    window.editCategory = function(cat) {
-      document.getElementById('form-cat-title').innerHTML = `<i data-lucide="edit" class="w-4 h-4 mr-1 inline"></i> Edit Kategori`;
-      document.getElementById('cat-id').value = cat.id;
-      document.getElementById('cat-nama').value = cat.nama_kategori;
-      document.getElementById('cat-deskripsi').value = cat.deskripsi || '';
-      document.getElementById('btn-batal-cat').classList.remove('hidden');
-      lucide.createIcons();
-    };
-
-    window.deleteCategory = function(id) {
-      showCustomConfirm("Hapus", "Hapus Kategori ini?", () => {
-        executeApi('deleteCategory', 'POST', { catId: id }).then(res => {
-          showToast("Sukses", res.message);
-          fetchCategories();
-        });
-      });
-    };
-
-    function renderPageFileManager() {
-      document.getElementById('btn-new-folder').onclick = () => document.getElementById('modal-folder').classList.remove('hidden');
-      fetchDriveContents();
-    }
-
-    window.fetchDriveContents = function(folderId = 'root') {
-      const container = document.getElementById('drive-contents');
-      if (container) {
-        container.innerHTML = `<div class="col-span-full text-center py-12"><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-brand-primary mx-auto"></div></div>`;
-      }
-      executeApi('getFolderContents', 'GET', { folderId }).then(contents => {
-        state.drive = contents || { folders: [], files: [] };
-        renderDriveBreadcrumbs();
-        renderDriveGrid();
-      });
-    };
-
-    function renderDriveBreadcrumbs() {
-      const crumbs = document.getElementById('drive-breadcrumbs');
-      if (!crumbs) return;
-      crumbs.innerHTML = `<button onclick="fetchDriveContents('root')" class="text-brand-primary dark:text-brand-accentDark font-bold hover:underline">Utama</button>`;
-      if (state.drive.currentFolderId && state.drive.currentFolderId !== 'root') {
-        crumbs.innerHTML += ` <span class="text-gray-400">/</span> <span class="font-semibold text-gray-600 dark:text-gray-300 truncate max-w-[100px]">${state.drive.currentFolderName}</span>`;
-      }
-    }
-
-    function renderDriveGrid() {
-      const container = document.getElementById('drive-contents');
-      if (!container) return;
-      container.innerHTML = '';
-      if (!state.drive.folders?.length && !state.drive.files?.length) {
-        container.innerHTML = `<div class="col-span-full text-center py-6 text-gray-400">Folder ini kosong.</div>`;
-        return;
-      }
-      state.drive.folders?.forEach(fold => {
-        container.innerHTML += `
-          <div onclick="fetchDriveContents('${fold.id}')" class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 hover:border-brand-primary/40 cursor-pointer flex flex-col items-center">
-            <i data-lucide="folder" class="w-8 h-8 text-amber-500 fill-amber-500/10"></i>
-            <p class="mt-1 text-[11px] font-bold truncate w-full text-center text-gray-800 dark:text-gray-200">${fold.name}</p>
-          </div>`;
-      });
-      state.drive.files?.forEach(file => {
-        container.innerHTML += `
-          <div class="bg-white dark:bg-brand-surfaceDark p-3 rounded-xl border border-brand-muted/20 dark:border-brand-highlightDark/30 flex flex-col items-center">
-            <i data-lucide="file-text" class="w-8 h-8 text-brand-primary dark:text-brand-accentDark"></i>
-            <p class="mt-1 text-[11px] font-bold truncate w-full text-center text-gray-800 dark:text-gray-200">${file.name}</p>
-            <span class="text-[9px] text-gray-400">${(file.size / 1024).toFixed(0)} KB</span>
-          </div>`;
-      });
-      lucide.createIcons();
-    }
-
-    function renderPageControlUser() {
-      const sel = document.getElementById('user-bagian');
-      if (sel) {
-        sel.innerHTML = '<option value="">-- Pilih Bagian --</option>';
-        state.departments.forEach(b => sel.innerHTML += `<option value="${b.id}">${b.nama_bagian}</option>`);
-      }
-
-      const list = document.getElementById('user-menu-checklist');
-      if (list) {
-        list.innerHTML = '';
-        state.menus.forEach(m => {
-          list.innerHTML += `
-            <label class="flex items-center space-x-2 p-1 cursor-pointer">
-              <input type="checkbox" value="${m.id}" class="user-menu-access-chk rounded text-brand-primary">
-              <span class="text-[11px] font-semibold text-gray-700 dark:text-gray-300">${m.nama_menu}</span>
-            </label>`;
-        });
-      }
-
-      const form = document.getElementById('form-user');
-      if (form) {
-        form.onsubmit = (e) => {
-          e.preventDefault();
-          const checked = [];
-          document.querySelectorAll('.user-menu-access-chk:checked').forEach(c => checked.push(c.value));
-          const userData = {
-            id: document.getElementById('user-id').value,
-            username: document.getElementById('user-username').value,
-            nama: document.getElementById('user-nama').value,
-            id_bagian: document.getElementById('user-bagian').value,
-            role: document.getElementById('user-role').value,
-            status: document.getElementById('user-status').value,
-            menu_akses: checked
-          };
-          executeApi('saveUser', 'POST', { userData }).then(res => {
-            showToast("Sukses", res.message, "success");
-            fetchUsers();
-            resetUserForm();
-          });
-        };
-      }
-      const btnBatal = document.getElementById('btn-batal-user');
-      if (btnBatal) btnBatal.onclick = resetUserForm;
-      fetchUsers();
-    }
-
-    function renderUsersTable() {
-      const tbody = document.getElementById('tbl-body-users');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      state.users.forEach(usr => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
-            <td class="px-4 py-2 font-bold">@${usr.username}</td>
-            <td class="px-4 py-2 font-semibold">${usr.nama}</td>
-            <td class="px-4 py-2 text-center"><span class="px-1.5 py-0.5 rounded border border-brand-primary text-brand-primary">${usr.role}</span></td>
-            <td class="px-4 py-2 text-center"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${usr.status}</span></td>
-            <td class="px-4 py-2 text-center space-x-1">
-              <button onclick="editUser(${JSON.stringify(usr).replace(/"/g, '&quot;')})" class="text-amber-500"><i data-lucide="edit" class="w-3.5 h-3.5 inline"></i></button>
-            </td>
-          </tr>`;
-      });
-      lucide.createIcons();
-    }
-
-    window.editUser = function(usr) {
-      document.getElementById('form-user-title').innerHTML = `<i data-lucide="user-check" class="w-4 h-4 mr-1 inline"></i> Edit User`;
-      document.getElementById('user-id').value = usr.id;
-      document.getElementById('user-username').value = usr.username;
-      document.getElementById('user-username').disabled = true;
-      document.getElementById('user-nama').value = usr.nama;
-      document.getElementById('user-bagian').value = usr.id_bagian;
-      document.getElementById('user-role').value = usr.role;
-      document.getElementById('user-status').value = usr.status;
-      document.getElementById('pwd-field-group').classList.add('hidden');
-      document.querySelectorAll('.user-menu-access-chk').forEach(cb => {
-        cb.checked = usr.menu_akses && usr.menu_akses.includes(cb.value);
-      });
-      document.getElementById('btn-batal-user').classList.remove('hidden');
-      lucide.createIcons();
-    };
-
-    function renderPageBagian() {
-      const form = document.getElementById('form-bagian');
-      if (form) {
-        form.onsubmit = (e) => {
-          e.preventDefault();
-          const bagData = {
-            nama_bagian: document.getElementById('bag-nama').value,
-            kode_bagian: document.getElementById('bag-kode').value
-          };
-          executeApi('saveBagian', 'POST', { bagData }).then((res) => {
-            showToast("Sukses", res.message, "success");
-            document.getElementById('form-bagian').reset();
-            fetchBagian();
-          });
-        };
-      }
-      fetchBagian();
-    }
-
-    function renderBagianTable() {
-      const tbody = document.getElementById('tbl-body-bagian');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      state.departments.forEach(bag => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
-            <td class="px-4 py-2 font-bold">${bag.kode_bagian}</td>
-            <td class="px-4 py-2">${bag.nama_bagian}</td>
-            <td class="px-4 py-2 text-center">
-              <button onclick="deleteBagian('${bag.id}')" class="text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i></button>
-            </td>
-          </tr>`;
-      });
-      lucide.createIcons();
-    }
-
-    window.deleteBagian = function(id) {
-      showCustomConfirm("Hapus", "Hapus divisi ini?", () => {
-        executeApi('deleteBagian', 'POST', { bagId: id }).then(res => {
-          showToast("Sukses", res.message);
-          fetchBagian();
-        });
-      });
-    };
-
-    function fetchDownloadHistory() {
-      executeApi('getDownloadHistory').then(res => {
-        state.history = Array.isArray(res) ? res : [];
-        renderDownloadHistoryTable();
-      });
-    }
-
-    function renderDownloadHistoryTable() {
-      const tbody = document.getElementById('tbl-body-history');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      state.history.forEach(hist => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
-            <td class="px-4 py-2 text-gray-400">${hist.id}</td>
-            <td class="px-4 py-2 font-bold">${hist.nama_dokumen}</td>
-            <td class="px-4 py-2">${hist.diunduh_oleh}</td>
-            <td class="px-4 py-2 text-gray-500 dark:text-gray-300">${hist.tanggal_unduh_formatted}</td>
-          </tr>`;
-      });
-    }
-
-    function fetchLoginHistory() {
-      executeApi('getLoginHistory').then(res => {
-        state.loginHistory = Array.isArray(res) ? res : [];
-        renderLoginHistoryTable();
-      });
-    }
-
-    function renderLoginHistoryTable() {
-      const tbody = document.getElementById('tbl-body-login-history');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      state.loginHistory.forEach(log => {
-        tbody.innerHTML += `
-          <tr class="hover:bg-gray-50 dark:hover:bg-brand-highlightDark/10 text-[11px]">
-            <td class="px-4 py-2 text-gray-400">${log.id}</td>
-            <td class="px-4 py-2"><strong>${log.nama}</strong> (@${log.username})</td>
-            <td class="px-4 py-2 text-center"><span class="px-1.5 py-0.5 rounded ${log.event_type === 'Login' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">${log.event_type}</span></td>
-            <td class="px-4 py-2">${log.device}</td>
-            <td class="px-4 py-2 text-gray-500 dark:text-gray-300">${log.tanggal_jam_formatted}</td>
-          </tr>`;
-      });
-    }
-
-    function renderPageBackup() {
-      const btnProses = document.getElementById('btn-proses-backup');
-      if (btnProses) {
-        btnProses.onclick = function() {
-          this.disabled = true;
-          this.textContent = "Mengekspor & Mencadangkan Seluruh Basis Data...";
-          executeApi('backupDb', 'POST').then(res => {
-            const btn = document.getElementById('btn-proses-backup');
-            if (btn) {
-              btn.disabled = false;
-              btn.textContent = "Cadangkan Sekarang";
-            }
-            if (res.success) {
-              showToast("Berhasil", res.message, "success");
-              const statusArea = document.getElementById('backup-status-area');
-              if (statusArea) {
-                statusArea.innerHTML = `
-                  <div class="mt-4 p-3 bg-emerald-50 text-emerald-800 border border-emerald-200/50 rounded-xl">
-                    <p class="font-bold text-xs">Pencadangan Excel Sukses!</p>
-                    <a href="${res.downloadUrl}" target="_blank" class="mt-2 inline-block px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs transition-colors">Ambil Berkas Excel (.xlsx)</a>
-                  </div>`;
-                statusArea.classList.remove('hidden');
-              }
-            }
-          });
-        };
-      }
-    }
-
-    // ==========================================
-    // MODULES UTILITIES
-    // ==========================================
-    function resetCategoryForm() {
-      const form = document.getElementById('form-kategori');
-      if (form) form.reset();
-      document.getElementById('cat-id').value = '';
-      document.getElementById('form-cat-title').innerHTML = `<i data-lucide="plus-circle" class="w-4 h-4 mr-1 animate-pulse"></i> Tambah Kategori`;
-      document.getElementById('btn-batal-cat').classList.add('hidden');
-      lucide.createIcons();
-    }
-
-    // --- RESET FORMULIR MANAJEMEN USER ---
-    function resetUserForm() {
-      const form = document.getElementById('form-user');
-      if (form) form.reset();
-      document.getElementById('user-id').value = '';
-      document.getElementById('user-username').disabled = false;
-      document.getElementById('form-user-title').innerHTML = `<i data-lucide="user-plus" class="w-4 h-4 mr-1"></i> Tambah User`;
-      document.getElementById('pwd-field-group').classList.remove('hidden');
-      document.querySelectorAll('.user-menu-access-chk').forEach(cb => cb.checked = false);
-      document.getElementById('btn-batal-user').classList.add('hidden');
-      lucide.createIcons();
-    }
-
-    // ==========================================
-    // GLOBAL UI EVENT LISTENERS
-    // ==========================================
-    function setupEventListeners() {
-      // Toggle Menu Sidebar Mobile
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
-      const openBtn = document.getElementById('open-sidebar-btn');
-      const closeBtn = document.getElementById('close-sidebar-btn');
-
-      if (openBtn) {
-        openBtn.onclick = () => {
-          sidebar.classList.remove('-translate-x-full');
-          overlay.classList.remove('hidden');
-        };
-      }
-      if (closeBtn) {
-        closeBtn.onclick = () => {
-          sidebar.classList.add('-translate-x-full');
-          overlay.classList.add('hidden');
-        };
-      }
-      if (overlay) {
-        overlay.onclick = () => {
-          sidebar.classList.add('-translate-x-full');
-          overlay.classList.add('hidden');
-        };
-      }
-
-      document.getElementById('dark-mode-toggle').onclick = toggleDarkMode;
-      document.getElementById('login-dark-toggle').onclick = toggleDarkMode;
-      
-      document.getElementById('btn-confirm-cancel').onclick = () => document.getElementById('custom-confirm-modal').classList.add('hidden');
-      document.getElementById('btn-confirm-proceed').onclick = () => { if (confirmCallback) confirmCallback(); };
-
-      // Memperbaiki Fungsi Mata agar icon dapat berubah dan klik tidak rusak
-      document.getElementById('toggle-password-visibility').onclick = function() {
-        const pwd = document.getElementById('login-password');
-        const btn = this;
-        if (pwd.type === 'password') {
-          pwd.type = 'text';
-          btn.innerHTML = '<i data-lucide="eye-off" class="w-4 h-4"></i>';
-        } else {
-          pwd.type = 'password';
-          btn.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
-        }
-        lucide.createIcons(); // Re-render Lucide Icon
-      };
-
-      document.getElementById('form-login').onsubmit = async function(e) {
-        e.preventDefault();
-        const u = document.getElementById('login-username').value;
-        const p = document.getElementById('login-password').value;
-        const security = await fetchSecurityFootprint();
-        
-        const loginBtn = document.getElementById('btn-login');
-        if (loginBtn) {
-          loginBtn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> <span>Otentikasi...</span>`;
-        }
-
-        executeApi('login', 'POST', { username: u, password: p, securityInfo: security })
-          .then(res => {
-            if (loginBtn) {
-              loginBtn.innerHTML = `<span>Masuk Sistem</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
-              lucide.createIcons();
-            }
-            if (res.success) {
-              state.isLoggedIn = true;
-              state.currentUser = res.user;
-              document.getElementById('login-wrapper').classList.add('hidden');
-              document.getElementById('app-wrapper').classList.remove('hidden');
-              document.getElementById('user-display-name').textContent = res.user.nama;
-              document.getElementById('user-display-role').textContent = res.user.role;
-              document.getElementById('user-avatar').textContent = res.user.nama[0];
-              fetchMenusAndStart();
-            } else {
-              showToast("Gagal", res.message, "danger");
-            }
-          });
-      };
-
-      document.getElementById('btn-logout').onclick = () => {
-        state.isLoggedIn = false;
-        document.getElementById('app-wrapper').classList.add('hidden');
-        document.getElementById('login-wrapper').classList.remove('hidden');
-        document.getElementById('form-login').reset();
-      };
-
-      document.querySelectorAll('.close-modal-doc').forEach(btn => {
-        btn.onclick = () => document.getElementById('modal-dokumen').classList.add('hidden');
-      });
-
-      document.getElementById('doc-file').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function(evt) {
-            state.selectedFile = { bytes: evt.target.result.split(',')[1], mimeType: file.type, name: file.name };
-            document.getElementById('file-name-display').textContent = `${file.name} (${(file.size/1024).toFixed(1)} KB)`;
-            document.getElementById('file-info').classList.remove('hidden');
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-
-      document.getElementById('btn-remove-file').onclick = () => {
-        document.getElementById('doc-file').value = '';
-        state.selectedFile = null;
-        document.getElementById('file-info').classList.add('hidden');
-      };
-
-      document.getElementById('form-dokumen-detail').onsubmit = function(e) {
-        e.preventDefault();
-        const checkedBagian = [];
-        document.querySelectorAll('.doc-chk-bag-akses:checked').forEach(cb => {
-          checkedBagian.push(cb.value);
-        });
-
-        const docData = {
-          id: document.getElementById('doc-id').value,
-          nomor_arsip: document.getElementById('doc-nomor').value,
-          nama_dokumen: document.getElementById('doc-nama').value,
-          id_kategori: document.getElementById('doc-id-kategori').value,
-          id_bagian: document.getElementById('doc-id-bagian').value,
-          deskripsi: document.getElementById('doc-deskripsi').value,
-          file_id_drive: document.getElementById('doc-file-id').value,
-          file_url_drive: document.getElementById('doc-file-url').value,
-          akses_semua_bagian: document.getElementById('doc-akses-semua').checked,
-          akses_bagian_tertentu: checkedBagian
-        };
-        
-        const btnSubmitDoc = document.getElementById('btn-submit-doc');
-        if (btnSubmitDoc) {
-            btnSubmitDoc.disabled = true;
-            btnSubmitDoc.textContent = 'Menyimpan...';
-        }
-
-        executeApi('saveDocument', 'POST', { docData, fileDataObj: state.selectedFile })
-          .then(res => {
-            if (btnSubmitDoc) {
-                btnSubmitDoc.disabled = false;
-                btnSubmitDoc.textContent = 'Simpan';
-            }
-            showToast("Berhasil", res.message, "success");
-            document.getElementById('modal-dokumen').classList.add('hidden');
+        <!-- Center Column: Roulette Wheel Display -->
+        <section class="lg:col-span-8 bg-slate-900/50 border border-white/10 backdrop-blur-md rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center relative min-h-[500px]">
             
-            // Refresh tabel langsung secara dinamis (tanpa loading kedip)
-            if (state.activePage === 'daftar-dokumen') {
-              fetchDocuments();
-            } else if (state.activePage === 'dashboard') {
-              renderPageDashboard();
-            }
-          }).catch(err => {
-            if (btnSubmitDoc) {
-                btnSubmitDoc.disabled = false;
-                btnSubmitDoc.textContent = 'Simpan';
-            }
-          });
-      };
+            <!-- Dynamic Wheel Wrapper -->
+            <div class="relative flex items-center justify-center my-4">
+                
+                <!-- Pointer/Indicator Arrow -->
+                <div class="absolute -top-4 z-20 flex flex-col items-center filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
+                    <div class="w-8 h-8 bg-gradient-to-b from-yellow-300 to-amber-500 clip-polygon-triangle transform rotate-180 rounded-sm"></div>
+                    <i class="fa-solid fa-caret-down text-3xl text-amber-400 -mt-3"></i>
+                </div>
 
-      document.getElementById('doc-akses-semua').onchange = function() {
-        const listContainer = document.getElementById('doc-bagian-akses-list');
-        if (!listContainer) return;
-        if (this.checked) {
-          listContainer.classList.add('hidden');
-        } else {
-          listContainer.classList.remove('hidden');
-          listContainer.innerHTML = '';
-          state.departments.forEach(bag => {
-            listContainer.innerHTML += `
-              <label class="flex items-center space-x-1.5 cursor-pointer">
-                <input type="checkbox" value="${bag.id}" class="doc-chk-bag-akses rounded text-brand-primary">
-                <span class="text-gray-700 dark:text-gray-300">${bag.nama_bagian}</span>
-              </label>
-            `;
-          });
+                <!-- Canvas Component -->
+                <div class="relative p-3 rounded-full bg-gradient-to-tr from-slate-800 via-slate-900 to-purple-950 border-4 border-slate-700/80 shadow-2xl glow-effect">
+                    <canvas id="rouletteCanvas" width="460" height="460" class="max-w-full h-auto cursor-pointer rounded-full transition-transform duration-100"></canvas>
+                    
+                    <!-- Center Decorative Cap / Spin Button Core -->
+                    <button id="centerSpinBtn" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-gradient-to-tr from-pink-600 to-purple-600 rounded-full border-4 border-white/80 shadow-2xl flex flex-col items-center justify-center text-white font-extrabold hover:scale-105 active:scale-95 transition z-10">
+                        <span class="text-xs uppercase tracking-wider">Mulai</span>
+                        <i class="fa-solid fa-play text-sm mt-0.5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Big Spin Button Below for Accessibility -->
+            <div class="mt-6 w-full max-w-sm">
+                <button id="spinBtn" class="w-full py-4 px-8 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white font-extrabold text-lg tracking-wide uppercase shadow-lg glow-button flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-arrows-spin text-2xl animate-spin-slow"></i>
+                    <span>KOCOK ARISAN SEKARANG</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Winner Modal Overlay -->
+    <div id="winnerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-gradient-to-b from-slate-900 to-slate-950 border border-pink-500/30 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl transform scale-90 transition-transform duration-300 relative overflow-hidden" id="modalCard">
+            <!-- Background Glow Animation -->
+            <div class="absolute -top-24 -left-24 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10">
+                <div class="w-20 h-20 bg-gradient-to-tr from-amber-400 to-yellow-300 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg text-slate-950 text-3xl font-black animate-bounce">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                
+                <h3 class="text-sm font-semibold uppercase tracking-widest text-pink-400 mb-1">Selamat Kepada!</h3>
+                <h2 id="winnerNameDisplay" class="text-3xl md:text-4xl font-extrabold text-white mb-6 bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 via-pink-200 to-purple-200 break-words">
+                    Nama Pemenang
+                </h2>
+
+                <p class="text-xs text-slate-400 mb-6">
+                    Apakah nama ini ingin dihapus dari daftar putaran berikutnya?
+                </p>
+
+                <div class="flex flex-col gap-2.5">
+                    <button id="removeWinnerBtn" class="w-full py-3 px-4 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500 text-white text-sm font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user-minus"></i> Hapus dari Daftar & Lanjut
+                    </button>
+                    <button id="keepWinnerBtn" class="w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold rounded-xl transition border border-slate-700">
+                        Biarkan di Daftar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default Participant List
+        const DEFAULT_NAMES = ["Budi Santoso", "Siti Rahma", "Agus Wijaya", "Dewi Lestari", "Rina Kurnia", "Ahmad Fauzi", "Maya Putri", "Doni Pratama"];
+
+        // Color Palette for Roulette Slices
+        const PALETTE = [
+            '#ec4899', '#8b5cf6', '#3b82f6', '#10b981', 
+            '#f59e0b', '#ef4444', '#06b6d4', '#6366f1',
+            '#d946ef', '#14b8a6', '#f97316', '#84cc16'
+        ];
+
+        // Application State
+        let names = [...DEFAULT_NAMES];
+        let currentRotation = 0; // In Radians
+        let isSpinning = false;
+        let audioEnabled = true;
+        let winnerHistory = [];
+
+        // Secret Feature State
+        let blacklistedNames = new Set();
+        let secretAdminMode = false;
+
+        // DOM Elements
+        const canvas = document.getElementById('rouletteCanvas');
+        const ctx = canvas.getContext('2d');
+        const namesInput = document.getElementById('namesInput');
+        const updateListBtn = document.getElementById('updateListBtn');
+        const shuffleListBtn = document.getElementById('shuffleListBtn');
+        const clearListBtn = document.getElementById('clearListBtn');
+        const presetBtn = document.getElementById('presetBtn');
+        const spinBtn = document.getElementById('spinBtn');
+        const centerSpinBtn = document.getElementById('centerSpinBtn');
+        const participantCount = document.getElementById('participantCount');
+        const participantTags = document.getElementById('participantTags');
+        const audioToggleBtn = document.getElementById('audioToggleBtn');
+        const audioIcon = document.getElementById('audioIcon');
+        const audioText = document.getElementById('audioText');
+        const winnerModal = document.getElementById('winnerModal');
+        const modalCard = document.getElementById('modalCard');
+        const winnerNameDisplay = document.getElementById('winnerNameDisplay');
+        const removeWinnerBtn = document.getElementById('removeWinnerBtn');
+        const keepWinnerBtn = document.getElementById('keepWinnerBtn');
+        const winnerHistoryEl = document.getElementById('winnerHistory');
+        const emptyHistoryMsg = document.getElementById('emptyHistoryMsg');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const secretAdminBanner = document.getElementById('secretAdminBanner');
+
+        let lastWinner = null;
+
+        // Web Audio API Synthesizer (No external audio files needed)
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
         }
-      };
 
-      const closeModalsFolder = [document.getElementById('close-modal-folder'), document.getElementById('btn-cancel-folder')];
-      closeModalsFolder.forEach(btn => {
-        if (btn) btn.onclick = () => document.getElementById('modal-folder').classList.add('hidden');
-      });
-      
-      const settingsModalsFolder = [document.getElementById('close-modal-settings'), document.getElementById('login-settings-btn')];
-      settingsModalsFolder.forEach(btn => {
-          if (btn) btn.onclick = () => {
-              const modal = document.getElementById('modal-settings');
-              if (modal.classList.contains('hidden')) {
-                  document.getElementById('settings-api-url').value = GAS_API_URL || localStorage.getItem('gas_api_url') || '';
-                  modal.classList.remove('hidden');
-              } else {
-                  modal.classList.add('hidden');
-              }
-          }
-      });
-      
-      document.getElementById('btn-clear-api').onclick = () => {
-        localStorage.removeItem('gas_api_url');
-        document.getElementById('modal-settings').classList.add('hidden');
-        updateSyncStatus();
-        showToast("Demo Mode", "Beralih ke mode luring/lokal.", "warning");
-      };
+        function playTickSound() {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.04);
+                
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.04);
+            } catch (e) {
+                // Audio safety fallbacks
+            }
+        }
 
-      document.getElementById('form-settings').onsubmit = (e) => {
-        e.preventDefault();
-        const url = document.getElementById('settings-api-url').value.trim();
-        localStorage.setItem('gas_api_url', url);
-        document.getElementById('modal-settings').classList.add('hidden');
-        updateSyncStatus();
-        showToast("Tersimpan", "URL API berhasil dikonfigurasi.", "success");
-      };
+        function playVictorySound() {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C, E, G, High C
+                notes.forEach((freq, idx) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + (idx * 0.12));
+                    
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime + (idx * 0.12));
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (idx * 0.12) + 0.3);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start(audioCtx.currentTime + (idx * 0.12));
+                    osc.stop(audioCtx.currentTime + (idx * 0.12) + 0.3);
+                });
+            } catch (e) {}
+        }
 
-      document.getElementById('form-new-folder').onsubmit = function(e) {
-        e.preventDefault();
-        const fName = document.getElementById('new-folder-name').value;
-        executeApi('createNewFolder', 'POST', { parentFolderId: state.drive.currentFolderId, folderName: fName })
-          .then(res => {
-            showToast("Sukses", res.message, "success");
-            document.getElementById('modal-folder').classList.add('hidden');
-            fetchDriveContents(state.drive.currentFolderId);
-          });
-      };
-    }
-  </script>
+        // Canvas Drawing Logic
+        function drawWheel() {
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = width / 2 - 12; // Radius with padding
+
+            ctx.clearRect(0, 0, width, height);
+
+            if (names.length === 0) {
+                // Empty Wheel State
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#1e293b';
+                ctx.fill();
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#334155';
+                ctx.stroke();
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = 'bold 16px Poppins';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Tambahkan Nama Peserta', centerX, centerY);
+                return;
+            }
+
+            const sliceAngle = (Math.PI * 2) / names.length;
+
+            names.forEach((name, index) => {
+                const startAngle = currentRotation + (index * sliceAngle);
+                const endAngle = startAngle + sliceAngle;
+                const color = PALETTE[index % PALETTE.length];
+
+                // Draw Slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                ctx.closePath();
+                
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'rgba(15, 23, 42, 0.6)';
+                ctx.stroke();
+
+                // Draw Name Text
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#ffffff';
+                
+                // Adjust font size dynamically based on participant count
+                let fontSize = 16;
+                if (names.length > 20) fontSize = 10;
+                else if (names.length > 12) fontSize = 12;
+                else if (names.length > 8) fontSize = 14;
+
+                ctx.font = `700 ${fontSize}px Poppins`;
+                
+                // Truncate long strings for clean rendering
+                let displayName = name;
+                if (displayName.length > 16) {
+                    displayName = displayName.substring(0, 14) + '...';
+                }
+                
+                // Shadow for text contrast
+                ctx.shadowColor = 'rgba(0,0,0,0.6)';
+                ctx.shadowBlur = 4;
+                ctx.fillText(displayName, radius - 20, 0);
+                ctx.restore();
+            });
+
+            // Outer Metallic Ring Effect
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.stroke();
+        }
+
+        let lastPassedSlice = -1;
+
+        function spinWheel() {
+            if (isSpinning) return;
+            if (names.length === 0) {
+                alertCustom('Silakan masukkan minimal 1 nama peserta!');
+                return;
+            }
+
+            initAudio();
+            isSpinning = true;
+            spinBtn.disabled = true;
+            centerSpinBtn.disabled = true;
+            spinBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            // --- SECRET FEATURE LOGIC ---
+            // Filter eligible winners (names NOT in blacklist)
+            let eligibleIndices = [];
+            names.forEach((name, idx) => {
+                if (!blacklistedNames.has(name.trim().toLowerCase())) {
+                    eligibleIndices.push(idx);
+                }
+            });
+
+            // Fallback if all participants are blacklisted
+            if (eligibleIndices.length === 0) {
+                eligibleIndices = names.map((_, idx) => idx);
+            }
+
+            // Randomly select one index from eligible candidates
+            const chosenWinnerIdx = eligibleIndices[Math.floor(Math.random() * eligibleIndices.length)];
+            const sliceAngle = (Math.PI * 2) / names.length;
+
+            // Calculate precise target rotation so wheel lands squarely inside the chosenWinnerIdx slice
+            // Wheel pointer is at TOP (1.5 * PI). Slice angle center relative offset:
+            const randomOffsetInSlice = 0.2 + (Math.random() * 0.6); // keep arrow within 20%-80% of slice width
+            const sliceTargetOffset = (chosenWinnerIdx + randomOffsetInSlice) * sliceAngle;
+
+            // Target modulo angle in radians (where pointer at 1.5*PI points to chosen slice)
+            const targetModulo = (Math.PI * 1.5 - sliceTargetOffset) % (Math.PI * 2);
+            const currentModulo = (currentRotation % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+            
+            let forwardDelta = ((targetModulo - currentModulo) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+            if (forwardDelta < 0.2) forwardDelta += Math.PI * 2; // ensure noticeable final rotation adjustment
+
+            const extraRounds = 5 + Math.floor(Math.random() * 5); // 5 to 9 full spins
+            const totalRotationGoal = currentRotation + (extraRounds * Math.PI * 2) + forwardDelta;
+            
+            const startRotation = currentRotation;
+            const startTime = performance.now();
+            const duration = 4500 + Math.random() * 1000; // ~4.5 - 5.5 seconds
+
+            lastPassedSlice = -1;
+
+            function animateSpin(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Cubic Ease-Out curve for smooth slowing down
+                const easeOut = (t) => 1 - Math.pow(1 - t, 4);
+                const currentProgress = easeOut(progress);
+
+                currentRotation = startRotation + (totalRotationGoal - startRotation) * currentProgress;
+
+                // Play tick sound when passing slice boundaries
+                const normalizedAngle = (2 * Math.PI - (currentRotation % (2 * Math.PI)) + (1.5 * Math.PI)) % (2 * Math.PI);
+                const currentSlice = Math.floor(normalizedAngle / sliceAngle);
+
+                if (currentSlice !== lastPassedSlice) {
+                    playTickSound();
+                    lastPassedSlice = currentSlice;
+                }
+
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateSpin);
+                } else {
+                    // Spin finished
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                    centerSpinBtn.disabled = false;
+                    spinBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    
+                    calculateWinner();
+                }
+            }
+
+            requestAnimationFrame(animateSpin);
+        }
+
+        function calculateWinner() {
+            const sliceAngle = (Math.PI * 2) / names.length;
+            // Pointer is fixed at top (270 degrees or -90 degrees in standard canvas coords)
+            const normalizedAngle = (Math.PI * 2 - (currentRotation % (Math.PI * 2)) + (Math.PI * 1.5)) % (Math.PI * 2);
+            const winnerIndex = Math.floor(normalizedAngle / sliceAngle);
+            
+            const winnerName = names[winnerIndex];
+            lastWinner = winnerName;
+
+            // Trigger Fireworks / Confetti
+            triggerConfetti();
+            playVictorySound();
+
+            // Record to Winner History Log
+            addWinnerToHistory(winnerName);
+
+            // Show Winner Modal Pop-up
+            setTimeout(() => {
+                winnerNameDisplay.textContent = winnerName;
+                openWinnerModal();
+            }, 300);
+        }
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        function syncInputFromArray() {
+            namesInput.value = names.join('\n');
+            participantCount.textContent = names.length;
+            renderTags();
+            drawWheel();
+        }
+
+        function syncArrayFromInput() {
+            const rawText = namesInput.value;
+            const parsedLines = rawText.split(/[\n,]+/).map(n => n.trim()).filter(n => n.length > 0);
+            
+            names = [...parsedLines];
+
+            // Hapus nama terblokir yang sudah dihapus dari daftar
+            const currentNamesSet = new Set(names.map(n => n.toLowerCase()));
+            blacklistedNames.forEach(nameLower => {
+                if (!currentNamesSet.has(nameLower)) {
+                    blacklistedNames.delete(nameLower);
+                }
+            });
+
+            participantCount.textContent = names.length;
+            renderTags();
+            drawWheel();
+        }
+
+        function renderTags() {
+            participantTags.innerHTML = '';
+            const adminIndicator = document.getElementById('adminStatusIndicator');
+            if (adminIndicator) {
+                if (secretAdminMode) {
+                    adminIndicator.classList.remove('hidden');
+                } else {
+                    adminIndicator.classList.add('hidden');
+                }
+            }
+
+            names.forEach((name, index) => {
+                const isBlocked = blacklistedNames.has(name.toLowerCase());
+                const tag = document.createElement('div');
+                
+                if (secretAdminMode) {
+                    // MODE ADMIN RAHASIA: Tampilan jelas untuk atur siapa yang diblokir
+                    let tagClass = 'px-2.5 py-1 rounded-lg text-xs font-medium flex items-center gap-1.5 shadow-sm select-none cursor-pointer border transition ';
+                    if (isBlocked) {
+                        tagClass += 'bg-red-950/90 border-red-500 text-red-200 hover:bg-red-900';
+                    } else {
+                        tagClass += 'bg-emerald-950/90 border-emerald-500 text-emerald-200 hover:bg-emerald-900';
+                    }
+                    tag.className = tagClass;
+
+                    const statusBadge = isBlocked 
+                        ? `<span class="bg-red-600 text-white px-1.5 py-0.5 text-[10px] rounded font-bold flex items-center gap-1"><i class="fa-solid fa-lock text-[9px]"></i> DIBLOKIR</span>`
+                        : `<span class="bg-emerald-600 text-white px-1.5 py-0.5 text-[10px] rounded font-bold flex items-center gap-1"><i class="fa-solid fa-check text-[9px]"></i> BISA MENANG</span>`;
+
+                    tag.innerHTML = `
+                        <span>${escapeHtml(name)}</span>
+                        ${statusBadge}
+                        <button onclick="event.stopPropagation(); removeNameAtIndex(${index})" class="text-slate-400 hover:text-white transition ml-1" title="Hapus Peserta">
+                            <i class="fa-solid fa-xmark text-xs"></i>
+                        </button>
+                    `;
+
+                    // Klik tag saat di Mode Admin untuk merubah status blokir
+                    tag.addEventListener('click', () => {
+                        toggleBlacklistName(name);
+                    });
+
+                } else {
+                    // MODE NORMAL: Tampilan 100% Polos & Bersih tanpa indikator rahasia apapun
+                    tag.className = 'px-2.5 py-1 bg-slate-800 border border-slate-700/80 rounded-lg text-xs font-medium text-slate-200 flex items-center gap-1.5 shadow-sm select-none';
+                    tag.innerHTML = `
+                        <span>${escapeHtml(name)}</span>
+                        <button onclick="event.stopPropagation(); removeNameAtIndex(${index})" class="text-slate-400 hover:text-red-400 transition ml-0.5">
+                            <i class="fa-solid fa-xmark text-xs"></i>
+                        </button>
+                    `;
+                }
+
+                participantTags.appendChild(tag);
+            });
+        }
+
+        function toggleBlacklistName(name) {
+            const lower = name.toLowerCase();
+            if (blacklistedNames.has(lower)) {
+                blacklistedNames.delete(lower);
+            } else {
+                blacklistedNames.add(lower);
+            }
+            renderTags();
+        }
+
+        function toggleSecretAdminMode() {
+            secretAdminMode = !secretAdminMode;
+            if (secretAdminMode) {
+                secretAdminBanner.classList.remove('hidden');
+            } else {
+                secretAdminBanner.classList.add('hidden');
+            }
+            renderTags();
+        }
+
+        // Global Keydown Shortcut (Alt + S to toggle Secret Admin Mode)
+        window.addEventListener('keydown', (e) => {
+            if (e.altKey && (e.key === 's' || e.key === 'S')) {
+                e.preventDefault();
+                toggleSecretAdminMode();
+            }
+        });
+
+        const closeAdminBtn = document.getElementById('closeAdminBtn');
+        if (closeAdminBtn) {
+            closeAdminBtn.addEventListener('click', () => {
+                toggleSecretAdminMode();
+            });
+        }
+
+        window.removeNameAtIndex = function(index) {
+            if (isSpinning) return;
+            const removed = names.splice(index, 1);
+            if (removed.length > 0) {
+                blacklistedNames.delete(removed[0].toLowerCase());
+            }
+            syncInputFromArray();
+        };
+
+        function addWinnerToHistory(name) {
+            winnerHistory.unshift({
+                name: name,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+            renderHistory();
+        }
+
+        function renderHistory() {
+            if (winnerHistory.length === 0) {
+                winnerHistoryEl.innerHTML = '<li class="text-slate-500 italic text-center py-2" id="emptyHistoryMsg">Belum ada pemenang yang terpilih</li>';
+                return;
+            }
+
+            winnerHistoryEl.innerHTML = winnerHistory.map((item, idx) => `
+                <li class="bg-slate-800/80 border border-slate-700/60 rounded-lg px-3 py-1.5 flex justify-between items-center animate-fade-in">
+                    <span class="font-semibold text-pink-300">#${winnerHistory.length - idx}. ${escapeHtml(item.name)}</span>
+                    <span class="text-[10px] text-slate-400">${item.time}</span>
+                </li>
+            `).join('');
+        }
+
+        // Custom Notification Message Box (replaces browser default alert)
+        function alertCustom(message) {
+            const msgBox = document.createElement('div');
+            msgBox.className = 'fixed top-5 right-5 bg-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-2xl z-50 transition transform translate-y-0 opacity-100 flex items-center gap-2';
+            msgBox.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> <span>${escapeHtml(message)}</span>`;
+            document.body.appendChild(msgBox);
+            setTimeout(() => {
+                msgBox.style.opacity = '0';
+                msgBox.style.transform = 'translateY(-10px)';
+                setTimeout(() => msgBox.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.innerText = text;
+            return div.innerHTML;
+        }
+
+        // Modal Controls
+        function openWinnerModal() {
+            winnerModal.classList.remove('hidden');
+            setTimeout(() => {
+                winnerModal.classList.remove('opacity-0');
+                modalCard.classList.remove('scale-90');
+                modalCard.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeWinnerModal() {
+            winnerModal.classList.add('opacity-0');
+            modalCard.classList.remove('scale-100');
+            modalCard.classList.add('scale-90');
+            setTimeout(() => {
+                winnerModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Event Listeners
+        spinBtn.addEventListener('click', spinWheel);
+        centerSpinBtn.addEventListener('click', spinWheel);
+
+        updateListBtn.addEventListener('click', () => {
+            syncArrayFromInput();
+            alertCustom('Daftar peserta arisan diperbarui!');
+        });
+
+        shuffleListBtn.addEventListener('click', () => {
+            if (isSpinning) return;
+            names.sort(() => Math.random() - 0.5);
+            syncInputFromArray();
+            alertCustom('Urutan posisi nama diacak!');
+        });
+
+        clearListBtn.addEventListener('click', () => {
+            if (isSpinning) return;
+            names = [];
+            syncInputFromArray();
+        });
+
+        presetBtn.addEventListener('click', () => {
+            if (isSpinning) return;
+            names = [...DEFAULT_NAMES];
+            syncInputFromArray();
+        });
+
+        audioToggleBtn.addEventListener('click', () => {
+            audioEnabled = !audioEnabled;
+            if (audioEnabled) {
+                audioIcon.className = 'fa-solid fa-volume-high text-emerald-400';
+                audioText.textContent = 'Suara: ON';
+            } else {
+                audioIcon.className = 'fa-solid fa-volume-xmark text-slate-500';
+                audioText.textContent = 'Suara: OFF';
+            }
+        });
+
+        // Modal Action Buttons
+        removeWinnerBtn.addEventListener('click', () => {
+            if (lastWinner) {
+                names = names.filter(n => n !== lastWinner);
+                syncInputFromArray();
+            }
+            closeWinnerModal();
+        });
+
+        keepWinnerBtn.addEventListener('click', () => {
+            closeWinnerModal();
+        });
+
+        clearHistoryBtn.addEventListener('click', () => {
+            winnerHistory = [];
+            renderHistory();
+        });
+
+        // Responsive canvas adjustment on window resize
+        window.addEventListener('resize', () => {
+            drawWheel();
+        });
+
+        // Initialize state on page load
+        window.onload = function() {
+            syncInputFromArray();
+            drawWheel();
+        };
+    </script>
 </body>
 </html>
